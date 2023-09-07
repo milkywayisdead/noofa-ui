@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import api from '../utils/api/api.js'
 import {getLocale} from '../utils/locales/locales.js'
 
 export default {
@@ -11,12 +10,10 @@ export default {
     data(){
         return {
             locale: getLocale('ru'),
-            api: api,
         }
     },
     provide(){
         return {
-            api: this.api,
             locale: this.locale,
         }
     },

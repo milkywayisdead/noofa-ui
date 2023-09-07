@@ -86,6 +86,7 @@
 import BaseDialog from './BaseDialog.vue'
 import NooTextField from '@/components/inputs/NooTextField.vue'
 import NooSelect from '@/components/inputs/NooSelect.vue'
+import sources from '@/utils/sources.js'
 
 export default {
     name: 'NewSourceDialog',
@@ -102,12 +103,7 @@ export default {
             dbName: '',
             connStr: '',
             visible: false,
-            srcTypes: [
-                {value: 'postgres', text: 'Postgres'},
-                {value: 'mysql', text: 'MySQL'},
-                {value: 'mssql', text: 'SQL Server'},
-                {value: 'redis', text: 'Redis'},
-            ]
+            srcTypes: sources,
         }
     },
     inject: ['context', 'locale'],

@@ -1,6 +1,58 @@
 class NoofaCtx {
     constructor(conf){
-        this.id = conf.profileId || null;
+        this.update(conf);
+    }
+
+    compile(){
+        const sources = {}
+        for(let source of Object.values(this.sources)){
+            sources[source.id] = source.compile();
+        }
+
+        const queries = {}
+        for(let query of Object.values(this.queries)){
+            queries[query.id] = query.compile();
+        }
+
+        const dataframes = {}
+        for(let df of Object.values(this.dataframes)){
+            dataframes[df.id] = df.compile();
+        }
+
+        const components = {}
+        for(let cmp of Object.values(this.components)){
+            components[cmp.id] = cmp.compile();
+        }
+
+        const docs = {}
+        for(let doc of Object.values(this.docs)){
+            docs[doc.id] = doc.compile();
+        }
+
+        const values = {}
+        for(let value of Object.values(this.values)){
+            values[value.id] = value.compile();
+        }
+
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            sources: sources,
+            queries: queries,
+            dataframes: dataframes,
+            components: components,
+            docs: docs,
+            values: values,
+        }
+    }
+
+    addSource(conf){
+        this.sources[conf.id] = new CtxSource(conf);
+    }
+
+    update(conf){
+        this.id = conf.id || null;
         this.name = conf.name || '';
         this.description = conf.description || '';
         for(let prop of [
@@ -14,19 +66,12 @@ class NoofaCtx {
         const sources = conf.sources || {}
         for(let sourceId in sources){
             const sourceConf = sources[sourceId];
-            this.sources[sourceId] = new CtxSource(sourceConf);
-        }
+            this.addSource(sourceConf);
+        }        
     }
 
-    compile(){
-        return {
-            id: this.id,
-            sources: Object.values(this.sources).map(src => src.compile()),
-        }
-    }
-
-    addSource(conf){
-        this.sources[conf.id] = new CtxSource(conf);
+    hasId(){
+        return this.id !== null;
     }
 }
 

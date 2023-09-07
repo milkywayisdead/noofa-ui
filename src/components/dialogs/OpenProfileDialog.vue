@@ -5,6 +5,7 @@
         :on-open="getProfiles"
         @close="reset"
         :width="'40%'"
+        ref="baseDialog"
     >
         <template v-slot:content>
             <v-row>
@@ -18,7 +19,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="profile in profiles" :key="profile.id">
+                            <tr v-for="profile in profiles" 
+                                :key="profile.id"
+                                @click="openProfile(profile.id)"
+                                style="cursor: pointer"
+                            >
                                 <td>{{ profile.name }}</td>
                                 <td>{{ profile.created }}</td>
                                 <td>{{ profile.last_update }}</td>
@@ -52,9 +57,18 @@ export default {
         },
         reset(){
             this.profiles = []
-        }
+        },
+        openProfile(profileId){
+            this.api.getProfile(profileId)
+                .then(res => {
+                    if(res.status === 200){
+                        this.context.update(res.data)
+                    }
+                    this.$refs.baseDialog.close()
+                })
+        },
     },
-    inject: ['api', 'locale'],
+    inject: ['api', 'locale', 'context'],
     components: {
         BaseDialog,
     },

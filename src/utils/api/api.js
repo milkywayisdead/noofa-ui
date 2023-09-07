@@ -8,6 +8,12 @@ const api = {
     profilesDetails(){
         return axios.get(urls.profilesDetails);
     },
+    createProfile(payload){
+        return axios.post(urls.createProfile, payload);
+    },
+    updateProfile(profileId, payload){
+        return axios.post(urls.updateProfile + profileId, payload);
+    },
 }
 
 export default api;
