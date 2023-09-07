@@ -1,24 +1,24 @@
 <template>
-    <base-dialog 
+    <base-dialog
+        ref="baseDialog"
         :title="locale.sources.new" 
         activator-icon="mdi-database-plus"
+        @close="reset"
     >
         <template v-slot:content>
             <v-row>
                 <v-col cols="12">
-                    <v-text-field 
+                    <noo-text-field 
                         :label="locale.sources.name"
                         v-model="name" />
                 </v-col>
             </v-row>
             <v-row>
                 <v-col cols="12">
-                    <v-select
+                    <noo-select
                         :label="locale.sources.type"
                         v-model="type" 
-                        :items="srcTypes" 
-                        item-title="text" 
-                        item-value="value" />
+                        :items="srcTypes" />
                 </v-col>
             </v-row>
             <v-row>
@@ -32,11 +32,16 @@
                 </v-col>
             </v-row>
         </template>
+        <template v-slot:actions>
+            <v-btn @click="addSource">{{ locale.actions.save }}</v-btn>
+        </template>
     </base-dialog>
 </template>
 
 <script>
 import BaseDialog from './BaseDialog.vue'
+import NooTextField from '@/components/inputs/NooTextField.vue'
+import NooSelect from '@/components/inputs/NooSelect.vue'
 
 export default {
     name: 'NewSourceDialog',
@@ -44,9 +49,14 @@ export default {
         return {
             id: '',
             name: '',
-            type: '',
+            type: 'postgres',
             from: 'json',
-            value: '',
+            host: '',
+            port: '',
+            user: '',
+            password: '',
+            dbName: '',
+            connStr: '',
             visible: false,
             srcTypes: [
                 {value: 'postgres', text: 'Postgres'},
@@ -56,9 +66,42 @@ export default {
             ]
         }
     },
-    inject: ['locale'],
+    inject: ['context', 'locale'],
+    methods: {
+        addSource(){
+            const conf = this.toConf();
+            this.context.addSource(conf)
+            console.log(this.context)
+            this.$refs.baseDialog.close()
+        },
+        toConf(){
+            const srcId = `src${+ new Date()}`
+            const conf = {id: srcId}
+            for(let prop of [
+                'name', 'type', 'from',
+                'host', 'port', 'dbName',
+                'user', 'password', 'connStr',
+            ]){
+                conf[prop] = this[prop]
+            }
+            return conf;
+        },
+        reset(){
+            for(let prop of [
+                'name', 'host', 'port',
+                'user', 'password', 'connStr',
+                'dbName',
+            ]){
+                this[prop] = ''
+            }
+            this.type = 'postgres'
+            this.from = 'json'
+        },
+    },
     components: {
         BaseDialog,
+        NooTextField,
+        NooSelect,
     },
 }
 </script>

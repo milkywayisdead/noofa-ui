@@ -24,24 +24,49 @@ class NoofaCtx {
             sources: Object.values(this.sources).map(src => src.compile()),
         }
     }
+
+    addSource(conf){
+        this.sources[conf.id] = new CtxSource(conf);
+    }
 }
 
 
 class CtxSource {
     constructor(conf){
-        this.id = conf.id;
-        this.type = conf.type;
-        this.from = conf.from;
-        this.value = conf.value;
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
     }
 
     compile(){
+        let value = this.connStr;
+        if(this.from !== 'conn_str'){
+            value = {}
+            for(let prop of this._propsForCompile()){
+                value[prop] = this[prop];
+            }
+        }
         return {
             id: this.id,
             type: this.type,
             from: this.from,
-            value: this.value,
+            value: value,
         }
+    }
+
+    _propsForCompile(){
+        return [
+            'host', 'port', 'dbName', 'user',
+            'password',
+        ];
+    }
+
+    _propsForConstructor(){
+        return [
+            'id', 'name', 'type', 'from',
+            'host', 'port', 'dbName', 'user',
+            'password', 'connStr',
+        ];
     }
 }
 

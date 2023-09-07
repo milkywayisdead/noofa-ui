@@ -53,12 +53,20 @@ export default {
             default: null,
         },
     },
+    methods: {
+        close(){
+            this.visible = false
+        },
+    },
+    emits: ['close'],
     watch: {
         visible(value){
             if(value){
                 if(this.onOpen){
                     this.onOpen()
                 }
+            } else {
+                this.$emit('close')
             }
         },
     },
