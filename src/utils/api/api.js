@@ -5,8 +5,8 @@ const api = {
     getProfile(profileId){
         return axios.get(urls.getProfile + profileId);
     },
-    getProfiles(){
-        return axios.get(urls.getProfiles);
+    profilesDetails(){
+        return axios.get(urls.profilesDetails);
     },
 }
 

@@ -3,7 +3,10 @@
         <template v-slot:content>
             <v-toolbar>
                 <open-profile-dialog />
+                <v-btn icon="mdi-content-save"></v-btn>
                 <new-source-dialog />
+                <v-btn icon="mdi-swap-horizontal"></v-btn>
+                <v-btn icon="mdi-table-large-plus"></v-btn>
             </v-toolbar>
         </template>
     </wrapper>

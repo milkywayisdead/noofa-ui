@@ -31,6 +31,50 @@
                     </v-radio-group>
                 </v-col>
             </v-row>
+            <v-row v-if="usingConnStr">
+                <v-col cols="12">
+                    <noo-text-field 
+                        :label="locale.sources.connStr"
+                        v-model="connStr" />
+                </v-col>
+            </v-row>
+            <div v-if="!usingConnStr">
+                <v-row>
+                    <v-col cols="12">
+                        <noo-text-field 
+                            :label="locale.sources.host"
+                            v-model="host" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <noo-text-field 
+                            :label="locale.sources.port"
+                            v-model="port" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <noo-text-field 
+                            :label="locale.sources.db"
+                            v-model="dbName" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <noo-text-field 
+                            :label="locale.sources.user"
+                            v-model="user" />
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="12">
+                        <noo-text-field 
+                            :label="locale.sources.password"
+                            v-model="password" />
+                    </v-col>
+                </v-row>
+            </div>
         </template>
         <template v-slot:actions>
             <v-btn @click="addSource">{{ locale.actions.save }}</v-btn>
@@ -96,6 +140,11 @@ export default {
             }
             this.type = 'postgres'
             this.from = 'json'
+        },
+    },
+    computed: {
+        usingConnStr(){
+            return this.from === 'conn_str'
         },
     },
     components: {
