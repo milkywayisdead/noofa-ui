@@ -53,7 +53,7 @@ class NoofaCtx {
 
     update(conf){
         this.id = conf.id || null;
-        this.name = conf.name || '';
+        this.name = conf.name ? conf.name : (conf.defaultName ? conf.defaultName : 'Untitled');
         this.description = conf.description || '';
         for(let prop of [
                 'sources', 'queries', 'dataframes',
@@ -93,6 +93,7 @@ class CtxSource {
         }
         return {
             id: this.id,
+            name: this.name,
             type: this.type,
             from: this.from,
             value: value,

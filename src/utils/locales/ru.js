@@ -10,6 +10,10 @@ const ru = {
         name: 'Название профиля',
         created: 'Дата создания',
         lastUpdate: 'Последнее обновление',
+        profileTree: 'Дерево проекта',
+        defaultName: 'Безымянный',
+        data: 'Данные',
+        components: 'Компоненты',
     },
     sources: {
         new: 'Добавление источника',
@@ -23,6 +27,19 @@ const ru = {
         password: 'Пароль',
         db: 'Название БД',
         connStr: 'Строка подключения',
+        plural: 'Источники',
+    },
+    queries: {
+        plural: 'Запросы',
+    },
+    dataframes: {
+        plural: 'Датафреймы',
+    },
+    tables: {
+        plural: 'Таблицы',
+    },
+    figures: {
+        plural: 'Графики',
     },
 }
 

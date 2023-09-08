@@ -1,11 +1,11 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
-import Editor from '@/components/Editor.vue'
+import NoofaEditor from '@/components/NoofaEditor.vue'
 
 const routes = [
   {
     path: '/',
-    component: Editor,
+    component: NoofaEditor,
     name: 'Home',
   },
 ]
