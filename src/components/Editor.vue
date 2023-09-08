@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar>
+    <v-toolbar density="compact">
         <open-profile-dialog />
         <v-btn 
             icon="mdi-content-save"
@@ -10,10 +10,10 @@
     </v-toolbar>
     <v-row>
         <v-col cols="2">
-            <profile-tree></profile-tree>
+            <profile-tree @profile-item-selected="addTab"></profile-tree>
         </v-col>
         <v-col cols="10">
-            <tabs-area></tabs-area>
+            <tabs-area ref="tabsArea"></tabs-area>
         </v-col>
     </v-row>
 </template>
@@ -23,7 +23,6 @@ import ProfileTree from '@/components/profile_tree/ProfileTree.vue'
 import TabsArea from '@/components/tabs/TabsArea.vue'
 import NewSourceDialog from './dialogs/NewSourceDialog.vue'
 import OpenProfileDialog from './dialogs/OpenProfileDialog.vue'
-
 
 export default {
     name: 'Editor',
@@ -41,6 +40,9 @@ export default {
                         console.log(res.data)
                     }
                 })
+        },
+        addTab(itemProps){
+            this.$refs.tabsArea.addTab(itemProps)
         },
     },
     components: {

@@ -8,7 +8,10 @@
         <slot v-if="expanded" name="items"></slot>
         <v-list-item v-for="item in children" :key="item.id">
             <profile-tree-leaf 
-                :label="item.name" />
+                :label="item.name" 
+                :item-props="item" 
+                :item-type="itemType"
+                @profile-item-selected="emitSelected" />
         </v-list-item>
     </v-list>
 </template>
@@ -35,7 +38,10 @@ export default {
         items: {
             type: [Array, Object],
             default: [],
-        }
+        },
+        itemType: {
+            type: String,
+        },
     },
     inject: ['context', 'locale'],
     computed: {
@@ -51,6 +57,12 @@ export default {
         statusIcon(){
             return this.expanded ? 'mdi-minus' : 'mdi-plus'
         }
+    },
+    emits: ['profile-item-selected'],
+    methods: {
+        emitSelected(itemProps){
+            this.$emit('profile-item-selected', itemProps)
+        },
     },
     components: {
         ProfileTreeLeaf,
