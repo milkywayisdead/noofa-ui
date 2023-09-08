@@ -30,6 +30,12 @@ const ru = {
         plural: 'Источники',
     },
     queries: {
+        new: 'Добавление запроса',
+        name: 'Название запроса',
+        from: 'Вариант конфигурации',
+        expression: 'Выражение',
+        constructor: 'Конструктор',
+        source: 'Источник',
         plural: 'Запросы',
     },
     dataframes: {

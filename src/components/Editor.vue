@@ -5,8 +5,7 @@
             icon="mdi-content-save"
             @click="saveProfile" />
         <new-source-dialog />
-        <v-btn icon="mdi-swap-horizontal" />
-        <v-btn icon="mdi-table-large-plus" />
+        <new-query-dialog />
     </v-toolbar>
     <v-row>
         <v-col cols="2">
@@ -23,6 +22,7 @@ import ProfileTree from '@/components/profile_tree/ProfileTree.vue'
 import TabsArea from '@/components/tabs/TabsArea.vue'
 import NewSourceDialog from './dialogs/NewSourceDialog.vue'
 import OpenProfileDialog from './dialogs/OpenProfileDialog.vue'
+import NewQueryDialog from './dialogs/NewQueryDialog.vue'
 
 export default {
     name: 'Editor',
@@ -47,6 +47,7 @@ export default {
     },
     components: {
         NewSourceDialog,
+        NewQueryDialog,
         OpenProfileDialog,
         ProfileTree,
         TabsArea,

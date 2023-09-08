@@ -51,6 +51,10 @@ class NoofaCtx {
         this.sources[conf.id] = new CtxSource(conf);
     }
 
+    addQuery(conf){
+        this.queries[conf.id] = new CtxQuery(conf);
+    }
+
     update(conf){
         this.id = conf.id || null;
         this.name = conf.name ? conf.name : (conf.defaultName ? conf.defaultName : 'Untitled');
@@ -67,7 +71,13 @@ class NoofaCtx {
         for(let sourceId in sources){
             const sourceConf = sources[sourceId];
             this.addSource(sourceConf);
-        }        
+        }
+        
+        const queries = conf.queries || {}
+        for(let queryId in queries){
+            const queryConf = queries[queryId];
+            this.addQuery(queryConf);
+        }      
     }
 
     hasId(){
@@ -102,7 +112,7 @@ class CtxSource {
 
     _propsForCompile(){
         return [
-            'host', 'port', 'dbName', 'user',
+            'name', 'host', 'port', 'dbName', 'user',
             'password',
         ];
     }
@@ -112,6 +122,38 @@ class CtxSource {
             'id', 'name', 'type', 'from',
             'host', 'port', 'dbName', 'user',
             'password', 'connStr',
+        ];
+    }
+}
+
+class CtxQuery {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+    }
+
+    compile(){
+        const cmp = {}
+        let value = this.expression;
+        cmp.value = value;
+        for(let prop of this._propsForCompile()){
+            cmp[prop] = this[prop];
+        }
+        return cmp;
+    }
+
+    _propsForCompile(){
+        return [
+            'id', 'name', 'from',
+            'expression', 'source',
+        ];
+    }
+
+    _propsForConstructor(){
+        return [
+            'id', 'name', 'from',
+            'expression', 'source',
         ];
     }
 }

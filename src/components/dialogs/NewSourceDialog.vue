@@ -109,9 +109,8 @@ export default {
     inject: ['context', 'locale'],
     methods: {
         addSource(){
-            const conf = this.toConf();
+            const conf = this.toConf()
             this.context.addSource(conf)
-            console.log(this.context)
             this.$refs.baseDialog.close()
         },
         toConf(){

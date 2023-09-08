@@ -25,6 +25,7 @@
 
 <script>
 import SourceTab from './SourceTab.vue'
+import QueryTab from './QueryTab.vue'
 
 export default {
     name: 'TabsArea',
@@ -56,6 +57,7 @@ export default {
     },
     components: {
         SourceTab,
+        QueryTab,
     },
 }
 </script>
