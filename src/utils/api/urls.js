@@ -6,6 +6,8 @@ const urls = {
     profilesDetails: `${prefix}/profiles_details/`,
     createProfile: `${prefix}/create_profile/`,
     updateProfile: `${prefix}/update_profile/`,
+    deleteProfile: `${prefix}/delete_profile/`,
+    partialUpdate: `${prefix}/partial_update/`,
 }
 
 export default urls;

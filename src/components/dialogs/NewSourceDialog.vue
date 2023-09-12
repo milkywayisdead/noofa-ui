@@ -106,12 +106,20 @@ export default {
             srcTypes: sources,
         }
     },
-    inject: ['context', 'locale'],
+    inject: ['context', 'locale', 'api'],
     methods: {
         addSource(){
             const conf = this.toConf()
-            this.context.addSource(conf)
-            this.$refs.baseDialog.close()
+            const source = this.context.addSource(conf)
+            if(this.context.hasId()){
+                this.api.partialUpdate(this.context.id, 'source', source.id, source.compile())
+                    .then(res => {})
+                    .finally(_ => {
+                        this.$refs.baseDialog.close()
+                    })
+            } else {
+                this.$refs.baseDialog.close()
+            }
         },
         toConf(){
             const srcId = `src${+ new Date()}`

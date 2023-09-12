@@ -49,10 +49,12 @@ class NoofaCtx {
 
     addSource(conf){
         this.sources[conf.id] = new CtxSource(conf);
+        return this.sources[conf.id];
     }
 
     addQuery(conf){
         this.queries[conf.id] = new CtxQuery(conf);
+        return this.queries[conf.id];
     }
 
     update(conf){

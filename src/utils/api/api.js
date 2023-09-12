@@ -14,6 +14,15 @@ const api = {
     updateProfile(profileId, payload){
         return axios.post(urls.updateProfile + profileId, payload);
     },
+    deleteProfile(profileId){
+        return axios.post(urls.deleteProfile + profileId);
+    },
+    partialUpdate(profileId, target, targetId, payload){
+        return axios.post(
+            `${urls.partialUpdate + profileId}/?target=${target}&target_id=${targetId}`, 
+            payload
+        )
+    },
 }
 
 export default api;

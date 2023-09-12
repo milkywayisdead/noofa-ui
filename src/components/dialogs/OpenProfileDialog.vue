@@ -16,6 +16,7 @@
                                 <th>{{ locale.profiles.name }}</th>
                                 <th>{{ locale.profiles.created }}</th>
                                 <th>{{ locale.profiles.lastUpdate }}</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,6 +28,7 @@
                                 <td>{{ profile.name }}</td>
                                 <td>{{ profile.created }}</td>
                                 <td>{{ profile.last_update }}</td>
+                                <td><v-icon @click.stop="deleteProfile(profile.id)">mdi-delete</v-icon></td>
                             </tr>
                         </tbody>
                     </v-table>
@@ -65,6 +67,14 @@ export default {
                         this.context.update(res.data)
                     }
                     this.$refs.baseDialog.close()
+                })
+        },
+        deleteProfile(profileId){
+            this.api.deleteProfile(profileId)
+                .then(res => {
+                    if(res.status === 200){
+                        this.profiles = this.profiles.filter(p => p.id !== profileId)
+                    }
                 })
         },
     },
