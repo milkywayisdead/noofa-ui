@@ -57,7 +57,7 @@
                     <v-col cols="12">
                         <noo-text-field 
                             :label="locale.sources.db"
-                            v-model="dbName" />
+                            v-model="dbname" />
                     </v-col>
                 </v-row>
                 <v-row>
@@ -101,7 +101,7 @@ export default {
             port: '',
             user: '',
             password: '',
-            dbName: '',
+            dbname: '',
             connStr: '',
             visible: false,
             srcTypes: sources,
@@ -126,7 +126,7 @@ export default {
             const conf = {id: srcId}
             for(let prop of [
                 'name', 'type', 'from',
-                'host', 'port', 'dbName',
+                'host', 'port', 'dbname',
                 'user', 'password', 'connStr',
             ]){
                 conf[prop] = this[prop]
@@ -137,7 +137,7 @@ export default {
             for(let prop of [
                 'name', 'host', 'port',
                 'user', 'password', 'connStr',
-                'dbName',
+                'dbname',
             ]){
                 this[prop] = ''
             }

@@ -69,7 +69,7 @@
                     <v-col cols="12">
                         <noo-text-field 
                             :label="locale.sources.db"
-                            v-model="dbName" />
+                            v-model="dbname" />
                     </v-col>
                 </v-row>
                 <v-row>
@@ -103,7 +103,6 @@ export default {
     mixins: [tabMixin, dbExplorerMixin],
     data(){
         const props = this.itemProps
-        console.log(props)
         const tabProps = {
             sourceTypes: sources,
             itemGroup: 'source',
@@ -117,14 +116,14 @@ export default {
         if(tabProps.from === 'conn_str'){
             tabProps.connStr = props.connStr
             for(let p of [
-                'host', 'port', 'user', 'password', 'dbName',
+                'host', 'port', 'user', 'password', 'dbname',
             ]){
                 tabProps[p] = ''
             }
         } else {
             tabProps.connStr = ''
             for(let p of [
-                'host', 'port', 'user', 'password', 'dbName',
+                'host', 'port', 'user', 'password', 'dbname',
             ]){
                 tabProps[p] = props[p]
             }
@@ -154,7 +153,7 @@ export default {
             const conf = {id: this.id}
             for(let prop of [
                 'name', 'type', 'from',
-                'host', 'port', 'dbName',
+                'host', 'port', 'dbname',
                 'user', 'password', 'connStr',
             ]){
                 conf[prop] = this[prop]

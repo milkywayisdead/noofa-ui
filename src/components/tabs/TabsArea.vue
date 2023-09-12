@@ -13,7 +13,7 @@
             <v-window-item v-for="item in tabs" 
                 :key="item.props.id"
                 :value="item.props.id"
-                class="px-2 pb-2 pt-2"
+                class="px-2 pb-2 pt-2 no-transition"
             >
                 <component 
                     :is="`${item.type}-tab`" 
@@ -62,3 +62,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.no-transition {
+    transition: none!important;
+}
+</style>

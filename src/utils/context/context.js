@@ -133,7 +133,7 @@ class CtxSource {
             conf[p] = dbConf[p];
         }
         conf.connStr = usingConnStr ? dbConf.value : '';
-        for(let p of ['host', 'port', 'user', 'dbName', 'password']){
+        for(let p of ['host', 'port', 'user', 'dbname', 'password']){
             conf[p] = dbConf.value[p];
         }
 
@@ -142,7 +142,7 @@ class CtxSource {
 
     static _propsForCompile(){
         return [
-            'name', 'host', 'port', 'dbName', 'user',
+            'name', 'host', 'port', 'dbname', 'user',
             'password', 'connStr',
         ];
     }
@@ -150,7 +150,7 @@ class CtxSource {
     static _propsForConstructor(){
         return [
             'id', 'name', 'type', 'from',
-            'host', 'port', 'dbName', 'user',
+            'host', 'port', 'dbname', 'user',
             'password', 'connStr',
         ];
     }
@@ -170,11 +170,15 @@ class CtxQuery {
         for(let prop of this._propsForCompile()){
             cmp[prop] = this[prop];
         }
+        console.log(cmp)
         return cmp;
     }
 
     static fromConf(dbConf){
         const conf = {...dbConf}
+        if(dbConf.from === 'expression'){
+            conf.expression = conf.value;
+        }
         return new CtxQuery(conf);
     }
 
