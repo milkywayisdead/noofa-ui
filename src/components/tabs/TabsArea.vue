@@ -17,7 +17,8 @@
             >
                 <component 
                     :is="`${item.type}-tab`" 
-                    :item-props="item.props" />
+                    :item-props="item.props" 
+                    @item-delete="closeTab($event)" />
             </v-window-item>
         </v-window>
     </v-card>

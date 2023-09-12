@@ -19,10 +19,16 @@ const api = {
     },
     partialUpdate(profileId, target, targetId, payload){
         return axios.post(
-            `${urls.partialUpdate + profileId}/?target=${target}&target_id=${targetId}`, 
+            `${urls.partialUpdate + profileId}/${target}/${targetId}`, 
             payload
         )
     },
+    partialDelete(profileId, target, targetId){
+        return axios.post(`${urls.partialDelete + profileId}/${target}/${targetId}`)
+    },
+    testConnection(profileId, sourceId){
+        return axios.get(`${urls.testConnection + profileId}/${sourceId}`)
+    }
 }
 
 export default api;

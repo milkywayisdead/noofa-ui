@@ -52,9 +52,23 @@ class NoofaCtx {
         return this.sources[conf.id];
     }
 
+    updateSource(sourceId, conf){
+        this.sources[sourceId] = new CtxSource(conf);
+        return this.sources[sourceId];
+    }
+
     addQuery(conf){
         this.queries[conf.id] = new CtxQuery(conf);
         return this.queries[conf.id];
+    }
+
+    updateQuery(queryId, conf){
+        this.queries[queryId] = new CtxQuery(conf);
+        return this.queries[queryId];
+    }
+
+    deleteItem(target, targetId){
+        delete this[target][targetId];
     }
 
     update(conf){
@@ -72,7 +86,7 @@ class NoofaCtx {
         const sources = conf.sources || {}
         for(let sourceId in sources){
             const sourceConf = sources[sourceId];
-            this.addSource(sourceConf);
+            this.sources[sourceId] = CtxSource.fromConf(sourceConf);
         }
         
         const queries = conf.queries || {}
@@ -90,8 +104,8 @@ class NoofaCtx {
 
 class CtxSource {
     constructor(conf){
-        for(let prop of this._propsForConstructor()){
-            this[prop] = conf[prop];
+        for(let prop of CtxSource._propsForConstructor()){
+            this[prop] = conf[prop] ?? '';
         }
     }
 
@@ -99,7 +113,7 @@ class CtxSource {
         let value = this.connStr;
         if(this.from !== 'conn_str'){
             value = {}
-            for(let prop of this._propsForCompile()){
+            for(let prop of CtxSource._propsForCompile()){
                 value[prop] = this[prop];
             }
         }
@@ -112,14 +126,28 @@ class CtxSource {
         }
     }
 
-    _propsForCompile(){
+    static fromConf(dbConf){
+        const conf = {}
+        const usingConnStr = dbConf.from === 'conn_str';
+        for(let p of ['id', 'name', 'type', 'from']){
+            conf[p] = dbConf[p];
+        }
+        conf.connStr = usingConnStr ? dbConf.value : '';
+        for(let p of ['host', 'port', 'user', 'dbName', 'password']){
+            conf[p] = dbConf.value[p];
+        }
+
+        return new CtxSource(conf);
+    }
+
+    static _propsForCompile(){
         return [
             'name', 'host', 'port', 'dbName', 'user',
-            'password',
+            'password', 'connStr',
         ];
     }
 
-    _propsForConstructor(){
+    static _propsForConstructor(){
         return [
             'id', 'name', 'type', 'from',
             'host', 'port', 'dbName', 'user',

@@ -83,13 +83,14 @@
 </template>
 
 <script>
-import BaseDialog from './BaseDialog.vue'
 import NooTextField from '@/components/inputs/NooTextField.vue'
 import NooSelect from '@/components/inputs/NooSelect.vue'
 import sources from '@/utils/sources.js'
+import { dialogMixin } from '@/utils/mixins/dialogs'
 
 export default {
     name: 'NewSourceDialog',
+    mixins: [dialogMixin,],
     data(){
         return {
             id: '',
@@ -106,7 +107,6 @@ export default {
             srcTypes: sources,
         }
     },
-    inject: ['context', 'locale', 'api'],
     methods: {
         addSource(){
             const conf = this.toConf()
@@ -151,7 +151,6 @@ export default {
         },
     },
     components: {
-        BaseDialog,
         NooTextField,
         NooSelect,
     },

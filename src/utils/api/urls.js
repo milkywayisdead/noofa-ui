@@ -8,6 +8,8 @@ const urls = {
     updateProfile: `${prefix}/update_profile/`,
     deleteProfile: `${prefix}/delete_profile/`,
     partialUpdate: `${prefix}/partial_update/`,
+    partialDelete: `${prefix}/partial_delete/`,
+    testConnection: `${prefix}/test_connection/`,
 }
 
 export default urls;

@@ -4,6 +4,7 @@ const ru = {
         cancel: 'Отменить',
         save: 'Сохранить',
         delete: 'Удалить',
+        itemDelete: 'Удаление элемента профиля',
     },
     profiles: {
         open: 'Открыть профиль',
@@ -46,6 +47,9 @@ const ru = {
     },
     figures: {
         plural: 'Графики',
+    },
+    messages: {
+        itemDelete: 'Удалить элемент из профиля?',
     },
 }
 

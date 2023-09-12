@@ -48,12 +48,13 @@
 </template>
 
 <script>
-import BaseDialog from './BaseDialog.vue'
 import NooTextField from '@/components/inputs/NooTextField.vue'
 import NooSelect from '@/components/inputs/NooSelect.vue'
+import { dialogMixin } from '@/utils/mixins/dialogs'
 
 export default {
     name: 'NewQueryDialog',
+    mixins: [dialogMixin,],
     data(){
         return {
             name: '',
@@ -62,12 +63,19 @@ export default {
             source: '',
         }
     },
-    inject: ['context', 'locale'],
     methods: {
         addQuery(){
             const conf = this.toConf()
-            this.context.addQuery(conf)
-            this.$refs.baseDialog.close()
+            const query = this.context.addQuery(conf)
+            if(this.context.hasId()){
+                this.api.partialUpdate(this.context.id, 'query', query.id, query.compile())
+                    .then(res => {})
+                    .finally(_ => {
+                        this.$refs.baseDialog.close()
+                    })
+            } else {
+                this.$refs.baseDialog.close()
+            }
         },
         toConf(){
             const qId = `qr${+ new Date()}`
@@ -101,7 +109,6 @@ export default {
         },
     },
     components: {
-        BaseDialog,
         NooTextField,
         NooSelect,
     },

@@ -1,9 +1,14 @@
 <template>
     <v-toolbar density="compact">
         <v-btn icon="mdi-content-save" 
-            @click="save" />
-        <v-btn icon="mdi-delete" 
-            @click="delete" />
+            @click="updateQuery" />
+        <delete-confirmation-dialog 
+            :item-id="id"
+            :item-name="name"
+            :item-group="itemGroup"
+            :item-group-plural="'queries'"
+            @item-delete="emitItemDelete($event)"
+        />
         <v-btn icon="mdi-play" 
             @click="getData" />
     </v-toolbar>
@@ -52,12 +57,16 @@
 <script>
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
+import { tabMixin } from '@/utils/mixins/tabs'
 
 export default {
     name: 'QueryTab',
+    mixins: [tabMixin],
     data(){
         const props = this.itemProps
-        const tabProps = {}
+        const tabProps = {
+            itemGroup: 'query',
+        }
         for(let p of [
             'id', 'name', 'from', 'expression', 'source',
         ]){
@@ -66,12 +75,6 @@ export default {
 
         return tabProps
     },
-    props: {
-        itemProps: {
-            type: Object,
-        }
-    },
-    inject: ['locale', 'context', 'api'],
     computed: {
         usingExpression(){
             return this.from === 'expression'
@@ -86,9 +89,20 @@ export default {
         },
     },
     methods: {
-        save(){},
-        delete(){},
+        updateQuery(){
+            const query = this.context.updateQuery(this.id, this.toConf())
+            this.updateItem(query)   
+        },
         getData(){},
+        toConf(){
+            const conf = {}
+            for(let prop of [
+                'id', 'name', 'from', 'source', 'expression',
+            ]){
+                conf[prop] = this[prop]
+            }
+            return conf
+        },
     },
     components: {
         NooTextField,

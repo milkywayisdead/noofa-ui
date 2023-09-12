@@ -40,9 +40,11 @@
 
 <script>
 import BaseDialog from './BaseDialog.vue'
+import { dialogMixin } from '@/utils/mixins/dialogs'
 
 export default {
     name: 'OpenProfileDialog',
+    mixins: [dialogMixin,],
     data(){
         return {
             profiles: [],
@@ -77,10 +79,6 @@ export default {
                     }
                 })
         },
-    },
-    inject: ['api', 'locale', 'context'],
-    components: {
-        BaseDialog,
     },
 }
 </script>

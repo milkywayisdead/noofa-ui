@@ -1,9 +1,14 @@
 <template>
     <v-toolbar density="compact">
         <v-btn icon="mdi-content-save" 
-            @click="save" />
-        <v-btn icon="mdi-delete" 
-            @click="delete" />
+            @click="updateSource" />
+        <delete-confirmation-dialog 
+            :item-id="id"
+            :item-name="name"
+            :item-group="itemGroup"
+            :item-group-plural="itemGroup + 's'"
+            @item-delete="emitItemDelete($event)"
+        />
         <v-btn icon="mdi-connection"
             @click="testConnection" />
     </v-toolbar>
@@ -88,37 +93,71 @@
 import sources from '@/utils/sources.js'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
+import { tabMixin } from '@/utils/mixins/tabs'
 
 export default {
     name: 'SourceTab',
+    mixins: [tabMixin],
     data(){
         const props = this.itemProps
-        const tabProps = {sourceTypes: sources}
+        console.log(props)
+        const tabProps = {
+            sourceTypes: sources,
+            itemGroup: 'source',
+        }
         for(let p of [
             'id', 'name', 'type', 'from',
-            'host', 'port', 'user', 'password',
-            'dbName', 'connStr'
         ]){
             tabProps[p] = props[p] ?? ''
         }
 
+        if(tabProps.from === 'conn_str'){
+            tabProps.connStr = props.connStr
+            for(let p of [
+                'host', 'port', 'user', 'password', 'dbName',
+            ]){
+                tabProps[p] = ''
+            }
+        } else {
+            tabProps.connStr = ''
+            for(let p of [
+                'host', 'port', 'user', 'password', 'dbName',
+            ]){
+                tabProps[p] = props[p]
+            }
+        }
+
         return tabProps
     },
-    props: {
-        itemProps: {
-            type: Object,
-        }
-    },
-    inject: ['locale', 'context', 'api'],
     computed: {
         usingConnStr(){
             return this.from === 'conn_str'
         },
     },
     methods: {
-        save(){},
-        delete(){},
-        testConnection(){},
+        updateSource(){
+            const source = this.context.updateSource(this.id, this.toConf())
+            this.updateItem(source)      
+        },
+        testConnection(){
+            this.api.testConnection(this.context.id, this.id)
+                .then(res => {
+                    if(res.status === 200){
+                        alert(res.data.result)
+                    }
+                })
+        },
+        toConf(){
+            const conf = {id: this.id}
+            for(let prop of [
+                'name', 'type', 'from',
+                'host', 'port', 'dbName',
+                'user', 'password', 'connStr',
+            ]){
+                conf[prop] = this[prop]
+            }
+            return conf
+        },
     },
     components: {
         NooTextField,
