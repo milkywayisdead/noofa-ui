@@ -92,7 +92,7 @@ class NoofaCtx {
         const queries = conf.queries || {}
         for(let queryId in queries){
             const queryConf = queries[queryId];
-            this.addQuery(queryConf);
+            this.queries[queryId] = CtxQuery.fromConf(queryConf);
         }      
     }
 
@@ -173,10 +173,14 @@ class CtxQuery {
         return cmp;
     }
 
+    static fromConf(dbConf){
+        const conf = {...dbConf}
+        return new CtxQuery(conf);
+    }
+
     _propsForCompile(){
         return [
-            'id', 'name', 'from',
-            'expression', 'source',
+            'id', 'name', 'from', 'source',
         ];
     }
 

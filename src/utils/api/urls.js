@@ -10,6 +10,10 @@ const urls = {
     partialUpdate: `${prefix}/partial_update/`,
     partialDelete: `${prefix}/partial_delete/`,
     testConnection: `${prefix}/test_connection/`,
+    getTablesList: `${prefix}/get_tables_list/`,
+    getFieldsList: `${prefix}/get_fields_list/`,
+    getDbStructure: `${prefix}/get_db_structure/`,
+    getQueryData: `${prefix}/get_query_data/`,
 }
 
 export default urls;

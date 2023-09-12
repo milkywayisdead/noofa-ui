@@ -93,7 +93,14 @@ export default {
             const query = this.context.updateQuery(this.id, this.toConf())
             this.updateItem(query)   
         },
-        getData(){},
+        getData(){
+            this.api.getQueryData(this.context.id, this.id)
+                .then(res => {
+                    if(res.status === 200){
+                        console.log(res.data)
+                    }
+                })
+        },
         toConf(){
             const conf = {}
             for(let prop of [

@@ -21,14 +21,26 @@ const api = {
         return axios.post(
             `${urls.partialUpdate + profileId}/${target}/${targetId}`, 
             payload
-        )
+        );
     },
     partialDelete(profileId, target, targetId){
-        return axios.post(`${urls.partialDelete + profileId}/${target}/${targetId}`)
+        return axios.post(`${urls.partialDelete + profileId}/${target}/${targetId}`);
     },
     testConnection(profileId, sourceId){
-        return axios.get(`${urls.testConnection + profileId}/${sourceId}`)
-    }
+        return axios.get(`${urls.testConnection + profileId}/${sourceId}`);
+    },
+    getTablesList(profileId, sourceId){
+        return axios.get(`${urls.getTablesList + profileId}/${sourceId}`);
+    },
+    getFieldsList(profileId, sourceId, tableName){
+        return axios.get(`${urls.getFieldsList + profileId}/${sourceId}/${tableName}`);
+    },
+    getDbStructure(profileId, sourceId){
+        return axios.get(`${urls.getDbStructure + profileId}/${sourceId}`);
+    },
+    getQueryData(profileId, queryId){
+        return axios.get(`${urls.getQueryData + profileId}/${queryId}`);
+    },
 }
 
 export default api;

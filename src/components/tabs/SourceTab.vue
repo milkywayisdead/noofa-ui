@@ -11,6 +11,8 @@
         />
         <v-btn icon="mdi-connection"
             @click="testConnection" />
+        <v-btn icon="mdi-database-settings" 
+            @click="getDbStructure(this.id)" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -94,10 +96,11 @@ import sources from '@/utils/sources.js'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import { dbExplorerMixin } from '@/utils/mixins/sources'
 
 export default {
     name: 'SourceTab',
-    mixins: [tabMixin],
+    mixins: [tabMixin, dbExplorerMixin],
     data(){
         const props = this.itemProps
         console.log(props)
@@ -158,6 +161,7 @@ export default {
             }
             return conf
         },
+
     },
     components: {
         NooTextField,
