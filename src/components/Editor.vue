@@ -4,6 +4,7 @@
         <v-btn 
             icon="mdi-content-save"
             @click="saveProfile" />
+        <profile-settings-dialog />
         <new-source-dialog />
         <new-query-dialog />
     </v-toolbar>
@@ -23,6 +24,7 @@ import TabsArea from '@/components/tabs/TabsArea.vue'
 import NewSourceDialog from './dialogs/NewSourceDialog.vue'
 import OpenProfileDialog from './dialogs/OpenProfileDialog.vue'
 import NewQueryDialog from './dialogs/NewQueryDialog.vue'
+import ProfileSettingsDialog from './dialogs/ProfileSettingsDialog.vue'
 
 export default {
     name: 'Editor',
@@ -49,6 +51,7 @@ export default {
         NewSourceDialog,
         NewQueryDialog,
         OpenProfileDialog,
+        ProfileSettingsDialog,
         ProfileTree,
         TabsArea,
     },

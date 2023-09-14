@@ -9,6 +9,7 @@ const ru = {
     profiles: {
         open: 'Открыть профиль',
         name: 'Название профиля',
+        description: 'Описание',
         created: 'Дата создания',
         lastUpdate: 'Последнее обновление',
         profileTree: 'Дерево проекта',

@@ -170,7 +170,7 @@ class CtxQuery {
         for(let prop of this._propsForCompile()){
             cmp[prop] = this[prop];
         }
-        console.log(cmp)
+
         return cmp;
     }
 
