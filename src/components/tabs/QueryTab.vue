@@ -69,15 +69,14 @@
 
 <script>
 import DataTable from 'datatables.net-vue3'
-import DataTablesLib from 'datatables.net-bs5'
-import 'datatables.net-select-bs5'
+import DataTablesCore from 'datatables.net'
 
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 
   
-DataTable.use(DataTablesLib)
+DataTable.use(DataTablesCore)
 
 export default {
     name: 'QueryTab',
@@ -120,6 +119,7 @@ export default {
             this.updateItem(query)   
         },
         getData(){
+            this.enterLoadingState()
             this.dropTable()
 
             this.api.getQueryData(this.context.id, this.id)
@@ -132,6 +132,8 @@ export default {
                         this.options.data = res.data.data
                         this.showTable()
                     }
+                }).finally(() => {
+                    this.exitLoadingState()
                 })
         },
         toConf(){

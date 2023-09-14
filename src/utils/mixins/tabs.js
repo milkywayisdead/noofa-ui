@@ -12,7 +12,7 @@ const tabMixin = {
         }
     },
     inject: ['locale', 'context', 'api'],
-    emits: ['item-delete'],
+    emits: ['item-delete', 'enter-loading-state', 'exit-loading-state'],
     methods: {
         emitItemDelete(itemId){
             this.$emit('item-delete', itemId)
@@ -24,6 +24,12 @@ const tabMixin = {
                         console.log(res.data)
                     }
                 })     
+        },
+        enterLoadingState(){
+            this.$emit('enter-loading-state')
+        },
+        exitLoadingState(){
+            this.$emit('exit-loading-state')
         },
     },
     components: {
