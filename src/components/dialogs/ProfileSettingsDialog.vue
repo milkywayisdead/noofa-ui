@@ -1,7 +1,7 @@
 <template>
     <base-dialog
         ref="baseDialog"
-        :title="locale.sources.new" 
+        :title="locale.profiles.settings" 
         activator-icon="mdi-cog"
         :on-open="fillSettings"
         @close="reset"
