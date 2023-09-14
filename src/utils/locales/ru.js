@@ -7,6 +7,7 @@ const ru = {
         itemDelete: 'Удаление элемента профиля',
     },
     profiles: {
+        singular: 'Профиль',
         open: 'Открыть профиль',
         name: 'Название профиля',
         description: 'Описание',
@@ -16,6 +17,10 @@ const ru = {
         defaultName: 'Безымянный',
         data: 'Данные',
         components: 'Компоненты',
+        settings: 'Настройки профиля',
+    },
+    data: {
+        data: 'Данные',
     },
     sources: {
         new: 'Добавление источника',
