@@ -51,13 +51,33 @@
             <div v-if="!expression">
             </div>
         </v-col>
+        <v-col cols="9">
+           <data-table v-if="tableIsVisible" class="display table-bordered"
+                :options="options"
+           >
+                <thead>
+                    <tr>
+                        <th v-for="col in columns" :key="col">
+                            {{ col }}
+                        </th>
+                    </tr>   
+                </thead>
+           </data-table>
+        </v-col>
     </v-row>
 </template>
 
 <script>
+import DataTable from 'datatables.net-vue3'
+import DataTablesLib from 'datatables.net-bs5'
+import 'datatables.net-select-bs5'
+
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+
+  
+DataTable.use(DataTablesLib)
 
 export default {
     name: 'QueryTab',
@@ -66,6 +86,12 @@ export default {
         const props = this.itemProps
         const tabProps = {
             itemGroup: 'query',
+            options: {
+                columns: [],
+                data: [],
+            },
+            tableIsVisible: false,
+            columns: [],
         }
         for(let p of [
             'id', 'name', 'from', 'expression', 'source',
@@ -94,10 +120,17 @@ export default {
             this.updateItem(query)   
         },
         getData(){
+            this.dropTable()
+
             this.api.getQueryData(this.context.id, this.id)
                 .then(res => {
                     if(res.status === 200){
-                        console.log(res.data)
+                        this.options.columns = res.data.columns.map(i => {
+                            return {data: i.replace('.', '\\.')}
+                        })
+                        this.columns = res.data.columns.map(i => i)
+                        this.options.data = res.data.data
+                        this.showTable()
                     }
                 })
         },
@@ -110,10 +143,29 @@ export default {
             }
             return conf
         },
+        showTable(){
+            this.tableIsVisible = true
+        },
+        hideTable(){
+            this.tableIsVisible = false
+        },
+        dropTable(){
+            this.hideTable()
+            this.columns = []
+            this.options = {
+                columns: [],
+                data: [],
+            }
+        },
     },
     components: {
         NooTextField,
         NooSelect,
+        DataTable,
     }
 }
 </script>
+
+<style>
+@import 'datatables.net-dt';
+</style>
