@@ -11,8 +11,8 @@
         />
         <v-btn icon="mdi-connection"
             @click="testConnection" />
-        <v-btn icon="mdi-database-settings" 
-            @click="getDbStructure(this.id)" />
+        <v-btn icon="mdi-database-eye" 
+            @click="$emit('enter-loading-state'), getDbStructure(this.id)" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -88,15 +88,19 @@
                 </v-row>
             </div>
         </v-col>
+        <v-col cols="9">
+            <db-struct-area ref="dbStruct" />
+        </v-col>
     </v-row>
 </template>
 
 <script>
+import { tabMixin } from '@/utils/mixins/tabs'
+import { dbExplorerMixin } from '@/utils/mixins/sources'
 import sources from '@/utils/sources.js'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
-import { tabMixin } from '@/utils/mixins/tabs'
-import { dbExplorerMixin } from '@/utils/mixins/sources'
+import DbStructArea from '@/components/dbstruct/DbStructArea.vue'
 
 export default {
     name: 'SourceTab',
@@ -160,11 +164,19 @@ export default {
             }
             return conf
         },
-
+        onDbStructureLoaded(response){
+            const data = response.data.db
+            const dbTables = this.$refs.dbStruct.setIds(data.tables)
+            this.$refs.dbStruct.tables = dbTables
+            this.$refs.dbStruct.relations = data.relations
+            this.$refs.dbStruct.resize()
+            this.$emit('exit-loading-state')
+        },
     },
     components: {
         NooTextField,
         NooSelect,
+        DbStructArea,
     }
 }
 </script>

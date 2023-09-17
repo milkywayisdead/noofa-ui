@@ -69,6 +69,10 @@ export default {
                 this.tab = this.tabs[0].props.id
             }
         },
+        clear(){
+            this.tabs = []
+            this.tab = null
+        },
     },
     components: {
         SourceTab,

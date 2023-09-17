@@ -36,7 +36,8 @@
     </v-toolbar>
 
     <v-toolbar density="compact">
-        <open-profile-dialog ref="openProfileDialog" />
+        <open-profile-dialog ref="openProfileDialog"
+            @profile-selected="clearTabsArea" />
         <v-btn 
             icon="mdi-content-save"
             @click="saveProfile" />
@@ -95,6 +96,9 @@ export default {
         },
         openNewQueryDialog(){
             this.$refs.newQueryDialog.open()
+        },
+        clearTabsArea(){
+            this.$refs.tabsArea.clear()
         },
     },
     components: {

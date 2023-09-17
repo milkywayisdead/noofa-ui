@@ -18,6 +18,9 @@ import { registerPlugins } from '@/plugins'
 
 import router from './router'
 
+import jQuery from 'jquery'
+window.$ = window.jQuery = jQuery
+
 const app = createApp(App)
 registerPlugins(app)
 
