@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="12">
+    <v-card elevation="12" :id="divId">
         <v-tabs v-model="tab">
             <v-tab v-for="item in tabs" 
                 :key="item.props.id"
@@ -41,6 +41,15 @@
 import SourceTab from './SourceTab.vue'
 import QueryTab from './QueryTab.vue'
 
+
+const tabsAreaId = `tabs-area-${+new Date()}`
+const changeTabsAreaHeight = () => {
+    const tabsArea = document.getElementById(tabsAreaId)
+    const rect = tabsArea.getBoundingClientRect()
+    const height = window.innerHeight - rect.y - 15
+    tabsArea.style.height = height + 'px'
+}
+
 export default {
     name: 'TabsArea',
     data(){
@@ -48,7 +57,15 @@ export default {
             tab: null,
             tabs: [],
             loading: false,
+            divId: tabsAreaId,
         }
+    },
+    mounted(){
+        changeTabsAreaHeight()
+        addEventListener('resize', changeTabsAreaHeight)
+    },
+    unmounted(){
+        removeEventListener('resize', changeTabsAreaHeight)
     },
     methods: {
         addTab(props){

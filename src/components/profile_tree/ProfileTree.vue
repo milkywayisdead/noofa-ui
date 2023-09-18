@@ -1,5 +1,8 @@
 <template>
-    <v-card rounded elevation="12">
+    <v-card 
+        rounded 
+        elevation="12" 
+        :id="divId">
         <v-toolbar color="teal-darken-3" density="compact">
             <v-toolbar-title>{{ context.name }}</v-toolbar-title>
         </v-toolbar>
@@ -62,11 +65,20 @@
 <script>
 import ProfileTreeBranch from './ProfileTreeBranch.vue'
 
+const profileTreeId = `profile-tree-${+new Date()}`
+const changeProfileTreeHeight = () => {
+    const ptree = document.getElementById(profileTreeId)
+    const rect = ptree.getBoundingClientRect()
+    const height = window.innerHeight - rect.y - 15
+    ptree.style.height = height + 'px'
+}
+
 export default {
     name: 'ProfileTree',
     data(){
         return {
-            _items: []
+            _items: [],
+            divId: profileTreeId,
         }
     },
     inject: ['context', 'locale'],
@@ -75,6 +87,13 @@ export default {
         emitSelected(itemProps){
             this.$emit('profile-item-selected', itemProps)
         },
+    },
+    mounted(){
+        changeProfileTreeHeight()
+        addEventListener('resize', changeProfileTreeHeight)
+    },
+    unmounted(){
+        removeEventListener('resize', changeProfileTreeHeight)
     },
     components: {
         ProfileTreeBranch,
