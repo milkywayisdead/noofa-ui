@@ -50,6 +50,7 @@ export default {
             profiles: [],
         }
     },
+    emits: ['profile-selected'],
     methods: {
         getProfiles(){
             this.api.profilesDetails()
@@ -63,6 +64,7 @@ export default {
             this.profiles = []
         },
         openProfile(profileId){
+            this.$emit('profile-selected')
             this.api.getProfile(profileId)
                 .then(res => {
                     if(res.status === 200){

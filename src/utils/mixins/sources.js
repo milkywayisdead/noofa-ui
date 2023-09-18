@@ -18,13 +18,19 @@ const dbExplorerMixin = {
                 })
         },
         getDbStructure(sourceId){
+            this.beforeDbStructureLoading()
             this.api.getDbStructure(this.context.id, sourceId)
                 .then(res => {
                     if(res.status === 200){
-                        console.log(res.data)
+                        this.onDbStructureLoaded(res)
                     }
+                }).catch(err => {
+                    this.onDbStructureLoadingError(err)
                 })
         },
+        beforeDbStructureLoading(){},
+        onDbStructureLoaded(response){},
+        onDbStructureLoadingError(error){},
     },
 }
 

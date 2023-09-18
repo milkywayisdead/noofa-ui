@@ -18,10 +18,23 @@
                 <component 
                     :is="`${item.type}-tab`" 
                     :item-props="item.props" 
-                    @item-delete="closeTab($event)" />
+                    @item-delete="closeTab($event)" 
+                    @enter-loading-state="loading = true" 
+                    @exit-loading-state="loading = false" />
             </v-window-item>
         </v-window>
     </v-card>
+    <v-overlay
+      v-model="loading"
+      class="align-center justify-center"
+      contained
+    >
+      <v-progress-circular
+        color="primary"
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
 </template>
 
 <script>
@@ -34,6 +47,7 @@ export default {
         return {
             tab: null,
             tabs: [],
+            loading: false,
         }
     },
     methods: {
@@ -54,6 +68,10 @@ export default {
             if(this.tabs.length){
                 this.tab = this.tabs[0].props.id
             }
+        },
+        clear(){
+            this.tabs = []
+            this.tab = null
         },
     },
     components: {

@@ -57,6 +57,9 @@ const ru = {
     messages: {
         itemDelete: 'Удалить элемент из профиля?',
     },
+    dbstruct: {
+        fk: 'Внешний ключ',
+    },
 }
 
 export default ru;
