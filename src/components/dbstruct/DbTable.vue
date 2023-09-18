@@ -3,32 +3,19 @@
         :id="divId" 
         :style="{top:y, left:x}" 
         class="noo-dbstruct-table o-g">
-        <v-card-title>{{ tableName }}</v-card-title>
-        <v-divider></v-divider>
         <v-card-text>
             <v-list>
+                <v-list-item class="table-name">{{ tableName }}</v-list-item>
+                <v-divider></v-divider>
                 <v-list-item v-for="col in columns" :key="col"
                     :class="`_col-${col.name}`">
-                    {{ col.name }}({{ col.type }})
                     <v-icon v-if="isPk(col.name)">mdi-key-variant</v-icon>
                     <v-icon v-if="isFk(col.name)">mdi-link-variant</v-icon>
+                    {{ col.name }}({{ col.type }})
                 </v-list-item>
             </v-list>
         </v-card-text>
     </v-card>
-
-    <!--<div :id="divId" class="card card-info prevent-select repmas-dbstruct-table" :style="{top:y, left:x}">
-      <div class="card-header repmas-dbstruct-table-cell">
-        {{ tableName }}
-      </div>
-      <ul class="list-group list-group-flush" v-for="col in columns">
-        <li class="list-group-item repmas-dbstruct-table-cell" :data-column="col.name">
-          <font-awesome-icon icon="key" v-if="isPk(col.name)" />
-          <font-awesome-icon icon="link" v-if="isFk(col.name)" />
-          <span>{{ col.name }}({{ col.type }})</span>
-        </li>
-      </ul>
-    </div>-->
 </template>
     
 <script>
@@ -78,7 +65,7 @@ export default {
             return document.getElementById(this.divId)
         },
         getEndpoint(col){
-            const cell = document.querySelector(`#${this.divId} div._col-${col}`)
+            const cell = this.getCell(col)
             const {width, height} = cell.getBoundingClientRect()
             const ep = {
                 oL: this.offsetLeft, 
@@ -158,5 +145,11 @@ export default {
 
 .o-g {
     outline: 1px solid grey;
+}
+
+.table-name {
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #4DB6AC;
 }
 </style>
