@@ -67,6 +67,16 @@ class NoofaCtx {
         return this.queries[queryId];
     }
 
+    addDataframe(conf){
+        this.dataframes[conf.id] = new CtxDataframe(conf);
+        return this.dataframes[conf.id];
+    }
+
+    updateDataframe(dfId, conf){
+        this.dataframes[dfId] = new CtxDataframe(conf);
+        return this.dataframes[dfId]
+    }
+
     deleteItem(target, targetId){
         delete this[target][targetId];
     }
@@ -93,7 +103,13 @@ class NoofaCtx {
         for(let queryId in queries){
             const queryConf = queries[queryId];
             this.queries[queryId] = CtxQuery.fromConf(queryConf);
-        }      
+        }
+
+        const dataframes = conf.dataframes || {}
+        for(let dfId in dataframes){
+            const dfConf = dataframes[dfId];
+            this.dataframes[dfId] = CtxDataframe.fromConf(dfConf);
+        }
     }
 
     hasId(){
@@ -156,6 +172,7 @@ class CtxSource {
     }
 }
 
+
 class CtxQuery {
     constructor(conf){
         for(let prop of this._propsForConstructor()){
@@ -193,6 +210,31 @@ class CtxQuery {
             'id', 'name', 'from',
             'expression', 'source',
         ];
+    }
+}
+
+
+class CtxDataframe {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            name: this.name,
+            base: this.base,
+        }
+    }
+
+    static fromConf(dbConf){
+        return new CtxDataframe(dbConf);
+    }
+
+    _propsForConstructor(){
+        return ['id', 'name', 'base'];
     }
 }
 

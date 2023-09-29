@@ -46,7 +46,15 @@ const ru = {
         plural: 'Запросы',
     },
     dataframes: {
+        new: 'Добавление датафрейма',
         plural: 'Датафреймы',
+        name: 'Название датафрейма',
+        from: 'Вариант построения',
+        fromExpression: 'Выражение',
+        fromQuery: 'Результат запроса',
+        expression: 'Выражение',
+        source: 'Источник',
+        query: 'Запрос',
     },
     tables: {
         plural: 'Таблицы',
