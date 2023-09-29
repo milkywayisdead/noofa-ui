@@ -40,6 +40,7 @@
 <script>
 import SourceTab from './SourceTab.vue'
 import QueryTab from './QueryTab.vue'
+import DataframeTab from './DataframeTab.vue'
 
 
 const tabsAreaId = `tabs-area-${+new Date()}`
@@ -94,6 +95,7 @@ export default {
     components: {
         SourceTab,
         QueryTab,
+        DataframeTab,
     },
 }
 </script>

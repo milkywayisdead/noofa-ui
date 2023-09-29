@@ -219,14 +219,23 @@ class CtxDataframe {
         for(let prop of this._propsForConstructor()){
             this[prop] = conf[prop];
         }
+        for(let prop of ['unions', 'joins', 
+            'filters', 'dtypes', 'cols', 'ordering', 'fillna']){
+            this[prop] = conf[prop] ?? [];
+        }
     }
 
     compile(){
-        return {
+        const cmp = {
             id: this.id,
             name: this.name,
             base: this.base,
         }
+        for(let prop of ['unions', 'joins', 
+            'filters', 'dtypes', 'cols', 'ordering', 'fillna']){
+            cmp[prop] = this[prop] ?? [];
+        }
+        return cmp
     }
 
     static fromConf(dbConf){

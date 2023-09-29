@@ -130,7 +130,6 @@ export default {
             })
         },
         queries(){
-            const sources = this.sources.map(s => s.value)
             const srcQueries = Object.values(this.context.queries).filter(q => this.source === q.source)
             return srcQueries.map(q => {
                 return {
