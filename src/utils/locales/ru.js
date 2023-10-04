@@ -5,6 +5,7 @@ const ru = {
         save: 'Сохранить',
         delete: 'Удалить',
         itemDelete: 'Удаление элемента профиля',
+        add: 'Добавить',
     },
     profiles: {
         singular: 'Профиль',
@@ -47,6 +48,7 @@ const ru = {
     },
     dataframes: {
         new: 'Добавление датафрейма',
+        singular: 'Датафрейм',
         plural: 'Датафреймы',
         name: 'Название датафрейма',
         from: 'Вариант построения',
@@ -55,6 +57,9 @@ const ru = {
         expression: 'Выражение',
         source: 'Источник',
         query: 'Запрос',
+        union: 'Объединение',
+        unionPlural: 'Объединения',
+        newUnion: 'Добавление объединения',
     },
     tables: {
         plural: 'Таблицы',

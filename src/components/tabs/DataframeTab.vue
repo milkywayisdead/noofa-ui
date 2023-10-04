@@ -11,6 +11,9 @@
         />
         <v-btn icon="mdi-play" 
             @click="getData" />
+        <df-unions-dialog ref="unionsDialog"
+            :dataframe-id="id"
+            @items-updated="updateUnions" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -81,6 +84,7 @@ import DataTablesCore from 'datatables.net'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import DfUnionsDialog from '@/components/dialogs/dfconf/DfUnionsDialog.vue'
 
   
 DataTable.use(DataTablesCore)
@@ -106,6 +110,7 @@ export default {
         tabProps.source = base.type === 'query' ? base.source : ''
         tabProps.query = base.type === 'query' ? base.value : ''
         tabProps.expression = base.type === 'expression' ? base.value : ''
+        tabProps.unions = props.unions || []
 
         return tabProps
     },
@@ -159,6 +164,7 @@ export default {
                 id: this.id,
                 name: this.name,
                 base: this.getBase(),
+                unions: this.unions,
             }
             return conf
         },
@@ -186,11 +192,15 @@ export default {
                 data: [],
             }
         },
+        updateUnions(){
+            this.unions = this.$refs.unionsDialog.getItems()
+        },
     },
     components: {
         NooTextField,
         NooSelect,
         DataTable,
+        DfUnionsDialog,
     }
 }
 </script>
