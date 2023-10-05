@@ -93,6 +93,7 @@ export default {
                     value: jt,
                 }
             }),
+            relatedDfProp: 'joins',
         }
     },
     computed: {
@@ -118,24 +119,31 @@ export default {
             this.selectedItemIdx = null
         },
         fillConfFields(item){
+            const fromExpression = item.from === 'expression'
+            const value = item.value
+            this.dfFrom = item.from
+            this.expression = fromExpression ? value : ''
+            this.dfId = fromExpression ? '' : value
+            this.originalDfCol = item.on[0]
+            this.joinableDfCol = item.on[1]
+            this.joinType = item.type
         },
         itemToConf(){
             return {
                 from: this.dfFrom,
                 value: this.usingExpression ? this.expression : this.dfId,
+                on: [this.originalDfCol, this.joinableDfCol],
+                type: this.joinType,
             }
-        },
-        getItemsFromContext(){
-            this.updateItems(this.context.dataframes[this.dataframeId].joins)
         },
     },
     watch: {
         dfConfItems(){
-            if(!this.$refs.unionsList){
+            if(!this.$refs.joinsList){
                 return
             }
 
-            this.$refs.unionsList.updateItems(
+            this.$refs.joinsList.updateItems(
                 this.dfConfItems.map(item => `+ ${item.value}`)
             )
         },

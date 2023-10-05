@@ -66,6 +66,7 @@ export default {
             dfFrom: 'dataframe',
             dfId: '',
             expression: '',
+            relatedDfProp: 'unions',
         }
     },
     computed: {
@@ -98,9 +99,6 @@ export default {
                 from: this.dfFrom,
                 value: this.usingExpression ? this.expression : this.dfId,
             }
-        },
-        getItemsFromContext(){
-            this.updateItems(this.context.dataframes[this.dataframeId].unions)
         },
     },
     watch: {

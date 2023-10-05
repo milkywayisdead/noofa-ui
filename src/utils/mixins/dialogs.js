@@ -18,6 +18,7 @@ const dfConfDialogMixin = {
             dfConfItems: [],
             selectedItemIdx: null,
             mode: 'idle',
+            relatedDfProp: '',
         }
     },
     props: {
@@ -52,7 +53,6 @@ const dfConfDialogMixin = {
         itemToConf(){
             return {}
         },
-
         fillConfFields(item){
         },
         handleEdit(itemIdx){
@@ -83,6 +83,9 @@ const dfConfDialogMixin = {
             this.dfConfItems = items.filter(item => true)
         },
         getItemsFromContext(){
+            this.updateItems(
+                this.context.dataframes[this.dataframeId][this.relatedDfProp]
+            )
         },
     },
 }
