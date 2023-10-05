@@ -60,6 +60,11 @@ const ru = {
         union: 'Объединение',
         unionPlural: 'Объединения',
         newUnion: 'Добавление объединения',
+        join: 'Соединение',
+        joinPlural: 'Соединения',
+        originalDfCol: 'Столбец исходного датафрейма',
+        joinableDfCol: 'Столбец присоединяемого датафрейма',
+        joinType: 'Тип соединения',
     },
     tables: {
         plural: 'Таблицы',

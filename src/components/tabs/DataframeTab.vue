@@ -14,6 +14,9 @@
         <df-unions-dialog ref="unionsDialog"
             :dataframe-id="id"
             @items-updated="updateUnions" />
+        <df-joins-dialog ref="joinsDialog"
+            :dataframe-id="id"
+            @items-updated="updateJoins" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -85,6 +88,7 @@ import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import DfUnionsDialog from '@/components/dialogs/dfconf/DfUnionsDialog.vue'
+import DfJoinsDialog from '@/components/dialogs/dfconf/DfJoinsDialog.vue'
 
   
 DataTable.use(DataTablesCore)
@@ -111,6 +115,7 @@ export default {
         tabProps.query = base.type === 'query' ? base.value : ''
         tabProps.expression = base.type === 'expression' ? base.value : ''
         tabProps.unions = props.unions || []
+        tabProps.joins = props.joins || []
 
         return tabProps
     },
@@ -165,6 +170,7 @@ export default {
                 name: this.name,
                 base: this.getBase(),
                 unions: this.unions,
+                joins: this.joins,
             }
             return conf
         },
@@ -195,12 +201,16 @@ export default {
         updateUnions(){
             this.unions = this.$refs.unionsDialog.getItems()
         },
+        updateJoins(){
+            this.joins = this.$refs.joinsDialog.getItems()
+        },
     },
     components: {
         NooTextField,
         NooSelect,
         DataTable,
         DfUnionsDialog,
+        DfJoinsDialog,
     }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <base-dialog
-        :title="locale.dataframes.unionPlural"
+        :title="locale.dataframes.joinPlural"
         activator-icon="mdi-table-row-plus-before"
         @close="reset"
         :width="'40%'"
@@ -9,7 +9,7 @@
         <template v-slot:content>
             <v-row>
                 <v-col cols="12">
-                    <df-conf-items-list ref="unionsList"
+                    <df-conf-items-list ref="joinsList"
                         @item-add="mode = isEditing ? 'idle' : 'add'" 
                         @item-edit="handleEdit"
                         @item-delete="handleDelete" 
@@ -36,6 +36,22 @@
                         :label="locale.dataframes.expression" />
                 </v-col>
                 <v-col cols="12">
+                    <noo-text-field 
+                        :label="locale.dataframes.originalDfCol" 
+                        v-model="originalDfCol" />
+                </v-col>
+                <v-col cols="12">
+                    <noo-text-field 
+                        :label="locale.dataframes.joinableDfCol" 
+                        v-model="joinableDfCol" />
+                </v-col>
+                <v-col cols="12">
+                    <noo-select
+                        :label="locale.dataframes.joinType"
+                        v-model="joinType" 
+                        :items="joinTypes" />
+                </v-col>
+                <v-col cols="12">
                     <v-btn v-if="mode === 'add'"
                         @click="addItem"
                         :disabled="!addButtonIsEnabled" >
@@ -54,18 +70,29 @@
 
 <script>
 import BaseDialog from '../BaseDialog.vue'
+import NooTextField from '@/components/inputs/NooTextField.vue'
 import NooSelect from '@/components/inputs/NooSelect.vue'
 import { dfConfDialogMixin } from '@/utils/mixins/dialogs'
 import DfConfItemsList from './DfConfItemsList.vue'
+import { defaultJoinType, joinTypes } from '@/utils/df.js'
 
 export default {
-    name: 'DfUnionsDialog',
-    mixins: [dfConfDialogMixin,],
+    name: 'DfJoinsDialog',
+    mixins: [dfConfDialogMixin, ],
     data(){
         return {
             dfFrom: 'dataframe',
             dfId: '',
             expression: '',
+            originalDfCol: '',
+            joinableDfCol: '',
+            joinType: defaultJoinType,
+            joinTypes: joinTypes.map(jt => {
+                return {
+                    text: jt,
+                    value: jt,
+                }
+            }),
         }
     },
     computed: {
@@ -74,7 +101,9 @@ export default {
         },
         addButtonIsEnabled(){
             const value = this.dfFrom === 'dataframe' ? this.dfId : this.expression
-            return value.length > 0
+            return value.length > 0 && 
+                this.originalDfCol.length > 0 &&
+                this.joinableDfCol.length > 0
         },
     },
     methods: {
@@ -83,15 +112,12 @@ export default {
             this.dfFrom = 'dataframe'
             this.expression = ''
             this.dfId = ''
+            this.originalDfCol = ''
+            this.joinableDfCol = ''
+            this.joinType = defaultJoinType
             this.selectedItemIdx = null
         },
         fillConfFields(item){
-            const union = item
-            const fromExpression = union.from === 'expression'
-            const value = union.value
-            this.dfFrom = union.from
-            this.expression = fromExpression ? value : ''
-            this.dfId = fromExpression ? '' : value
         },
         itemToConf(){
             return {
@@ -100,7 +126,7 @@ export default {
             }
         },
         getItemsFromContext(){
-            this.updateItems(this.context.dataframes[this.dataframeId].unions)
+            this.updateItems(this.context.dataframes[this.dataframeId].joins)
         },
     },
     watch: {
@@ -117,6 +143,7 @@ export default {
     components: {
         DfConfItemsList,
         NooSelect,
+        NooTextField,
     },
 }
 </script>
