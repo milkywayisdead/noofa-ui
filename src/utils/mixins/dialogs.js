@@ -32,7 +32,10 @@ const dfConfDialogMixin = {
             return ['add', 'edit'].includes(this.mode)
         },
         dataframes(){
-            return Object.values(this.context.dataframes).map(df => {
+            const otherDfs = Object.values(this.context.dataframes).filter(
+                df => df.id !== this.dataframeId
+            )
+            return otherDfs.map(df => {
                 return {
                     value: df.id,
                     text: df.name,
@@ -68,13 +71,11 @@ const dfConfDialogMixin = {
             this.dfConfItems.push(this.itemToConf())
             this.dfConfItems = this.dfConfItems.filter(item => true)
             this.reset()
-            this.emitUpdated()
         },
         updateItem(){
             this.dfConfItems[this.selectedItemIdx] = this.itemToConf()
             this.dfConfItems = this.dfConfItems.filter(item => true)
             this.reset()
-            this.emitUpdated()
         },
         emitUpdated(){
             this.$emit('items-updated')
@@ -86,6 +87,10 @@ const dfConfDialogMixin = {
             this.updateItems(
                 this.context.dataframes[this.dataframeId][this.relatedDfProp]
             )
+        },
+        saveConfAndClose(){
+            this.emitUpdated()
+            this.$refs.baseDialog.close()
         },
     },
 }

@@ -13,10 +13,10 @@
             @click="getData" />
         <df-unions-dialog ref="unionsDialog"
             :dataframe-id="id"
-            @items-updated="updateUnions" />
+            @items-updated="updateDf" />
         <df-joins-dialog ref="joinsDialog"
             :dataframe-id="id"
-            @items-updated="updateJoins" />
+            @items-updated="updateDf" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -33,8 +33,8 @@
                     <v-radio-group 
                         v-model="from"
                         :label="locale.dataframes.from">
-                        <v-radio :label="locale.queries.expression" value="query"></v-radio>
-                        <v-radio :label="locale.queries.constructor" value="expression"></v-radio>
+                        <v-radio :label="locale.dataframes.query" value="query"></v-radio>
+                        <v-radio :label="locale.dataframes.expression" value="expression"></v-radio>
                     </v-radio-group>
                 </v-col>
             </v-row>
@@ -114,8 +114,6 @@ export default {
         tabProps.source = base.type === 'query' ? base.source : ''
         tabProps.query = base.type === 'query' ? base.value : ''
         tabProps.expression = base.type === 'expression' ? base.value : ''
-        tabProps.unions = props.unions || []
-        tabProps.joins = props.joins || []
 
         return tabProps
     },
@@ -169,8 +167,8 @@ export default {
                 id: this.id,
                 name: this.name,
                 base: this.getBase(),
-                unions: this.unions,
-                joins: this.joins,
+                unions: this.$refs.unionsDialog.getItems(),
+                joins: this.$refs.joinsDialog.getItems()
             }
             return conf
         },
@@ -197,12 +195,6 @@ export default {
                 columns: [],
                 data: [],
             }
-        },
-        updateUnions(){
-            this.unions = this.$refs.unionsDialog.getItems()
-        },
-        updateJoins(){
-            this.joins = this.$refs.joinsDialog.getItems()
         },
     },
     components: {

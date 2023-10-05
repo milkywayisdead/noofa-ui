@@ -49,6 +49,9 @@
                 </v-col>
             </v-row>
         </template>
+        <template v-slot:actions>
+            <v-btn @click="saveConfAndClose">{{ locale.actions.save }}</v-btn>
+        </template>
     </base-dialog>
 </template>
 
@@ -108,7 +111,14 @@ export default {
             }
 
             this.$refs.unionsList.updateItems(
-                this.dfConfItems.map(item => `+ ${item.value}`)
+                this.dfConfItems.map(item => {
+                    const fromExpression = item.from === 'expression'
+                    let value = item.value
+                    if(!fromExpression){
+                        value = this.context.dataframes[item.value].name
+                    }
+                    return `+ ${value}`
+                })
             )
         },
     },
