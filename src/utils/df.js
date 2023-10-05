@@ -6,7 +6,21 @@ const joinTypes = [
     'right',
 ]
 
+const filters = [
+    '>',
+    '>=',
+    '<',
+    '<=',
+    '==',
+    '!=',
+    'contains',
+    'startswith',
+    'endswith',
+    'in',
+]
+
 export {
     defaultJoinType,
     joinTypes,
+    filters,
 }

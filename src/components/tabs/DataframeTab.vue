@@ -20,6 +20,9 @@
         <df-cols-dialog ref="colsDialog"
             :dataframe-id="id"
             @items-updated="updateDf" />
+        <df-filters-dialog ref="filtersDialog"
+            :dataframe-id="id"
+            @items-updated="updateDf" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -93,6 +96,7 @@ import { tabMixin } from '@/utils/mixins/tabs'
 import DfUnionsDialog from '@/components/dialogs/dfconf/DfUnionsDialog.vue'
 import DfJoinsDialog from '@/components/dialogs/dfconf/DfJoinsDialog.vue'
 import DfColsDialog from '@/components/dialogs/dfconf/DfColsDialog.vue'
+import DfFiltersDialog from '@/components/dialogs/dfconf/DfFiltersDialog.vue'
   
 DataTable.use(DataTablesCore)
 
@@ -173,6 +177,7 @@ export default {
                 unions: this.$refs.unionsDialog.getItems(),
                 joins: this.$refs.joinsDialog.getItems(),
                 columns: this.$refs.colsDialog.getItems(),
+                filters: this.$refs.filtersDialog.getItems(),
             }
             return conf
         },
@@ -208,6 +213,7 @@ export default {
         DfUnionsDialog,
         DfJoinsDialog,
         DfColsDialog,
+        DfFiltersDialog,
     }
 }
 </script>
