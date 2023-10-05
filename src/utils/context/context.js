@@ -220,7 +220,7 @@ class CtxDataframe {
             this[prop] = conf[prop];
         }
         for(let prop of ['unions', 'joins', 
-            'filters', 'dtypes', 'cols', 'ordering', 'fillna']){
+            'filters', 'dtypes', 'columns', 'ordering', 'fillna']){
             this[prop] = conf[prop] ?? [];
         }
     }
@@ -232,7 +232,7 @@ class CtxDataframe {
             base: this.base,
         }
         for(let prop of ['unions', 'joins', 
-            'filters', 'dtypes', 'cols', 'ordering', 'fillna']){
+            'filters', 'dtypes', 'columns', 'ordering', 'fillna']){
             cmp[prop] = this[prop] ?? [];
         }
         return cmp

@@ -17,6 +17,9 @@
         <df-joins-dialog ref="joinsDialog"
             :dataframe-id="id"
             @items-updated="updateDf" />
+        <df-cols-dialog ref="colsDialog"
+            :dataframe-id="id"
+            @items-updated="updateDf" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -64,7 +67,7 @@
                 </v-row>
             </div>
         </v-col>
-        <v-col cols="9">
+        <v-col cols="9" style="overflow:auto">
            <data-table v-if="tableIsVisible" class="display table-bordered"
                 :options="options"
            >
@@ -89,7 +92,7 @@ import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import DfUnionsDialog from '@/components/dialogs/dfconf/DfUnionsDialog.vue'
 import DfJoinsDialog from '@/components/dialogs/dfconf/DfJoinsDialog.vue'
-
+import DfColsDialog from '@/components/dialogs/dfconf/DfColsDialog.vue'
   
 DataTable.use(DataTablesCore)
 
@@ -168,7 +171,8 @@ export default {
                 name: this.name,
                 base: this.getBase(),
                 unions: this.$refs.unionsDialog.getItems(),
-                joins: this.$refs.joinsDialog.getItems()
+                joins: this.$refs.joinsDialog.getItems(),
+                columns: this.$refs.colsDialog.getItems(),
             }
             return conf
         },
@@ -203,6 +207,7 @@ export default {
         DataTable,
         DfUnionsDialog,
         DfJoinsDialog,
+        DfColsDialog,
     }
 }
 </script>

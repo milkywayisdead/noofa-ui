@@ -1,7 +1,7 @@
 <template>
     <base-dialog
         :title="locale.dataframes.joinPlural"
-        activator-icon="mdi-table-row-plus-before"
+        activator-icon="mdi-table-arrow-left"
         @close="reset"
         :width="'40%'"
         ref="baseDialog"
