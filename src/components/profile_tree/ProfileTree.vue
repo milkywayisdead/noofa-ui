@@ -29,7 +29,7 @@
                     />
                     <profile-tree-branch 
                         :subheader="locale.dataframes.plural"
-                        icon="mdi-application-array"
+                        icon="mdi-table-large"
                         :items="context.dataframes"
                         item-type="dataframe"
                         @profile-item-selected="emitSelected"

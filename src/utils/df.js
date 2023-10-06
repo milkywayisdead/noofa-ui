@@ -19,8 +19,20 @@ const filters = [
     'in',
 ]
 
+const orderingTypes = [
+    'asc',
+    'desc',
+]
+
+const fillnaActions = [
+    'fill',
+    'drop',
+]
+
 export {
     defaultJoinType,
     joinTypes,
     filters,
+    orderingTypes,
+    fillnaActions,
 }

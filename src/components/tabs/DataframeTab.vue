@@ -11,18 +11,21 @@
         />
         <v-btn icon="mdi-play" 
             @click="getData" />
-        <df-unions-dialog ref="unionsDialog"
+        <df-unions-dialog
             :dataframe-id="id"
-            @items-updated="updateDf" />
-        <df-joins-dialog ref="joinsDialog"
+            @items-updated="updateBuildProp" />
+        <df-joins-dialog
             :dataframe-id="id"
-            @items-updated="updateDf" />
-        <df-cols-dialog ref="colsDialog"
+            @items-updated="updateBuildProp" />
+        <df-cols-dialog
             :dataframe-id="id"
-            @items-updated="updateDf" />
-        <df-filters-dialog ref="filtersDialog"
+            @items-updated="updateBuildProp" />
+        <df-filters-dialog
             :dataframe-id="id"
-            @items-updated="updateDf" />
+            @items-updated="updateBuildProp" />
+        <df-ordering-dialog
+            :dataframe-id="id"
+            @items-updated="updateBuildProp" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -97,6 +100,7 @@ import DfUnionsDialog from '@/components/dialogs/dfconf/DfUnionsDialog.vue'
 import DfJoinsDialog from '@/components/dialogs/dfconf/DfJoinsDialog.vue'
 import DfColsDialog from '@/components/dialogs/dfconf/DfColsDialog.vue'
 import DfFiltersDialog from '@/components/dialogs/dfconf/DfFiltersDialog.vue'
+import DfOrderingDialog from '@/components/dialogs/dfconf/DfOrderingDialog.vue'
   
 DataTable.use(DataTablesCore)
 
@@ -121,6 +125,13 @@ export default {
         tabProps.source = base.type === 'query' ? base.source : ''
         tabProps.query = base.type === 'query' ? base.value : ''
         tabProps.expression = base.type === 'expression' ? base.value : ''
+
+        const buildProps = {}
+        for(let prop of ['unions', 'joins', 'filters', 'columns',
+            'ordering', 'fillna', 'dtypes']){
+            buildProps[prop] = props[prop] ?? []
+        }
+        tabProps.buildProps = buildProps
 
         return tabProps
     },
@@ -174,10 +185,7 @@ export default {
                 id: this.id,
                 name: this.name,
                 base: this.getBase(),
-                unions: this.$refs.unionsDialog.getItems(),
-                joins: this.$refs.joinsDialog.getItems(),
-                columns: this.$refs.colsDialog.getItems(),
-                filters: this.$refs.filtersDialog.getItems(),
+                ...this.buildProps,
             }
             return conf
         },
@@ -190,6 +198,10 @@ export default {
                 base.value = this.query
             }
             return base
+        },
+        updateBuildProp(event){
+            const { prop, data } = event
+            this.buildProps[prop] = data.filter(item => true)
         },
         showTable(){
             this.tableIsVisible = true
@@ -206,6 +218,11 @@ export default {
             }
         },
     },
+    provide(){
+        return {
+            buildProps: this.buildProps,
+        }
+    },
     components: {
         NooTextField,
         NooSelect,
@@ -214,6 +231,7 @@ export default {
         DfJoinsDialog,
         DfColsDialog,
         DfFiltersDialog,
+        DfOrderingDialog,
     }
 }
 </script>

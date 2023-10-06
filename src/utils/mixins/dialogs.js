@@ -49,6 +49,7 @@ const dfConfDialogMixin = {
     emits: [
         'items-updated',
     ],
+    inject: ['buildProps'],
     methods: {
         getItems(){
             return this.dfConfItems
@@ -78,14 +79,17 @@ const dfConfDialogMixin = {
             this.reset()
         },
         emitUpdated(){
-            this.$emit('items-updated')
+            this.$emit('items-updated', {
+                prop: this.relatedDfProp,
+                data: this.getItems(),
+            })
         },
         updateItems(items){
             this.dfConfItems = items.filter(item => true)
         },
         getItemsFromContext(){
             this.updateItems(
-                this.context.dataframes[this.dataframeId][this.relatedDfProp]
+                this.buildProps[this.relatedDfProp]
             )
         },
         saveConfAndClose(){
