@@ -26,6 +26,9 @@
         <df-ordering-dialog
             :dataframe-id="id"
             @items-updated="updateBuildProp" />
+        <df-fillna-dialog
+            :dataframe-id="id"
+            @items-updated="updateBuildProp" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -38,7 +41,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col cols="12">
+                <v-col cols="12" style="overflow: auto">
                     <v-radio-group 
                         v-model="from"
                         :label="locale.dataframes.from">
@@ -101,6 +104,7 @@ import DfJoinsDialog from '@/components/dialogs/dfconf/DfJoinsDialog.vue'
 import DfColsDialog from '@/components/dialogs/dfconf/DfColsDialog.vue'
 import DfFiltersDialog from '@/components/dialogs/dfconf/DfFiltersDialog.vue'
 import DfOrderingDialog from '@/components/dialogs/dfconf/DfOrderingDialog.vue'
+import DfFillnaDialog from '@/components/dialogs/dfconf/DfFillnaDialog.vue'
   
 DataTable.use(DataTablesCore)
 
@@ -232,6 +236,7 @@ export default {
         DfColsDialog,
         DfFiltersDialog,
         DfOrderingDialog,
+        DfFillnaDialog,
     }
 }
 </script>

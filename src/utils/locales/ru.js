@@ -94,6 +94,11 @@ const ru = {
         ordering: 'Упорядочивание',
         orderingType: 'Направление',
         fillna: 'Обработка пустых значений',
+        fillnaAction: 'Вариант обработки',
+        fillnaActions: {
+            fill: 'Заполнить значением',
+            drop: 'Удалить строки',
+        },
         orderingTypes: {
             asc: 'По возрастанию',
             desc: 'По убыванию',
