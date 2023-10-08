@@ -83,9 +83,10 @@
            <data-table v-if="tableIsVisible" class="display table-bordered"
                 :options="options"
            >
-                <thead>
+                <thead :id="theadId">
                     <tr>
                         <th v-for="col in columns" :key="col">
+                            <v-icon color="primary">{{ _getDtypeIcon(dtypes[col]) }}</v-icon>
                             {{ col }}
                         </th>
                     </tr>   
@@ -126,6 +127,7 @@ export default {
             },
             tableIsVisible: false,
             columns: [],
+            dtypes: {},
         }
         tabProps.id = props.id
         tabProps.name = props.name
@@ -165,6 +167,9 @@ export default {
                 }
             })
         },
+        theadId(){
+            return `${this.id}-thead`
+        },
     },
     methods: {
         updateDf(){
@@ -183,7 +188,25 @@ export default {
                         })
                         this.columns = res.data.columns.map(i => i)
                         this.options.data = res.data.data
+                        this.dtypes = res.data.dtypes
                         this.showTable()
+                        /* this.$nextTick(() => {
+                            const theaders = document.querySelectorAll(`#${this.theadId} th`)
+                            const thMapping = {}
+                            for(let th of theaders){
+                                thMapping[th.innerText] = th
+                            }
+
+                            const dtypes = res.data.dtypes
+                            for(let col in dtypes){
+                                const th = thMapping[col]
+                                if(th){
+                                    const dtypeEl = document.createElement('span')
+                                    dtypeEl.classList.add('mdi', `${this._getDtypeIcon(dtypes[col])}`)
+                                    th.prepend(dtypeEl)
+                                }
+                            }
+                        }) */
                     }
                 }).finally(() => {
                     this.exitLoadingState()
@@ -225,6 +248,18 @@ export default {
                 columns: [],
                 data: [],
                 order: [],
+            }
+            this.dtypes = {}
+        },
+        _getDtypeIcon(dtypeStr){
+            if(dtypeStr === 'object'){
+                return 'mdi-format-text-variant'
+            }
+            if(dtypeStr.startsWith('int') || dtypeStr.startsWith('float')){
+                return 'mdi-numeric'
+            }
+            if(dtypeStr.startsWith('datetime')){
+                return 'mdi-calendar-clock'
             }
         },
     },
