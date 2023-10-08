@@ -11,6 +11,9 @@
         />
         <v-btn icon="mdi-play" 
             @click="getData" />
+        <df-dtypes-dialog
+            :dataframe-id="id"
+            @items-updated="updateBuildProp" />
         <df-unions-dialog
             :dataframe-id="id"
             @items-updated="updateBuildProp" />
@@ -105,6 +108,7 @@ import DfColsDialog from '@/components/dialogs/dfconf/DfColsDialog.vue'
 import DfFiltersDialog from '@/components/dialogs/dfconf/DfFiltersDialog.vue'
 import DfOrderingDialog from '@/components/dialogs/dfconf/DfOrderingDialog.vue'
 import DfFillnaDialog from '@/components/dialogs/dfconf/DfFillnaDialog.vue'
+import DfDtypesDialog from '@/components/dialogs/dfconf/DfDtypesDialog.vue'
   
 DataTable.use(DataTablesCore)
 
@@ -118,6 +122,7 @@ export default {
             options: {
                 columns: [],
                 data: [],
+                order: [],
             },
             tableIsVisible: false,
             columns: [],
@@ -219,6 +224,7 @@ export default {
             this.options = {
                 columns: [],
                 data: [],
+                order: [],
             }
         },
     },
@@ -237,6 +243,7 @@ export default {
         DfFiltersDialog,
         DfOrderingDialog,
         DfFillnaDialog,
+        DfDtypesDialog,
     }
 }
 </script>

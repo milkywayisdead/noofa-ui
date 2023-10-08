@@ -9,7 +9,7 @@
         <template v-slot:content>
             <v-row>
                 <v-col cols="12">
-                    <df-conf-items-list ref="filtersList"
+                    <df-conf-items-list ref="itemsList"
                         @item-add="mode = isEditing ? 'idle' : 'add'" 
                         @item-edit="handleEdit"
                         @item-delete="handleDelete" 
@@ -170,22 +170,12 @@ export default {
 
             return value
         },
-    },
-    watch: {
-        dfConfItems(){
-            if(!this.$refs.filtersList){
-                return
-            }
-
-            this.$refs.filtersList.updateItems(
-                this.dfConfItems.map(item => {
-                    const fromExpr = item.from === 'expression'
-                    const value = item.value
-                    return fromExpr ? 
-                        value : 
-                        `${value.col_name} ${value.op} ${value.value}`
-                })
-            )
+        _itemToStr(item){
+            const fromExpr = item.from === 'expression'
+            const value = item.value
+            return fromExpr ? 
+                value : 
+                `${value.col_name} ${value.op} ${value.value}`
         },
     },
     components: {

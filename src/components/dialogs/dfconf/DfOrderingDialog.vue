@@ -9,7 +9,7 @@
         <template v-slot:content>
             <v-row>
                 <v-col cols="12">
-                    <df-conf-items-list ref="orderingList"
+                    <df-conf-items-list ref="itemsList"
                         @item-add="mode = isEditing ? 'idle' : 'add'" 
                         @item-edit="handleEdit"
                         @item-delete="handleDelete" 
@@ -99,19 +99,9 @@ export default {
                 asc: this.isAsc,
             }
         },
-    },
-    watch: {
-        dfConfItems(){
-            if(!this.$refs.orderingList){
-                return
-            }
-
-            this.$refs.orderingList.updateItems(
-                this.dfConfItems.map(item => {
-                    const o = item.asc === true ? 'asc' : 'desc'
-                    return `${item.cols} ${o.toUpperCase()}`
-                })
-            )
+        _itemToStr(item){
+            const o = item.asc === true ? 'asc' : 'desc'
+            return `${item.cols} ${o.toUpperCase()}`
         },
     },
     components: {

@@ -29,10 +29,19 @@ const fillnaActions = [
     'drop',
 ]
 
+const dtypes = [
+    'none',
+    'int',
+    'float',
+    'str',
+    'datetime',
+]
+
 export {
     defaultJoinType,
     joinTypes,
     filters,
     orderingTypes,
     fillnaActions,
+    dtypes,
 }

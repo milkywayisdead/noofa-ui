@@ -96,6 +96,22 @@ const dfConfDialogMixin = {
             this.emitUpdated()
             this.$refs.baseDialog.close()
         },
+        _itemToStr(item){
+            return String(item)
+        },
+    },
+    watch: {
+        dfConfItems(){
+            if(!this.$refs.itemsList){
+                return
+            }
+
+            this.$refs.itemsList.updateItems(
+                this.dfConfItems.map(item => {
+                    return this._itemToStr(item)
+                })
+            )
+        },
     },
 }
 

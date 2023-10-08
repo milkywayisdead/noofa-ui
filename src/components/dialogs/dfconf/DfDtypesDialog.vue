@@ -1,7 +1,7 @@
 <template>
     <base-dialog
-        :title="locale.dataframes.fillna"
-        activator-icon="mdi-null"
+        :title="locale.dataframes.dtypesConv"
+        activator-icon="mdi-numeric"
         @close="reset"
         :width="'40%'"
         ref="baseDialog"
@@ -18,19 +18,15 @@
             </v-row>
             <v-row v-if="isEditing">
                 <v-col cols="12">
-                    <noo-select
-                        :label="locale.dataframes.fillnaAction"
-                        v-model="fillnaAction" 
-                        :items="fillnaActions" />
-                </v-col>
-                <v-col cols="12">
                     <noo-text-field 
                         :label="locale.dataframes.colName" 
                         v-model="colName" />
                 </v-col>
-                <v-col cols="12" v-if="usingFill">
-                    <v-textarea v-model="expression" 
-                        :label="locale.dataframes.expression" />
+                <v-col cols="12">
+                    <noo-select
+                        :label="locale.dataframes.targetDtype"
+                        v-model="dtype" 
+                        :items="dtypes" />
                 </v-col>
                 <v-col cols="12">
                     <v-btn v-if="mode === 'add'"
@@ -58,55 +54,48 @@ import NooTextField from '@/components/inputs/NooTextField.vue'
 import NooSelect from '@/components/inputs/NooSelect.vue'
 import { dfConfDialogMixin } from '@/utils/mixins/dialogs'
 import DfConfItemsList from './DfConfItemsList.vue'
-import { fillnaActions } from '@/utils/df.js'
+import { dtypes } from '@/utils/df.js'
 
 export default {
-    name: 'DfColsDialog',
+    name: 'DfDtypesDialog',
     mixins: [dfConfDialogMixin,],
     data(){
         return {
             colName: '',
-            expression: '',
-            fillnaAction: 'fill',
-            relatedDfProp: 'fillna',
-            fillnaActions: fillnaActions.map(a => {
+            dtype: 'none',
+            relatedDfProp: 'dtypes',
+            dtypes: dtypes.map(t => {
                 return {
-                    text: this.locale.dataframes.fillnaActions[a],
-                    value: a,
+                    text: this.locale.dataframes.dtypes[t],
+                    value: t,
                 }
             }),
         }
     },
     computed: {
         addButtonIsEnabled(){
-            return this.usingFill ? this.expression.length : true
-        },
-        usingFill(){
-            return this.fillnaAction === 'fill'
+            return this.colName.length > 0 && this.dtype !== 'none'
         },
     },
     methods: {
         reset(){
             this.mode = 'idle'
             this.colName = ''
-            this.expression = ''
-            this.fillnaAction = 'fill'
+            this.dtype = 'none'
             this.selectedItemIdx = null
         },
         fillConfFields(item){
-            this.fillnaAction = item.action
-            this.expression = item.action === 'fill' ? item.value : ''
             this.colName = item.col
+            this.dtype = item.dtype
         },
         itemToConf(){
             return {
-                action: this.fillnaAction,
-                value: this.usingFill ? this.expression : '',
                 col: this.colName,
+                dtype: this.dtype,
             }
         },
         _itemToStr(item){
-            return `${item.action}: ${item.col === '' ? 'all' : item.col}`
+            return `${item.col} -> ${item.dtype}`
         },
     },
     components: {

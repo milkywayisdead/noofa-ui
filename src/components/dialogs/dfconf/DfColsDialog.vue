@@ -9,7 +9,7 @@
         <template v-slot:content>
             <v-row>
                 <v-col cols="12">
-                    <df-conf-items-list ref="colsList"
+                    <df-conf-items-list ref="itemsList"
                         @item-add="mode = isEditing ? 'idle' : 'add'" 
                         @item-edit="handleEdit"
                         @item-delete="handleDelete" 
@@ -96,18 +96,8 @@ export default {
                 name: this.colName,
             }
         },
-    },
-    watch: {
-        dfConfItems(){
-            if(!this.$refs.colsList){
-                return
-            }
-
-            this.$refs.colsList.updateItems(
-                this.dfConfItems.map(
-                    item => `${item.name}: ${item.value}`
-                )
-            )
+        _itemToStr(item){
+            return `${item.name}: ${item.value}`
         },
     },
     components: {

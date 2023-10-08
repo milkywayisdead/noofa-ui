@@ -9,7 +9,7 @@
         <template v-slot:content>
             <v-row>
                 <v-col cols="12">
-                    <df-conf-items-list ref="unionsList"
+                    <df-conf-items-list ref="itemsList"
                         @item-add="mode = isEditing ? 'idle' : 'add'" 
                         @item-edit="handleEdit"
                         @item-delete="handleDelete" 
@@ -103,23 +103,13 @@ export default {
                 value: this.usingExpression ? this.expression : this.dfId,
             }
         },
-    },
-    watch: {
-        dfConfItems(){
-            if(!this.$refs.unionsList){
-                return
+        _itemToStr(item){
+            const fromExpression = item.from === 'expression'
+            let value = item.value
+            if(!fromExpression){
+                value = this.context.dataframes[item.value].name
             }
-
-            this.$refs.unionsList.updateItems(
-                this.dfConfItems.map(item => {
-                    const fromExpression = item.from === 'expression'
-                    let value = item.value
-                    if(!fromExpression){
-                        value = this.context.dataframes[item.value].name
-                    }
-                    return `+ ${value}`
-                })
-            )
+            return `+ ${value}`
         },
     },
     components: {
