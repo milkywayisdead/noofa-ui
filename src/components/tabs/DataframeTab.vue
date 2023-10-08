@@ -190,23 +190,6 @@ export default {
                         this.options.data = res.data.data
                         this.dtypes = res.data.dtypes
                         this.showTable()
-                        /* this.$nextTick(() => {
-                            const theaders = document.querySelectorAll(`#${this.theadId} th`)
-                            const thMapping = {}
-                            for(let th of theaders){
-                                thMapping[th.innerText] = th
-                            }
-
-                            const dtypes = res.data.dtypes
-                            for(let col in dtypes){
-                                const th = thMapping[col]
-                                if(th){
-                                    const dtypeEl = document.createElement('span')
-                                    dtypeEl.classList.add('mdi', `${this._getDtypeIcon(dtypes[col])}`)
-                                    th.prepend(dtypeEl)
-                                }
-                            }
-                        }) */
                     }
                 }).finally(() => {
                     this.exitLoadingState()

@@ -45,14 +45,14 @@
                     <profile-tree-branch 
                         :subheader="locale.tables.plural"
                         icon="mdi-table"
-                        :items="context.tables"
+                        :items="ctxTables"
                         item-type="table"
                         @profile-item-selected="emitSelected"
                     />
                     <profile-tree-branch 
                         :subheader="locale.figures.plural"
                         icon="mdi-chart-line"
-                        :items="context.figures"
+                        :items="ctxFigures"
                         item-type="figure"
                         @profile-item-selected="emitSelected"
                     />
@@ -86,6 +86,18 @@ export default {
     methods: {
         emitSelected(itemProps){
             this.$emit('profile-item-selected', itemProps)
+        },
+    },
+    computed: {
+        ctxTables(){
+            return Object.values(this.context.components).filter(
+                cmp => cmp.type === 'table'
+            )
+        },
+        ctxFigures(){
+            return Object.values(this.context.components).filter(
+                cmp => cmp.type === 'figure'
+            )
         },
     },
     mounted(){

@@ -38,6 +38,15 @@
                 </v-list-item>
             </template>
         </dropdown-menu>
+        <dropdown-menu :label="locale.components.components">
+            <template v-slot:items>
+                <v-list-item>
+                    <v-list-item-title @click="openNewTableDialog" >
+                        {{ locale.tables.new }}
+                    </v-list-item-title>
+                </v-list-item>
+            </template>
+        </dropdown-menu>
     </v-toolbar>
 
     <v-toolbar density="compact">
@@ -50,6 +59,7 @@
         <new-source-dialog ref="newSourceDialog" />
         <new-query-dialog ref="newQueryDialog" />
         <new-dataframe-dialog ref="newDataframeDialog" />
+        <new-table-dialog ref="newTableDialog" />
     </v-toolbar>
 
     <v-row>
@@ -71,6 +81,7 @@ import NewQueryDialog from './dialogs/NewQueryDialog.vue'
 import ProfileSettingsDialog from './dialogs/ProfileSettingsDialog.vue'
 import DropdownMenu from '@/components/dropdowns/DropdownMenu.vue'
 import NewDataframeDialog from './dialogs/NewDataframeDialog.vue'
+import NewTableDialog from './dialogs/NewTableDialog.vue'
 
 export default {
     name: 'Editor',
@@ -107,6 +118,9 @@ export default {
         openNewDataframeDialog(){
             this.$refs.newDataframeDialog.open()
         },
+        openNewTableDialog(){
+            this.$refs.newTableDialog.open()
+        },
         clearTabsArea(){
             this.$refs.tabsArea.clear()
         },
@@ -120,6 +134,7 @@ export default {
         ProfileTree,
         TabsArea,
         NewDataframeDialog,
+        NewTableDialog,
     },
 }
 </script>

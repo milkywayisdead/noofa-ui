@@ -77,6 +77,16 @@ class NoofaCtx {
         return this.dataframes[dfId]
     }
 
+    addTable(conf){
+        this.components[conf.id] = new CtxTable(conf);
+        return this.components[conf.id];
+    }
+
+    updateTable(tblId, conf){
+        this.components[tblId] = new CtxTable(conf);
+        return this.components[tblId]
+    }
+
     deleteItem(target, targetId){
         delete this[target][targetId];
     }
@@ -109,6 +119,15 @@ class NoofaCtx {
         for(let dfId in dataframes){
             const dfConf = dataframes[dfId];
             this.dataframes[dfId] = CtxDataframe.fromConf(dfConf);
+        }
+
+        const components = conf.components || {}
+        for(let cmpId in components){
+            const cmpConf = components[cmpId];
+            const cmpType = cmpConf.type;
+            if(cmpType === 'table'){
+                this.components[cmpId] = CtxTable.fromConf(cmpConf);
+            }
         }
     }
 
@@ -246,5 +265,39 @@ class CtxDataframe {
         return ['id', 'name', 'base'];
     }
 }
+
+
+class CtxTable {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+        this.layout = conf.layout ?? {
+            title_text: '',
+            to_exclude: [],
+            aliases: {},
+        }
+    }
+
+    compile(){
+        const cmp = {
+            type: this.type,
+            id: this.id,
+            name: this.name,
+            base: this.base,
+            layout: this.layout,
+        }
+        return cmp
+    }
+
+    static fromConf(dbConf){
+        return new CtxTable(dbConf);
+    }
+
+    _propsForConstructor(){
+        return ['type', 'id', 'name', 'base'];
+    }
+}
+
 
 export default NoofaCtx;

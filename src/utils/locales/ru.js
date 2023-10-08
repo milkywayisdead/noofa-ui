@@ -114,7 +114,20 @@ const ru = {
         targetDtype: 'Вариант преобразования',
     },
     tables: {
+        singular: 'Таблица',
         plural: 'Таблицы',
+        new: 'Добавление таблицы',
+        name: 'Название',
+        from: 'Вариант построения',
+        dataframe: 'Датафрейм',
+        expression: 'Выражение',
+        exclude: 'Отбрасываемые столбцы',
+        aliases: 'Переименование столбцов',
+        colName: 'Название столбца',
+        colAlias: 'Новое название столбца',
+    },
+    components: {
+        components: 'Компоненты',
     },
     figures: {
         plural: 'Графики',
