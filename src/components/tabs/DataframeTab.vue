@@ -253,7 +253,7 @@ export default {
         },
         _getDtypeIcon(dtypeStr){
             if(dtypeStr === 'object'){
-                return 'mdi-format-text-variant'
+                return 'mdi-alphabetical'
             }
             if(dtypeStr.startsWith('int') || dtypeStr.startsWith('float')){
                 return 'mdi-numeric'
