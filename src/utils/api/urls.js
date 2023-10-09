@@ -17,6 +17,7 @@ const urls = {
     getDbStructure: `${prefix}/get_db_structure/`,
     getQueryData: `${prefix}/get_query_data/`,
     getDataframeData: `${prefix}/get_df_data/`,
+    getTableData: `${prefix}/get_table_data/`,
 }
 
 export default urls;

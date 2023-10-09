@@ -88,6 +88,7 @@ class NoofaCtx {
     }
 
     deleteItem(target, targetId){
+        target = ['tables', 'figures'].includes(target) ? 'components' : target;
         delete this[target][targetId];
     }
 
@@ -274,7 +275,7 @@ class CtxTable {
         }
         this.layout = conf.layout ?? {
             title_text: '',
-            to_exclude: [],
+            exclude: [],
             aliases: {},
         }
     }

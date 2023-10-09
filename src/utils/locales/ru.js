@@ -125,6 +125,7 @@ const ru = {
         aliases: 'Переименование столбцов',
         colName: 'Название столбца',
         colAlias: 'Новое название столбца',
+        title: 'Заголовок',
     },
     components: {
         components: 'Компоненты',
