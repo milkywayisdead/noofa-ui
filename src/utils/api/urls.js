@@ -1,5 +1,7 @@
-const host = 'http://127.0.0.1:8000';
-const prefix = `${host}/api/v1`;
+const host = process.env.NOOFA_API_HOST ?? '127.0.0.1';
+const port = process.env.NOOFA_API_PORT ?? 8000;
+const url = `http://${host}:${port}`;
+const prefix = `${url}/api/v1`;
 
 const urls = {
     getProfile: `${prefix}/get_profile/`,
@@ -14,6 +16,8 @@ const urls = {
     getFieldsList: `${prefix}/get_fields_list/`,
     getDbStructure: `${prefix}/get_db_structure/`,
     getQueryData: `${prefix}/get_query_data/`,
+    getDataframeData: `${prefix}/get_df_data/`,
+    getTableData: `${prefix}/get_table_data/`,
 }
 
 export default urls;

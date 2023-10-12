@@ -41,6 +41,12 @@ const api = {
     getQueryData(profileId, queryId){
         return axios.get(`${urls.getQueryData + profileId}/${queryId}`);
     },
+    getDataframeData(profileId, dfId){
+        return axios.get(`${urls.getDataframeData + profileId}/${dfId}`);
+    },
+    getTableData(profileId, tableId){
+        return axios.get(`${urls.getTableData + profileId}/${tableId}`);
+    },
 }
 
 export default api;

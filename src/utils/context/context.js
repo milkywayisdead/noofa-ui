@@ -67,7 +67,38 @@ class NoofaCtx {
         return this.queries[queryId];
     }
 
+    addDataframe(conf){
+        this.dataframes[conf.id] = new CtxDataframe(conf);
+        return this.dataframes[conf.id];
+    }
+
+    updateDataframe(dfId, conf){
+        this.dataframes[dfId] = new CtxDataframe(conf);
+        return this.dataframes[dfId];
+    }
+
+    addTable(conf){
+        this.components[conf.id] = new CtxTable(conf);
+        return this.components[conf.id];
+    }
+
+    updateTable(tblId, conf){
+        this.components[tblId] = new CtxTable(conf);
+        return this.components[tblId];
+    }
+
+    addFigure(conf){
+        this.components[conf.id] = new CtxFigure(conf);
+        return this.components[conf.id];
+    }
+
+    updateFigure(figId, conf){
+        this.components[figId] = new CtxFigure(conf);
+        return this.components[figId];
+    }
+
     deleteItem(target, targetId){
+        target = ['tables', 'figures'].includes(target) ? 'components' : target;
         delete this[target][targetId];
     }
 
@@ -93,7 +124,22 @@ class NoofaCtx {
         for(let queryId in queries){
             const queryConf = queries[queryId];
             this.queries[queryId] = CtxQuery.fromConf(queryConf);
-        }      
+        }
+
+        const dataframes = conf.dataframes || {}
+        for(let dfId in dataframes){
+            const dfConf = dataframes[dfId];
+            this.dataframes[dfId] = CtxDataframe.fromConf(dfConf);
+        }
+
+        const components = conf.components || {}
+        for(let cmpId in components){
+            const cmpConf = components[cmpId];
+            const cmpType = cmpConf.type;
+            if(cmpType === 'table'){
+                this.components[cmpId] = CtxTable.fromConf(cmpConf);
+            }
+        }
     }
 
     hasId(){
@@ -156,6 +202,7 @@ class CtxSource {
     }
 }
 
+
 class CtxQuery {
     constructor(conf){
         for(let prop of this._propsForConstructor()){
@@ -195,5 +242,103 @@ class CtxQuery {
         ];
     }
 }
+
+
+class CtxDataframe {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+        for(let prop of ['unions', 'joins', 
+            'filters', 'dtypes', 'columns', 'ordering', 'fillna']){
+            this[prop] = conf[prop] ?? [];
+        }
+    }
+
+    compile(){
+        const cmp = {
+            id: this.id,
+            name: this.name,
+            base: this.base,
+        }
+        for(let prop of ['unions', 'joins', 
+            'filters', 'dtypes', 'columns', 'ordering', 'fillna']){
+            cmp[prop] = this[prop] ?? [];
+        }
+        return cmp
+    }
+
+    static fromConf(dbConf){
+        return new CtxDataframe(dbConf);
+    }
+
+    _propsForConstructor(){
+        return ['id', 'name', 'base'];
+    }
+}
+
+
+class CtxTable {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+        this.layout = conf.layout ?? {
+            title_text: '',
+            exclude: [],
+            aliases: {},
+        }
+    }
+
+    compile(){
+        const cmp = {
+            type: this.type,
+            id: this.id,
+            name: this.name,
+            base: this.base,
+            layout: this.layout,
+        }
+        return cmp
+    }
+
+    static fromConf(dbConf){
+        return new CtxTable(dbConf);
+    }
+
+    _propsForConstructor(){
+        return ['type', 'id', 'name', 'base'];
+    }
+}
+
+
+class CtxFigure {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+    }
+
+    compile(){
+        const cmp = {
+            id: this.id,
+            name: this.name,
+            engine: this.engine,
+            type: this.type,
+            figure_type: this.figure_type,
+            base: this.base,
+            layout: this.layout,
+        }
+        return cmp
+    }
+
+    static fromConf(dbConf){
+        return new CtxFigure(dbConf);
+    }
+
+    _propsForConstructor(){
+        return ['type', 'id', 'name', 'figure_type', 'base', 'engine'];
+    }
+}
+
 
 export default NoofaCtx;

@@ -88,6 +88,7 @@ export default {
             options: {
                 columns: [],
                 data: [],
+                order: [],
             },
             tableIsVisible: false,
             columns: [],
@@ -157,6 +158,7 @@ export default {
             this.options = {
                 columns: [],
                 data: [],
+                order: [],
             }
         },
     },

@@ -31,6 +31,25 @@
                         {{ locale.queries.new }}
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item>
+                    <v-list-item-title @click="openNewDataframeDialog" >
+                        {{ locale.dataframes.new }}
+                    </v-list-item-title>
+                </v-list-item>
+            </template>
+        </dropdown-menu>
+        <dropdown-menu :label="locale.components.components">
+            <template v-slot:items>
+                <v-list-item>
+                    <v-list-item-title @click="openNewTableDialog" >
+                        {{ locale.tables.new }}
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-title @click="openNewFigureDialog" >
+                        {{ locale.figures.new }}
+                    </v-list-item-title>
+                </v-list-item>
             </template>
         </dropdown-menu>
     </v-toolbar>
@@ -44,6 +63,9 @@
         <profile-settings-dialog ref="profileSettingsDialog" />
         <new-source-dialog ref="newSourceDialog" />
         <new-query-dialog ref="newQueryDialog" />
+        <new-dataframe-dialog ref="newDataframeDialog" />
+        <new-table-dialog ref="newTableDialog" />
+        <new-figure-dialog ref="newFigureDialog" />
     </v-toolbar>
 
     <v-row>
@@ -64,6 +86,9 @@ import OpenProfileDialog from './dialogs/OpenProfileDialog.vue'
 import NewQueryDialog from './dialogs/NewQueryDialog.vue'
 import ProfileSettingsDialog from './dialogs/ProfileSettingsDialog.vue'
 import DropdownMenu from '@/components/dropdowns/DropdownMenu.vue'
+import NewDataframeDialog from './dialogs/NewDataframeDialog.vue'
+import NewTableDialog from './dialogs/NewTableDialog.vue'
+import NewFigureDialog from '@/components/dialogs/NewFigureDialog.vue'
 
 export default {
     name: 'Editor',
@@ -97,6 +122,15 @@ export default {
         openNewQueryDialog(){
             this.$refs.newQueryDialog.open()
         },
+        openNewDataframeDialog(){
+            this.$refs.newDataframeDialog.open()
+        },
+        openNewTableDialog(){
+            this.$refs.newTableDialog.open()
+        },
+        openNewFigureDialog(){
+            this.$refs.newFigureDialog.open()
+        },
         clearTabsArea(){
             this.$refs.tabsArea.clear()
         },
@@ -109,6 +143,9 @@ export default {
         DropdownMenu,
         ProfileTree,
         TabsArea,
+        NewDataframeDialog,
+        NewTableDialog,
+        NewFigureDialog,
     },
 }
 </script>
