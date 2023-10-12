@@ -131,7 +131,22 @@ const ru = {
         components: 'Компоненты',
     },
     figures: {
+        singular: 'График',
         plural: 'Графики',
+        new: 'Добавление графика',
+        name: 'Название графика',
+        dataframe: 'Датафрейм',
+        type: 'Тип графика',
+        from: 'Вариант построения',
+        figureTypes: {
+            line: 'Линии',
+            pie: 'Круговая диаграмма',
+            bar: 'Столбчатая диаграмма',
+        },
+        fromOptions: {
+            dataframe: 'Датафрейм',
+            list: 'Наборы значений',
+        },
     },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',

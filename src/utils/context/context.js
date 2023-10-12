@@ -74,7 +74,7 @@ class NoofaCtx {
 
     updateDataframe(dfId, conf){
         this.dataframes[dfId] = new CtxDataframe(conf);
-        return this.dataframes[dfId]
+        return this.dataframes[dfId];
     }
 
     addTable(conf){
@@ -84,7 +84,17 @@ class NoofaCtx {
 
     updateTable(tblId, conf){
         this.components[tblId] = new CtxTable(conf);
-        return this.components[tblId]
+        return this.components[tblId];
+    }
+
+    addFigure(conf){
+        this.components[conf.id] = new CtxFigure(conf);
+        return this.components[conf.id];
+    }
+
+    updateFigure(figId, conf){
+        this.components[figId] = new CtxFigure(conf);
+        return this.components[figId];
     }
 
     deleteItem(target, targetId){
@@ -297,6 +307,36 @@ class CtxTable {
 
     _propsForConstructor(){
         return ['type', 'id', 'name', 'base'];
+    }
+}
+
+
+class CtxFigure {
+    constructor(conf){
+        for(let prop of this._propsForConstructor()){
+            this[prop] = conf[prop];
+        }
+    }
+
+    compile(){
+        const cmp = {
+            id: this.id,
+            name: this.name,
+            engine: this.engine,
+            type: this.type,
+            figure_type: this.figure_type,
+            base: this.base,
+            layout: this.layout,
+        }
+        return cmp
+    }
+
+    static fromConf(dbConf){
+        return new CtxFigure(dbConf);
+    }
+
+    _propsForConstructor(){
+        return ['type', 'id', 'name', 'figure_type', 'base', 'engine'];
     }
 }
 
