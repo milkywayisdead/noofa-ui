@@ -136,7 +136,7 @@ const ru = {
         new: 'Добавление графика',
         name: 'Название графика',
         dataframe: 'Датафрейм',
-        type: 'Тип графика',
+        figureType: 'Тип графика',
         from: 'Вариант построения',
         figureTypes: {
             line: 'Линии',
@@ -144,9 +144,12 @@ const ru = {
             bar: 'Столбчатая диаграмма',
         },
         fromOptions: {
-            dataframe: 'Датафрейм',
+            dataframe: 'Из датафрейма',
             list: 'Наборы значений',
         },
+        titleText: 'Заголовок',
+        showLegend: 'Показывать легенду',
+        datasets: 'Наборы значений',
     },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',

@@ -47,6 +47,9 @@ const api = {
     getTableData(profileId, tableId){
         return axios.get(`${urls.getTableData + profileId}/${tableId}`);
     },
+    getFigureData(profileId, figureId){
+        return axios.get(`${urls.getFigureData + profileId}/${figureId}`);
+    },
 }
 
 export default api;

@@ -8,7 +8,8 @@
         <template v-slot:activator="{ props }">
             <v-btn v-if="activatorIcon"
                 v-bind="props"
-                :icon="activatorIcon">
+                :icon="activatorIcon"
+                :disabled="activatorDisabled">
             </v-btn>
         </template>
         <v-card>
@@ -32,6 +33,7 @@ export default {
     data(){
         return {
             visible: false,
+            activatorDisabled: false,
         }
     },
     inject: ['locale'],

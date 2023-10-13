@@ -49,6 +49,13 @@ export default {
             this.profiles = []
         },
         deleteItem(){
+            if(!this.context.hasId()){
+                this.context.deleteItem(this.itemGroupPlural, this.itemId)
+                this.$emit('item-delete', this.itemId)
+                this.$refs.baseDialog.close()
+                return
+            }
+
             this.api.partialDelete(this.context.id, this.itemGroup, this.itemId)
                 .then(res => {
                     if(res.status === 200){

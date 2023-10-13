@@ -336,7 +336,11 @@ class CtxFigure {
     }
 
     _propsForConstructor(){
-        return ['type', 'id', 'name', 'figure_type', 'base', 'engine'];
+        return [
+            'type', 'id', 'name', 
+            'figure_type', 'base', 'engine',
+            'layout',
+        ];
     }
 }
 
