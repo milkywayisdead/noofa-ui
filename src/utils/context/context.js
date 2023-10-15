@@ -138,6 +138,8 @@ class NoofaCtx {
             const cmpType = cmpConf.type;
             if(cmpType === 'table'){
                 this.components[cmpId] = CtxTable.fromConf(cmpConf);
+            } else if(cmpType === 'figure'){
+                this.components[cmpId] = CtxFigure.fromConf(cmpConf);
             }
         }
     }

@@ -63,6 +63,7 @@ export default {
             mode: 'idle',
             datasets: [],
             usingXY: true,
+            selectedItemIdx: null,
         }
     },
     emits: ['datasets-updated'],
@@ -72,8 +73,8 @@ export default {
             this.reset()
             this.updateList()
         },
-        updateDataset(dsIdx){
-            this.datasets[dsIdx] = this.toConf()
+        updateDataset(){
+            this.datasets[this.selectedItemIdx] = this.toConf()
             this.reset()
             this.updateList()
         },
@@ -84,6 +85,7 @@ export default {
             }
 
             this.mode = 'edit'
+            this.selectedItemIdx = dsIdx
             this.datasetName = ds.name
             if(this.usingOneValueDataset){
                 this.datasetXExpression = ds.value
@@ -96,6 +98,7 @@ export default {
             this.datasets = this.datasets.filter((ds, idx) => idx !== dsIdx)
             this.reset()
             this.updateList()
+            this.selectedItemIdx = null
         },
         updateList(){
             if(!this.$refs.datasetsList) return

@@ -48,7 +48,7 @@
                 </v-col>
             </v-row>
         </v-col>
-        <v-col cols="9" style="overflow:auto">
+        <v-col cols="9" :id="figureContainerId">
         </v-col>
     </v-row>
 </template>
@@ -57,7 +57,7 @@
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
-import { figureTypes, fromOptions } from '@/utils/fig.js'
+import { figureTypes, fromOptions, plotlyUtils } from '@/utils/fig.js'
 import DatasetsDialog from '@/components/dialogs/figconf/DatasetsDialog.vue'
 
 export default {
@@ -99,6 +99,8 @@ export default {
                     value: fo,
                 }
             }),
+
+            figureContainerId: `fig-container-${+ new Date()}`,
         }
 
         return tabProps
@@ -132,13 +134,10 @@ export default {
             this.api.getFigureData(this.context.id, this.id)
                 .then(res => {
                     if(res.status === 200){
-                        this.options.columns = res.data.columns.map(i => {
-                            return {data: i.replace('.', '\\.')}
-                        })
-                        this.columns = res.data.columns.map(i => i)
-                        this.options.data = res.data.data
-                        this.dtypes = res.data.dtypes
-                        this.showTable()
+                        plotlyUtils.create(
+                            this.figureContainerId,
+                            res.data.data,
+                        )
                     }
                 }).finally(() => {
                     this.exitLoadingState()
