@@ -6,43 +6,40 @@
         @close="reset"
     >
         <template v-slot:content>
-            <v-row>
+            <conf-items-list ref="datasetsList"
+                @item-add="this.mode = 'add'" 
+                @item-edit="handleEdit"
+                @item-delete="handleDelete" 
+                @mounted="updateList" />
+            <v-row v-if="isEditing">
                 <v-col cols="12">
-                    <noo-text-field 
-                        :label="locale.queries.name"
-                        v-model="name" />
+                    <noo-text-field :label="locale.figures.datasetName" 
+                        v-model="datasetName" />
+                </v-col>
+                <v-col cols="12">
+                    <v-textarea :label="locale.figures.datasetXExpression" 
+                        v-model="datasetXExpression" />
+                </v-col>
+                <v-col cols="12" v-if="usingXY">
+                    <v-textarea :label="locale.figures.datasetYExpression" 
+                        v-model="datasetYExpression" />
+                </v-col>
+                <v-col cols="12">
+                    <v-btn v-if="mode === 'add'"
+                        @click="addDataset"
+                        :disabled="!addButtonIsEnabled" >
+                        {{ locale.actions.add }}
+                    </v-btn>
+                    <v-btn v-if="mode === 'edit'"
+                        @click="updateDataset"
+                        :disabled="!addButtonIsEnabled" >
+                        {{ locale.actions.save }}
+                    </v-btn>
                 </v-col>
             </v-row>
-            <v-row>
-                <v-col cols="12">
-                    <noo-select
-                        :label="locale.queries.source"
-                        v-model="source" 
-                        :items="sources" />
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col cols="12">
-                    <v-radio-group 
-                        v-model="from"
-                        :label="locale.queries.from">
-                        <v-radio :label="locale.queries.expression" value="expression"></v-radio>
-                        <v-radio :label="locale.queries.constructor" value="json" disabled></v-radio>
-                    </v-radio-group>
-                </v-col>
-            </v-row>
-            <v-row v-if="usingExpression">
-                <v-col cols="12">
-                    <v-textarea
-                        :label="locale.queries.expression"
-                        v-model="expression" />
-                </v-col>
-            </v-row>
-            <div v-if="!usingExpression">
-            </div>
         </template>
         <template v-slot:actions>
-            <v-btn @click="addQuery">{{ locale.actions.save }}</v-btn>
+            <v-btn @click="emitUpdateAndClose">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -51,62 +48,112 @@
 import NooTextField from '@/components/inputs/NooTextField.vue'
 import NooSelect from '@/components/inputs/NooSelect.vue'
 import { dialogMixin } from '@/utils/mixins/dialogs'
+import ConfItemsList from '@/components/misc/ConfItemsList.vue'
 
 export default {
     name: 'DatasetsDialog',
     mixins: [dialogMixin,],
     data(){
         return {
-            name: '',
+            datasetName: '',
+            datasetXExpression: '',
+            datasetYExpression: '',
             from: 'expression',
-            expression: '',
-            source: '',
             activatorDisabled: false,
+            mode: 'idle',
+            datasets: [],
+            usingXY: true,
         }
     },
+    emits: ['datasets-updated'],
     methods: {
-        addQuery(){
-            const conf = this.toConf()
-            const query = this.context.addQuery(conf)
-            if(this.context.hasId()){
-                this.api.partialUpdate(this.context.id, 'query', query.id, query.compile())
-                    .then(res => {})
-                    .finally(_ => {
-                        this.$refs.baseDialog.close()
-                    })
-            } else {
-                this.$refs.baseDialog.close()
+        addDataset(){
+            this.datasets.push(this.toConf())
+            this.reset()
+            this.updateList()
+        },
+        updateDataset(dsIdx){
+            this.datasets[dsIdx] = this.toConf()
+            this.reset()
+            this.updateList()
+        },
+        handleEdit(dsIdx){
+            const ds = this.datasets[dsIdx]
+            if(!ds){
+                return
             }
+
+            this.mode = 'edit'
+            this.datasetName = ds.name
+            if(this.usingOneValueDataset){
+                this.datasetXExpression = ds.value
+                return
+            }
+            this.datasetXExpression = ds.x
+            this.datasetYExpression = ds.y
+        },
+        handleDelete(dsIdx){
+            this.datasets = this.datasets.filter((ds, idx) => idx !== dsIdx)
+            this.reset()
+            this.updateList()
+        },
+        updateList(){
+            if(!this.$refs.datasetsList) return
+
+            this.$refs.datasetsList.updateItems(
+                this.itemsToStr()
+            )  
         },
         toConf(){
-            const qId = `qr${+ new Date()}`
-            const conf = {id: qId}
-            for(let prop of [
-                'name', 'from', 'expression', 'source',
-            ]){
-                conf[prop] = this[prop]
+            if(this.usingOneValueDataset){
+                return {
+                    name: this.name,
+                    value: this.datasetXExpression,
+                }
             }
-            return conf;
+
+            return {
+                name: this.datasetName,
+                x_from: this.from,
+                y_from: this.from,
+                x: this.datasetXExpression,
+                y: this.datasetYExpression,
+            }
         },
         reset(){
             for(let prop of [
-                'name', 'from', 'expression', 'source',
+                'datasetName', 'datasetXExpression',
+                'datasetYExpression',
             ]){
                 this[prop] = ''
             }
+            this.mode = 'idle'
+        },
+        itemsToStr(){
+            return this.datasets.map(
+                ds => ds.name
+            )
+        },
+        emitUpdateAndClose(){
+            this.$emit('datasets-updated', this.datasets)
+            this.$refs.baseDialog.close()
         },
     },
     computed: {
-        usingExpression(){
-            return this.from === 'expression'
+        isEditing(){
+            return ['add', 'edit'].includes(this.mode)
         },
-        sources(){
-            return Object.values(this.context.sources).map(s => {
-                return {
-                    value: s.id,
-                    text: s.name,
-                }
-            })
+        usingOneValueDataset(){
+            return !this.usingXY
+        },
+        addButtonIsEnabled(){
+            const dsName = this.datasetName.length > 0
+            if(this.usingOneValueDataset){
+                return dsName && this.datasetXExpression.length > 0
+            }
+            return dsName && 
+                this.datasetXExpression.length > 0 &&
+                this.datasetYExpression.length > 0
         },
     },
     watch: {
@@ -117,6 +164,7 @@ export default {
     components: {
         NooTextField,
         NooSelect,
+        ConfItemsList,
     },
 }
 </script>

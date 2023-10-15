@@ -150,6 +150,9 @@ const ru = {
         titleText: 'Заголовок',
         showLegend: 'Показывать легенду',
         datasets: 'Наборы значений',
+        datasetName: 'Название набора',
+        datasetXExpression: 'Выражение для значений X',
+        datasetYExpression: 'Выражение для значений Y'
     },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',

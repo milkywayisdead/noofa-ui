@@ -11,7 +11,8 @@
         />
         <v-btn icon="mdi-play" 
             @click="getFigure" />
-        <datasets-dialog ref="datasetsDialog" />
+        <datasets-dialog ref="datasetsDialog" 
+            @datasets-updated="updateDatasets" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -25,7 +26,7 @@
                 <v-col cols="12">
                     <noo-select
                         :label="locale.figures.figureType"
-                        v-model="figure_type" 
+                        v-model="figureType" 
                         :items="figureTypes" />
                 </v-col>
                 <v-col cols="12">
@@ -70,16 +71,20 @@ export default {
             id: props.id,
             name: props.name,
             type: 'figure',
-            figure_type: props.figure_type,
+            figureType: props.figure_type,
             engine: this.engine,
             from: props.base.from,
+            xCol: '',
+            yCol: '',
             xFrom: 'expression',
             yFrom: 'expression',
             pieNames: '',
             pieValues: '',
             lineGroup: '',
-
+            datasets: props.base.from === 'list' ? props.base.value : [],
             base: props.base,
+            dfFrom: props.base.value?.df_from ?? 'dataframe',
+            dfId: props.base.value?.df_from === 'dataframe' ? props.base.value.dataframe : '',
             ...props.layout,
 
             figureTypes: figureTypes.map(ft => {
@@ -100,6 +105,11 @@ export default {
     },
     mounted(){
         this.$refs.datasetsDialog.activatorDisabled = this.from !== 'list'
+                
+        if(this.from === 'list'){
+            this.$refs.datasetsDialog.datasets = this.datasets.filter(ds => true)
+            this.$refs.datasetsDialog.updateList()
+        }
     },
     computed: {
         dataframes(){
@@ -139,7 +149,7 @@ export default {
                 id: this.id,
                 type: this.type,
                 name: this.name,
-                figure_type: this.figure_type,
+                figure_type: this.figureType,
                 engine: this.engine,
                 base: this.getBase(),
                 layout: this.getLayoutProps(),
@@ -147,10 +157,41 @@ export default {
             return conf
         },
         getBase(){
-            const base = {
-                from: this.from,
-                value: this.fromExpression ? this.expression : this.dataframe
+            let value
+            const f = this.from
+            if(f === 'list'){
+                value = this.datasets
+            } else if(f === 'dataframe' || f === 'grouped'){
+                value = {
+                    df_from: this.dfFrom,
+                    dataframe: this.dfId,
+                }
+            } else if(f === 'agg'){
+                value = {
+                    df_from: this.dfFrom,
+                    dataframe: this.dfId,
+                    groupby: [],
+                    on: '',
+                    func: '',
+                }
             }
+
+            const base = {
+                from: f,
+                value: value,
+            }
+
+            if(['line', 'bar'].includes(this.figureType) && this.from !== 'list'){
+                base.x = this.xCol
+                base.y = this.yCol
+                if(this.figureType === 'bar'){
+                    base.barmode = 'relative'
+                }
+                if(this.figureType === 'line' && this.lineGroup){
+                    base.line_group = this.lineGroup
+                }
+            }
+
             return base
         },
         getLayoutProps(){
@@ -158,6 +199,9 @@ export default {
                 title_text: this.title_text,
                 showlegend: this.showlegend,
             }
+        },
+        updateDatasets(value){
+            this.datasets = value.filter(i => true)
         },
     },
     watch: {
