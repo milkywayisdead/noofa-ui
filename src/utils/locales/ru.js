@@ -154,8 +154,17 @@ const ru = {
         datasetXExpression: 'Выражение для значений X',
         datasetYExpression: 'Выражение для значений Y'
     },
+    values: {
+        singular: 'Вычисляемое значение',
+        plural: 'Вычисляемые значения',
+        new: 'Добавление вычисляемого значения',
+        name: 'Название значения',
+        expression: 'Выражение',
+        result: 'Результат',
+    },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',
+        valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено',
     },
     dbstruct: {
         fk: 'Внешний ключ',

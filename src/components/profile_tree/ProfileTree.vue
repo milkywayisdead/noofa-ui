@@ -58,6 +58,12 @@
                     />
                 </template>
             </profile-tree-branch>
+            <profile-tree-branch 
+                :subheader="locale.values.plural"
+                icon="mdi-format-superscript"
+                @profile-item-selected="emitSelected"
+                item-type="value"
+                :items="ctxValues" />
         </v-card-text>
     </v-card>
 </template>
@@ -98,6 +104,9 @@ export default {
             return Object.values(this.context.components).filter(
                 cmp => cmp.type === 'figure'
             )
+        },
+        ctxValues(){
+            return Object.values(this.context.values)
         },
     },
     mounted(){

@@ -66,6 +66,7 @@
         <new-dataframe-dialog ref="newDataframeDialog" />
         <new-table-dialog ref="newTableDialog" />
         <new-figure-dialog ref="newFigureDialog" />
+        <new-value-dialog ref="newValueDialog" />
     </v-toolbar>
 
     <v-row>
@@ -89,6 +90,7 @@ import DropdownMenu from '@/components/dropdowns/DropdownMenu.vue'
 import NewDataframeDialog from './dialogs/NewDataframeDialog.vue'
 import NewTableDialog from './dialogs/NewTableDialog.vue'
 import NewFigureDialog from '@/components/dialogs/NewFigureDialog.vue'
+import NewValueDialog from '@/components/dialogs/NewValueDialog.vue'
 
 export default {
     name: 'Editor',
@@ -131,6 +133,9 @@ export default {
         openNewFigureDialog(){
             this.$refs.newFigureDialog.open()
         },
+        openNewValueDialog(){
+            this.$refs.newValueDialog.open()
+        },
         clearTabsArea(){
             this.$refs.tabsArea.clear()
         },
@@ -146,6 +151,7 @@ export default {
         NewDataframeDialog,
         NewTableDialog,
         NewFigureDialog,
+        NewValueDialog,
     },
 }
 </script>

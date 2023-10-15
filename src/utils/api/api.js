@@ -50,6 +50,9 @@ const api = {
     getFigureData(profileId, figureId){
         return axios.get(`${urls.getFigureData + profileId}/${figureId}`);
     },
+    getValue(profileId, valueName){
+        return axios.get(`${urls.getValue + profileId}/${valueName}`);
+    },
 }
 
 export default api;

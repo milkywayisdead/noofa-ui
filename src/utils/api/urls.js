@@ -19,6 +19,7 @@ const urls = {
     getDataframeData: `${prefix}/get_df_data/`,
     getTableData: `${prefix}/get_table_data/`,
     getFigureData: `${prefix}/get_figure_data/`,
+    getValue: `${prefix}/get_value/`,
 }
 
 export default urls;

@@ -97,6 +97,16 @@ class NoofaCtx {
         return this.components[figId];
     }
 
+    addValue(conf){
+        this.values[conf.id] = new CtxValue(conf);
+        return this.values[conf.id];
+    }
+
+    updateValue(valueId, conf){
+        this.values[valueId] = new CtxValue(conf);
+        return this.values[valueId];
+    }
+
     deleteItem(target, targetId){
         target = ['tables', 'figures'].includes(target) ? 'components' : target;
         delete this[target][targetId];
@@ -141,6 +151,12 @@ class NoofaCtx {
             } else if(cmpType === 'figure'){
                 this.components[cmpId] = CtxFigure.fromConf(cmpConf);
             }
+        }
+
+        const values = conf.values || {}
+        for(let vId in values){
+            const valueConf = values[vId];
+            this.values[vId] = CtxValue.fromConf(valueConf);
         }
     }
 
@@ -343,6 +359,27 @@ class CtxFigure {
             'figure_type', 'base', 'engine',
             'layout',
         ];
+    }
+}
+
+
+class CtxValue {
+    constructor(conf){
+        this.id = conf.id;
+        this.name = conf.name;
+        this.value = conf.value;
+    }
+
+    static fromConf(dbConf){
+        return new CtxValue(dbConf);
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            name: this.name,
+            value: this.value,
+        }
     }
 }
 
