@@ -11,6 +11,11 @@ const fromOptions = [
     'list',
 ];
 
+const orientations = [
+    'v',
+    'h',
+];
+
 const plotlyUtils = {
     create(id, figureData){
         const cntr = document.getElementById(id)
@@ -24,4 +29,5 @@ export {
     figureTypes,
     fromOptions,
     plotlyUtils,
+    orientations,
 }

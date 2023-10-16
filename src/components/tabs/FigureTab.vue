@@ -82,13 +82,18 @@
                         </v-col>
                         <v-col cols="12">
                             <noo-select :label="locale.figures.aggfunc"
-                                v-model="aggfunc" 
+                                v-model="aggFunc" 
                                 :items="aggfuncs" />
                         </v-col>
                         <v-col cols="12">
                             <noo-text-field :label="locale.figures.aggOn"
                                 v-model="aggOn" />
                         </v-col>
+                    </v-col>
+                    <v-col cols="12" v-if="figureType === 'bar'">
+                        <noo-select :label="locale.figures.orientation"
+                            v-model="orientation" 
+                            :items="orientations" />
                     </v-col>
                 </v-col>
 
@@ -114,7 +119,7 @@
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
-import { figureTypes, fromOptions, plotlyUtils } from '@/utils/fig.js'
+import { figureTypes, fromOptions, plotlyUtils, orientations } from '@/utils/fig.js'
 import DatasetsDialog from '@/components/dialogs/figconf/DatasetsDialog.vue'
 import { aggFuncs } from '@/utils/agg.js'
 
@@ -124,18 +129,21 @@ export default {
     data(){
         const props = this.itemProps
         let f = props.base.from
-        const usingXY = ['bar', 'line'].includes(props.figure_type) && f !== 'agg'
+        const usingXY = ['bar', 'line', 'hbar'].includes(props.figure_type) && f !== 'agg'
+        const usingAgg = f === 'agg'
         
-        if(f === 'grouped'){
+        if(f === 'grouped' || usingAgg){
             f = 'dataframe'
         }
+
+        const hBar = props.figure_type === 'hbar'
 
         const tabProps = {
             itemGroup: 'figure',
             id: props.id,
             name: props.name,
             type: 'figure',
-            figureType: props.figure_type,
+            figureType: hBar ? 'bar' : props.figure_type,
             engine: this.engine,
             from: f,
             xCol: usingXY ? props.base.x : '',
@@ -169,10 +177,19 @@ export default {
                     value: af,
                 }
             }),
+            orientations: orientations.map(o => {
+                return {
+                    text: this.locale.figures.orientations[o],
+                    value: o,
+                }
+            }),
+            orientation: hBar ? 'h' : 'v',
 
             figureContainerId: `fig-container-${+ new Date()}`,
-            useAgg: props.base.from === 'agg',
-            groupby: '',
+            useAgg: usingAgg,
+            groupby: usingAgg ? props.base.value.groupby.join(',') : '',
+            aggOn: usingAgg ? props.base.value.on : '',
+            aggFunc: usingAgg ? props.base.value.func : 'count',
         }
 
         return tabProps
@@ -225,11 +242,16 @@ export default {
                 })
         },
         toConf(){
+            let ft = this.figureType
+            if(this.figureType === 'bar' && this.orientation === 'h'){
+                ft = 'hbar'
+            }
+
             const conf = {
                 id: this.id,
                 type: this.type,
                 name: this.name,
-                figure_type: this.figureType,
+                figure_type: ft,
                 engine: this.engine,
                 base: this.getBase(),
                 layout: this.getLayoutProps(),
@@ -241,18 +263,18 @@ export default {
             const f = this.from
             if(f === 'list'){
                 value = this.datasets
-            } else if(f === 'dataframe'){
+            } else if(f === 'dataframe' && !this.usingAgg){
                 value = {
                     df_from: this.dfFrom,
                     dataframe: this.dfId,
                 }
-            } else if(f === 'agg'){
+            } else if(f === 'dataframe' && this.usingAgg){
                 value = {
                     df_from: this.dfFrom,
                     dataframe: this.dfId,
-                    groupby: [],
-                    on: '',
-                    func: '',
+                    groupby: this.groupby.split(',').map(i => i.trim()),
+                    on: this.aggOn,
+                    func: this.aggFunc,
                 }
             }
 
@@ -274,6 +296,10 @@ export default {
                 base.barmode = 'relative'
             }
 
+            if(this.usingAgg){
+                base.from = 'agg'
+            }
+
             return base
         },
         getLayoutProps(){
@@ -289,6 +315,11 @@ export default {
     watch: {
         from(value){
             this.$refs.datasetsDialog.activatorDisabled = value !== 'list'
+
+            this.useAgg = false
+        },
+        figureType(){
+            this.useAgg = false
         },
     },
     components: {

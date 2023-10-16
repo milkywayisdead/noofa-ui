@@ -3,7 +3,7 @@
         rounded 
         elevation="12" 
         :id="divId">
-        <v-toolbar color="teal-darken-3" density="compact">
+        <v-toolbar color="grey-darken-2" density="compact">
             <v-toolbar-title>{{ context.name }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text>

@@ -162,6 +162,11 @@ const ru = {
         yCol: 'Столбец значений Y',
         pieNames: 'Столбец имён',
         pieValues: 'Столбец значений',
+        orientation: 'Ориентация',
+        orientations: {
+            h: 'Горизонтальная',
+            v: 'Вертикальная',
+        }
     },
     values: {
         singular: 'Вычисляемое значение',
