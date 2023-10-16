@@ -35,6 +35,63 @@
                         v-model="from" 
                         :items="fromOptions" />
                 </v-col>
+
+                <v-col cols="12" v-if="from !== 'list'" class="pa-0">
+                    <v-col cols="12">
+                        <noo-select
+                            :label="locale.figures.dataframe"
+                            v-model="dfId" 
+                            :items="dataframes" />
+                    </v-col>
+                    <v-col cols="12" v-if="figureType !== 'pie' && !usingAgg">
+                        <noo-text-field
+                            v-model="xCol"
+                            :label="locale.figures.xCol" />
+                    </v-col>
+                    <v-col cols="12" v-if="figureType !== 'pie' && !usingAgg">
+                        <noo-text-field
+                            v-model="yCol"
+                            :label="locale.figures.yCol"
+                        />
+                    </v-col>
+                    <v-col cols="12" v-if="figureType === 'pie' && !usingAgg">
+                        <noo-text-field
+                            v-model="pieNames"
+                            :label="locale.figures.pieNames"
+                        />
+                    </v-col>
+                    <v-col cols="12" v-if="figureType === 'pie' && !usingAgg">
+                        <noo-text-field
+                            v-model="pieValues"
+                            :label="locale.figures.pieValues"
+                        />
+                    </v-col>
+                    <v-col cols="12" v-if="figureType === 'line'">
+                        <noo-text-field
+                            :label="locale.figures.lineGroup"
+                            v-model="lineGroup" />
+                    </v-col>
+                    <v-col cols="12" v-if="figureType !== 'line'">
+                        <v-checkbox v-model="useAgg"
+                            :label="locale.figures.aggDf" hide-details />
+                    </v-col>
+                    <v-col cols="12" v-if="useAgg && figureType !== 'line'" class="pa-0">
+                        <v-col cols="12">
+                            <noo-text-field :label="locale.figures.groupby"
+                                v-model="groupby" />
+                        </v-col>
+                        <v-col cols="12">
+                            <noo-select :label="locale.figures.aggfunc"
+                                v-model="aggfunc" 
+                                :items="aggfuncs" />
+                        </v-col>
+                        <v-col cols="12">
+                            <noo-text-field :label="locale.figures.aggOn"
+                                v-model="aggOn" />
+                        </v-col>
+                    </v-col>
+                </v-col>
+
                 <v-col cols="12">
                     <noo-text-field
                         v-model="title_text"
@@ -59,12 +116,19 @@ import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import { figureTypes, fromOptions, plotlyUtils } from '@/utils/fig.js'
 import DatasetsDialog from '@/components/dialogs/figconf/DatasetsDialog.vue'
+import { aggFuncs } from '@/utils/agg.js'
 
 export default {
     name: 'FigureTab',
     mixins: [tabMixin],
     data(){
         const props = this.itemProps
+        let f = props.base.from
+        const usingXY = ['bar', 'line'].includes(props.figure_type) && f !== 'agg'
+        
+        if(f === 'grouped'){
+            f = 'dataframe'
+        }
 
         const tabProps = {
             itemGroup: 'figure',
@@ -73,14 +137,14 @@ export default {
             type: 'figure',
             figureType: props.figure_type,
             engine: this.engine,
-            from: props.base.from,
-            xCol: '',
-            yCol: '',
+            from: f,
+            xCol: usingXY ? props.base.x : '',
+            yCol: usingXY ? props.base.y : '',
             xFrom: 'expression',
             yFrom: 'expression',
             pieNames: '',
             pieValues: '',
-            lineGroup: '',
+            lineGroup: props.base.from === 'grouped' ? props.base.line_group : '',
             datasets: props.base.from === 'list' ? props.base.value : [],
             base: props.base,
             dfFrom: props.base.value?.df_from ?? 'dataframe',
@@ -99,8 +163,16 @@ export default {
                     value: fo,
                 }
             }),
+            aggfuncs: aggFuncs.map(af => {
+                return {
+                    text: this.locale.aggFuncs[af],
+                    value: af,
+                }
+            }),
 
             figureContainerId: `fig-container-${+ new Date()}`,
+            useAgg: props.base.from === 'agg',
+            groupby: '',
         }
 
         return tabProps
@@ -117,10 +189,19 @@ export default {
         dataframes(){
             return Object.values(this.context.dataframes).map(df => {
                 return {
-                    value: df.name,
+                    value: df.id,
                     text: df.name,
                 }
             })
+        },
+        aggAvailable(){
+            return ['bar', 'pie'].includes(this.figureType)
+        },
+        usingAgg(){
+            return this.useAgg
+        },
+        usingLineGroup(){
+            return this.lineGroup.length > 0
         },
     },
     methods: {
@@ -160,7 +241,7 @@ export default {
             const f = this.from
             if(f === 'list'){
                 value = this.datasets
-            } else if(f === 'dataframe' || f === 'grouped'){
+            } else if(f === 'dataframe'){
                 value = {
                     df_from: this.dfFrom,
                     dataframe: this.dfId,
@@ -183,12 +264,14 @@ export default {
             if(['line', 'bar'].includes(this.figureType) && this.from !== 'list'){
                 base.x = this.xCol
                 base.y = this.yCol
-                if(this.figureType === 'bar'){
-                    base.barmode = 'relative'
-                }
-                if(this.figureType === 'line' && this.lineGroup){
+                if(this.figureType === 'line' && this.usingLineGroup){
+                    base.from = 'grouped'
                     base.line_group = this.lineGroup
                 }
+            }
+
+            if(this.figureType === 'bar'){
+                base.barmode = 'relative'
             }
 
             return base
