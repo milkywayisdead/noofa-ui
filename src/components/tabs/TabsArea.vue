@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="12" :id="divId">
+    <v-card elevation="12" :id="divId" style="overflow: scroll">
         <v-tabs v-model="tab">
             <v-tab v-for="item in tabs" 
                 :key="item.props.id"

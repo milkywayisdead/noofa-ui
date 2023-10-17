@@ -136,7 +136,8 @@ export default {
             f = 'dataframe'
         }
 
-        const hBar = props.figure_type === 'hbar'
+        const ft = props.figure_type
+        const hBar = ft === 'hbar'
 
         const tabProps = {
             itemGroup: 'figure',
@@ -150,11 +151,11 @@ export default {
             yCol: usingXY ? props.base.y : '',
             xFrom: 'expression',
             yFrom: 'expression',
-            pieNames: '',
-            pieValues: '',
+            pieNames: ft === 'pie' ? props.base.names : '',
+            pieValues: ft === 'pie' ? props.base.values : '',
             lineGroup: props.base.from === 'grouped' ? props.base.line_group : '',
             datasets: props.base.from === 'list' ? props.base.value : [],
-            base: props.base,
+            //base: props.base,
             dfFrom: props.base.value?.df_from ?? 'dataframe',
             dfId: props.base.value?.df_from === 'dataframe' ? props.base.value.dataframe : '',
             ...props.layout,
@@ -295,6 +296,11 @@ export default {
             if(this.figureType === 'bar'){
                 base.barmode = 'relative'
             }
+            
+            if(this.figureType === 'pie' && this.from !== 'list'){
+                base.names = this.pieNames
+                base.values = this.pieValues
+            }
 
             if(this.usingAgg){
                 base.from = 'agg'
@@ -318,8 +324,14 @@ export default {
 
             this.useAgg = false
         },
-        figureType(){
+        figureType(ft){
             this.useAgg = false
+
+            if(ft === 'pie'){
+                this.$refs.datasetsDialog.usingXY = false
+            } else {
+                this.$refs.datasetsDialog.usingXY = true
+            }
         },
     },
     components: {

@@ -110,7 +110,7 @@ export default {
         toConf(){
             if(this.usingOneValueDataset){
                 return {
-                    name: this.name,
+                    name: this.datasetName,
                     value: this.datasetXExpression,
                 }
             }
