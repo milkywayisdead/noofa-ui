@@ -44,6 +44,7 @@ import DataframeTab from './DataframeTab.vue'
 import TableTab from './TableTab.vue'
 import FigureTab from './FigureTab.vue'
 import ValueTab from './ValueTab.vue'
+import DocumentTab from './DocumentTab.vue'
 
 const tabsAreaId = `tabs-area-${+new Date()}`
 const changeTabsAreaHeight = () => {
@@ -101,6 +102,7 @@ export default {
         TableTab,
         FigureTab,
         ValueTab,
+        DocumentTab,
     },
 }
 </script>

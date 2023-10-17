@@ -64,6 +64,12 @@
                 @profile-item-selected="emitSelected"
                 item-type="value"
                 :items="ctxValues" />
+            <profile-tree-branch 
+                :subheader="locale.documents.plural"
+                icon="mdi-file-pdf-box"
+                @profile-item-selected="emitSelected"
+                item-type="document"
+                :items="ctxDocuments" />
         </v-card-text>
     </v-card>
 </template>
@@ -107,6 +113,9 @@ export default {
         },
         ctxValues(){
             return Object.values(this.context.values)
+        },
+        ctxDocuments(){
+            return Object.values(this.context.documents)
         },
     },
     mounted(){

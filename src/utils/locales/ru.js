@@ -176,6 +176,14 @@ const ru = {
         expression: 'Выражение',
         result: 'Результат',
     },
+    documents: {
+        singular: 'Документ',
+        plural: 'Документы',
+        new: 'Добавление документа',
+        name: 'Название документа',
+        components: 'Компоненты',
+        ctxCompontents: 'Доступные компоненты',
+    },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',
         valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено',

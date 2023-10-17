@@ -53,6 +53,12 @@ const api = {
     getValue(profileId, valueName){
         return axios.get(`${urls.getValue + profileId}/${valueName}`);
     },
+    getDocument(profileId, docId){
+        return axios.get(
+            `${urls.getDocument + profileId}/${docId}`,
+            {responseType: 'blob'}
+        );
+    },
 }
 
 export default api;

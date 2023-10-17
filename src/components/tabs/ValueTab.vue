@@ -33,8 +33,7 @@
                 <v-col cols="12">
                     <v-textarea
                         :label="locale.values.result"
-                        v-model="result" 
-                        disabled />
+                        v-model="result" />
                 </v-col>
             </v-row>
         </v-col>

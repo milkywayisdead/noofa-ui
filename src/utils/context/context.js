@@ -24,9 +24,9 @@ class NoofaCtx {
             components[cmp.id] = cmp.compile();
         }
 
-        const docs = {}
-        for(let doc of Object.values(this.docs)){
-            docs[doc.id] = doc.compile();
+        const documents = {}
+        for(let doc of Object.values(this.documents)){
+            documents[doc.id] = doc.compile();
         }
 
         const values = {}
@@ -42,7 +42,7 @@ class NoofaCtx {
             queries: queries,
             dataframes: dataframes,
             components: components,
-            docs: docs,
+            documents: documents,
             values: values,
         }
     }
@@ -107,6 +107,16 @@ class NoofaCtx {
         return this.values[valueId];
     }
 
+    addDocument(conf){
+        this.documents[conf.id] = new CtxDocument(conf);
+        return this.documents[conf.id];
+    }
+
+    updateDocument(docId, conf){
+        this.documents[docId] = new CtxDocument(conf);
+        return this.documents[docId];
+    }
+
     deleteItem(target, targetId){
         target = ['tables', 'figures'].includes(target) ? 'components' : target;
         delete this[target][targetId];
@@ -118,7 +128,7 @@ class NoofaCtx {
         this.description = conf.description || '';
         for(let prop of [
                 'sources', 'queries', 'dataframes',
-                'components', 'docs', 'values',
+                'components', 'documents', 'values',
             ]
         ){
             this[prop] = {}
@@ -157,6 +167,12 @@ class NoofaCtx {
         for(let vId in values){
             const valueConf = values[vId];
             this.values[vId] = CtxValue.fromConf(valueConf);
+        }
+
+        const docs = conf.docs || {}
+        for(let dId in docs){
+            const docConf = docs[dId];
+            this.documents[dId] = CtxDocument.fromConf(docConf);
         }
     }
 
@@ -379,6 +395,27 @@ class CtxValue {
             id: this.id,
             name: this.name,
             value: this.value,
+        }
+    }
+}
+
+
+class CtxDocument {
+    constructor(conf){
+        this.id = conf.id;
+        this.name = conf.name;
+        this.components = conf.components;
+    }
+
+    static fromConf(dbConf){
+        return new CtxDocument(dbConf);
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            name: this.name,
+            components: this.components,
         }
     }
 }
