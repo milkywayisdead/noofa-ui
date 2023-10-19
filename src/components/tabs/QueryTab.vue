@@ -12,6 +12,10 @@
         />
         <v-btn icon="mdi-play" 
             @click="getData" />
+        <v-btn icon="mdi-file-delimited"
+            @click="download('csv')" />
+        <v-btn icon="mdi-file-excel"
+            @click="download('excel')" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -52,7 +56,7 @@
             <div v-if="!expression">
             </div>
         </v-col>
-        <v-col cols="9">
+        <v-col cols="9" :id="`${this.id}-container`">
            <data-table v-if="tableIsVisible" class="display table-bordered"
                 :options="options"
            >
@@ -71,6 +75,9 @@
 <script>
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
+import 'datatables.net-buttons'
+import 'datatables.net-buttons/js/buttons.html5'
+import jszip from 'jszip'
 
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
@@ -78,6 +85,7 @@ import { tabMixin } from '@/utils/mixins/tabs'
 
   
 DataTable.use(DataTablesCore)
+DataTablesCore.Buttons.jszip(jszip)
 
 export default {
     name: 'QueryTab',
@@ -87,6 +95,7 @@ export default {
         const tabProps = {
             itemGroup: 'query',
             options: {
+                dom: 'lBftip',
                 columns: [],
                 data: [],
                 order: [],
@@ -98,6 +107,12 @@ export default {
             'id', 'name', 'from', 'expression', 'source',
         ]){
             tabProps[p] = props[p] ?? ''
+        }
+
+        tabProps.exportBtnsSelectors = {
+            csv: `#${tabProps.id}-container button.buttons-csv.buttons-html5`,
+            excel: `#${tabProps.id}-container button.buttons-excel.buttons-html5`,
+            copy: `#${tabProps.id}-container button.buttons-copy.buttons-html5`,
         }
 
         return tabProps
@@ -140,6 +155,9 @@ export default {
                         this.columns = res.data.columns.map(i => i)
                         this.options.data = res.data.data
                         this.showTable()
+                        this.$nextTick(_ => {
+                            this._hideExportBtns()
+                        })
                     }
                 }).finally(() => {
                     this.exitLoadingState()
@@ -164,9 +182,32 @@ export default {
             this.hideTable()
             this.columns = []
             this.options = {
+                dom: 'lBftip',
                 columns: [],
                 data: [],
                 order: [],
+            }
+        },
+        download(format){
+            try {
+                document.querySelector(
+                    this.exportBtnsSelectors[format]
+                ).click()
+            } catch {}
+        },
+        _hideExportBtns(){
+            const csvBtn = document.querySelector(
+                this.exportBtnsSelectors.csv
+            )
+            const excelBtn = document.querySelector(
+                this.exportBtnsSelectors.excel
+            )
+            const copyBtn = document.querySelector(
+                this.exportBtnsSelectors.copy
+            )
+
+            for(let b of [csvBtn, excelBtn, copyBtn]){
+                b.style.display = 'none'
             }
         },
     },
@@ -180,4 +221,5 @@ export default {
 
 <style>
 @import 'datatables.net-dt';
+@import 'datatables.net-buttons-dt';
 </style>
