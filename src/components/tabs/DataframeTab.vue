@@ -33,6 +33,10 @@
         <df-fillna-dialog
             :dataframe-id="id"
             @items-updated="updateBuildProp" />
+        <v-btn icon="mdi-file-delimited" 
+            @click="download('csv')" />
+        <v-btn icon="mdi-file-excel" 
+            @click="download('excel')" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -80,7 +84,7 @@
                 </v-row>
             </div>
         </v-col>
-        <v-col cols="9" style="overflow:auto">
+        <v-col cols="9" style="overflow:auto" :id="`${this.id}-container`">
            <data-table v-if="tableIsVisible" class="display table-bordered"
                 :options="options"
            >
@@ -100,10 +104,14 @@
 <script>
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
+import 'datatables.net-buttons'
+import 'datatables.net-buttons/js/buttons.html5'
+import jszip from 'jszip'
 
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import { tableExportMixin } from '@/utils/mixins/tables.js'
 import DfUnionsDialog from '@/components/dialogs/dfconf/DfUnionsDialog.vue'
 import DfJoinsDialog from '@/components/dialogs/dfconf/DfJoinsDialog.vue'
 import DfColsDialog from '@/components/dialogs/dfconf/DfColsDialog.vue'
@@ -113,15 +121,17 @@ import DfFillnaDialog from '@/components/dialogs/dfconf/DfFillnaDialog.vue'
 import DfDtypesDialog from '@/components/dialogs/dfconf/DfDtypesDialog.vue'
   
 DataTable.use(DataTablesCore)
+DataTablesCore.Buttons.jszip(jszip)
 
 export default {
     name: 'DataframeTab',
-    mixins: [tabMixin],
+    mixins: [tabMixin, tableExportMixin],
     data(){
         const props = this.itemProps
         const tabProps = {
             itemGroup: 'dataframe',
             options: {
+                dom: 'lBftip',
                 columns: [],
                 data: [],
                 order: [],
@@ -197,6 +207,8 @@ export default {
                         this.options.data = res.data.data
                         this.dtypes = res.data.dtypes
                         this.showTable()
+
+                        this.$nextTick(this._hideExportBtns)
                     }
                 }).finally(() => {
                     this.exitLoadingState()
@@ -235,6 +247,7 @@ export default {
             this.hideTable()
             this.columns = []
             this.options = {
+                dom: 'lBftip',
                 columns: [],
                 data: [],
                 order: [],
@@ -252,6 +265,7 @@ export default {
                 return 'mdi-calendar-clock'
             }
         },
+
     },
     provide(){
         return {
@@ -275,4 +289,5 @@ export default {
 
 <style>
 @import 'datatables.net-dt';
+@import 'datatables.net-buttons-dt';
 </style>

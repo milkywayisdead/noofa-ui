@@ -82,6 +82,7 @@ import jszip from 'jszip'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import { tableExportMixin } from '@/utils/mixins/tables.js'
 
   
 DataTable.use(DataTablesCore)
@@ -89,7 +90,7 @@ DataTablesCore.Buttons.jszip(jszip)
 
 export default {
     name: 'QueryTab',
-    mixins: [tabMixin],
+    mixins: [tabMixin, tableExportMixin],
     data(){
         const props = this.itemProps
         const tabProps = {
@@ -107,12 +108,6 @@ export default {
             'id', 'name', 'from', 'expression', 'source',
         ]){
             tabProps[p] = props[p] ?? ''
-        }
-
-        tabProps.exportBtnsSelectors = {
-            csv: `#${tabProps.id}-container button.buttons-csv.buttons-html5`,
-            excel: `#${tabProps.id}-container button.buttons-excel.buttons-html5`,
-            copy: `#${tabProps.id}-container button.buttons-copy.buttons-html5`,
         }
 
         return tabProps
@@ -186,28 +181,6 @@ export default {
                 columns: [],
                 data: [],
                 order: [],
-            }
-        },
-        download(format){
-            try {
-                document.querySelector(
-                    this.exportBtnsSelectors[format]
-                ).click()
-            } catch {}
-        },
-        _hideExportBtns(){
-            const csvBtn = document.querySelector(
-                this.exportBtnsSelectors.csv
-            )
-            const excelBtn = document.querySelector(
-                this.exportBtnsSelectors.excel
-            )
-            const copyBtn = document.querySelector(
-                this.exportBtnsSelectors.copy
-            )
-
-            for(let b of [csvBtn, excelBtn, copyBtn]){
-                b.style.display = 'none'
             }
         },
     },
