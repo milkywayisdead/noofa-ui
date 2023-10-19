@@ -1,7 +1,7 @@
 <template>
     <base-dialog
         :title="locale.tables.exclude"
-        activator-icon="mdi-sort-descending"
+        activator-icon="mdi-table-column-remove"
         @close="reset"
         :width="'40%'"
         ref="baseDialog"
