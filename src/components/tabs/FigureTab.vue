@@ -1,6 +1,7 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save" 
+        <v-btn icon="mdi-content-save"
+            :disabled="!saveBtnEnabled"
             @click="updateFigure" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -220,6 +221,9 @@ export default {
         },
         usingLineGroup(){
             return this.lineGroup.length > 0
+        },
+        saveBtnEnabled(){
+            return this.name.length
         },
     },
     methods: {

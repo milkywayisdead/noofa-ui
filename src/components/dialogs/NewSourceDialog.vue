@@ -77,7 +77,8 @@
             </div>
         </template>
         <template v-slot:actions>
-            <v-btn @click="addSource">{{ locale.actions.save }}</v-btn>
+            <v-btn :disabled="!saveBtnEnabled"
+                @click="addSource">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -148,6 +149,17 @@ export default {
     computed: {
         usingConnStr(){
             return this.from === 'conn_str'
+        },
+        saveBtnEnabled(){
+            if(this.usingConnStr){
+                return this.name.length &&
+                    this.connStr.length
+            }
+
+            return this.name.length &&
+                this.host.length &&
+                this.port.length &&
+                this.dbname.length
         },
     },
     components: {

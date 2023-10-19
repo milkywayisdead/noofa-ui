@@ -1,6 +1,7 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save" 
+        <v-btn icon="mdi-content-save"
+            :disabled="!saveBtnEnabled"
             @click="updateSource" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -138,6 +139,16 @@ export default {
     computed: {
         usingConnStr(){
             return this.from === 'conn_str'
+        },
+        saveBtnEnabled(){
+            if(this.usingConnStr){
+                return this.name.length && this.connStr.length
+            }
+
+            return this.name.length &&
+                this.host.length &&
+                this.port.length &&
+                this.dbname.length
         },
     },
     methods: {

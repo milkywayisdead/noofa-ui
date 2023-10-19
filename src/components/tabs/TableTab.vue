@@ -1,6 +1,7 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save" 
+        <v-btn icon="mdi-content-save"
+            :disabled="!saveBtnEnabled" 
             @click="updateTable" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -135,6 +136,12 @@ export default {
                     text: df.name,
                 }
             })
+        },
+        saveBtnEnabled(){
+            if(this.fromExpression){
+                return this.name.length && this.expression.length
+            }
+            return this.name.length && this.dataframe.length
         },
     },
     methods: {

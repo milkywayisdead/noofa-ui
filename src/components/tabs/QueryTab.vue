@@ -1,6 +1,7 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save" 
+        <v-btn icon="mdi-content-save"
+            :disabled="!saveBtnEnabled"
             @click="updateQuery" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -112,6 +113,13 @@ export default {
                     text: s.name,
                 }
             })
+        },
+        saveBtnEnabled(){
+            if(this.usingExpression){
+                return this.name.length && this.expression.length
+            }
+
+            return false
         },
     },
     methods: {

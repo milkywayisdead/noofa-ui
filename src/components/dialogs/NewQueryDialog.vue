@@ -42,7 +42,8 @@
             </div>
         </template>
         <template v-slot:actions>
-            <v-btn @click="addQuery">{{ locale.actions.save }}</v-btn>
+            <v-btn :disabled="!saveBtnEnabled"
+                @click="addQuery">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -89,10 +90,11 @@ export default {
         },
         reset(){
             for(let prop of [
-                'name', 'from', 'expression', 'source',
+                'name', 'from', 'source',
             ]){
                 this[prop] = ''
             }
+            this.from = 'expression'
         },
     },
     computed: {
@@ -106,6 +108,11 @@ export default {
                     text: s.name,
                 }
             })
+        },
+        saveBtnEnabled(){
+            return this.name.length &&
+                this.expression.length &&
+                this.source.length
         },
     },
     components: {
