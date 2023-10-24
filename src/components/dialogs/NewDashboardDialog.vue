@@ -50,7 +50,9 @@ export default {
             const dash = this.context.addDashboard(this.toConf())
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'dashboard', null, dash.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.context.dashboards[dash.contextualId].id = res.data.id 
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })

@@ -56,7 +56,8 @@ export default {
                 return
             }
 
-            this.api.partialDelete(this.context.id, this.itemGroup, this.itemId)
+            const item = this.context.getItem(this.itemGroupPlural, this.itemId)
+            this.api.partialDelete(this.context.id, this.itemGroup, item.id)
                 .then(res => {
                     if(res.status === 200){
                         this.context.deleteItem(this.itemGroupPlural, this.itemId)

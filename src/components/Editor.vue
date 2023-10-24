@@ -52,6 +52,15 @@
                 </v-list-item>
             </template>
         </dropdown-menu>
+        <dropdown-menu :label="locale.dashboards.plural">
+            <template v-slot:items>
+                <v-list-item>
+                    <v-list-item-title @click="openNewDashboardDialog" >
+                        {{ locale.dashboards.new }}
+                    </v-list-item-title>
+                </v-list-item>
+            </template>
+        </dropdown-menu>
     </v-toolbar>
 
     <v-toolbar density="compact">

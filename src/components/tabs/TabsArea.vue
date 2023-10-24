@@ -2,17 +2,17 @@
     <v-card elevation="12" :id="divId" style="overflow: scroll">
         <v-tabs v-model="tab">
             <v-tab v-for="item in tabs" 
-                :key="item.props.id"
-                :value="item.props.id"
+                :key="_key(item)"
+                :value="_key(item)"
             >{{ item.props.name }}
                 <v-icon icon="mdi-close" 
-                    @click.stop="closeTab(item.props.id)" />
+                    @click.stop="closeTab(_key(item))" />
             </v-tab>
         </v-tabs>
         <v-window v-model="tab">
             <v-window-item v-for="item in tabs" 
-                :key="item.props.id"
-                :value="item.props.id"
+                :key="_key(item)"
+                :value="_key(item)"
                 class="px-2 pb-2 pt-2 no-transition"
             >
                 <component 
@@ -45,6 +45,7 @@ import TableTab from './TableTab.vue'
 import FigureTab from './FigureTab.vue'
 import ValueTab from './ValueTab.vue'
 import DocumentTab from './DocumentTab.vue'
+import DashboardTab from './DashboardTab.vue'
 
 const tabsAreaId = `tabs-area-${+new Date()}`
 const changeTabsAreaHeight = () => {
@@ -73,9 +74,11 @@ export default {
     },
     methods: {
         addTab(props){
-            const tabId = props.props.id
+            const tabId = props.type !== 'dashboard' ? props.props.id : props.props.contextualId
+            const tabIdProp = props.type !== 'dashboard' ? 'id' : 'contextualId'
+
             for(let tab of this.tabs){
-                if(tab.props.id === tabId){
+                if(tab.props[tabIdProp] === tabId){
                     this.tab = tabId
                     return
                 }
@@ -85,14 +88,19 @@ export default {
             this.tab = tabId
         },
         closeTab(tabId){
-            this.tabs = this.tabs.filter(tab => tab.props.id !== tabId)
+            const tabIdProp = tabId.startsWith('dash') ? 'contextualId' : 'id'
+
+            this.tabs = this.tabs.filter(tab => tab.props[tabIdProp] !== tabId)
             if(this.tabs.length){
-                this.tab = this.tabs[0].props.id
+                this.tab = this.tabs[0].props[tabIdProp]
             }
         },
         clear(){
             this.tabs = []
             this.tab = null
+        },
+        _key(item){
+            return item.type === 'dashboard' ? item.props.contextualId : item.props.id
         },
     },
     components: {
@@ -103,6 +111,7 @@ export default {
         FigureTab,
         ValueTab,
         DocumentTab,
+        DashboardTab,
     },
 }
 </script>

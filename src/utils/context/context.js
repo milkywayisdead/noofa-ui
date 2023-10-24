@@ -124,8 +124,8 @@ class NoofaCtx {
     }
 
     addDashboard(conf){
-        this.dashboards[conf.contextualId] = new CtxDashboard(conf);
-        return this.dashboards[conf.contextualId];
+        this.dashboards[conf.contextual_id] = new CtxDashboard(conf);
+        return this.dashboards[conf.contextual_id];
     }
 
     updateDashboard(dashCtxId, conf){
@@ -201,6 +201,10 @@ class NoofaCtx {
 
     hasId(){
         return this.id !== null;
+    }
+
+    getItem(group, id){
+        return this[group][id];
     }
 }
 
