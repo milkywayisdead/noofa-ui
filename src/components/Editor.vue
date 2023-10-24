@@ -68,6 +68,7 @@
         <new-figure-dialog ref="newFigureDialog" />
         <new-value-dialog ref="newValueDialog" />
         <new-document-dialog ref="newDocumentDialog" />
+        <new-dashboard-dialog ref="newDashboardDialog" />
     </v-toolbar>
 
     <v-row>
@@ -93,6 +94,7 @@ import NewTableDialog from './dialogs/NewTableDialog.vue'
 import NewFigureDialog from '@/components/dialogs/NewFigureDialog.vue'
 import NewValueDialog from '@/components/dialogs/NewValueDialog.vue'
 import NewDocumentDialog from '@/components/dialogs/NewDocumentDialog.vue'
+import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
 
 export default {
     name: 'Editor',
@@ -107,7 +109,7 @@ export default {
             method(...args)
                 .then(res => {
                     if(res.status === 200){
-                        console.log(res.data)
+                        this.context.id = res.data.id
                     }
                 })
         },
@@ -141,6 +143,9 @@ export default {
         openNewDocumentDialog(){
             this.$refs.newDocumentDialog.open()
         },
+        openNewDashboardDialog(){
+            this.$refs.newDashboardDialog.open()
+        },
         clearTabsArea(){
             this.$refs.tabsArea.clear()
         },
@@ -158,6 +163,7 @@ export default {
         NewFigureDialog,
         NewValueDialog,
         NewDocumentDialog,
+        NewDashboardDialog,
     },
 }
 </script>

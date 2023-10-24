@@ -70,6 +70,12 @@
                 @profile-item-selected="emitSelected"
                 item-type="document"
                 :items="ctxDocuments" />
+            <profile-tree-branch 
+                :subheader="locale.dashboards.plural"
+                icon="mdi-view-dashboard"
+                @profile-item-selected="emitSelected"
+                item-type="dashboard"
+                :items="ctxDashboards" />
         </v-card-text>
     </v-card>
 </template>
@@ -116,6 +122,9 @@ export default {
         },
         ctxDocuments(){
             return Object.values(this.context.documents)
+        },
+        ctxDashboards(){
+            return Object.values(this.context.dashboards)
         },
     },
     mounted(){

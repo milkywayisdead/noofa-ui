@@ -199,7 +199,14 @@ const ru = {
         count: 'Количество',
         std: 'Стандартное отклонение',
         var: 'Дисперсия',
-    }, 
+    },
+    dashboards: {
+        singular: 'Дашборд',
+        plural: 'Дашборды',
+        new: 'Добавление дашборда',
+        name: 'Название дашборда',
+        description: 'Описание',
+    },
 }
 
 export default ru;

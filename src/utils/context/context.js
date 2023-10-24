@@ -34,6 +34,11 @@ class NoofaCtx {
             values[value.id] = value.compile();
         }
 
+        const dashboards = {}
+        for(let dash of Object.values(this.dashboards)){
+            dashboards[dash.contextualId] = dash.compile();
+        }
+
         return {
             id: this.id,
             name: this.name,
@@ -42,8 +47,9 @@ class NoofaCtx {
             queries: queries,
             dataframes: dataframes,
             components: components,
-            documents: documents,
+            docs: documents,
             values: values,
+            dashboards: dashboards,
         }
     }
 
@@ -117,6 +123,16 @@ class NoofaCtx {
         return this.documents[docId];
     }
 
+    addDashboard(conf){
+        this.dashboards[conf.contextualId] = new CtxDashboard(conf);
+        return this.dashboards[conf.contextualId];
+    }
+
+    updateDashboard(dashCtxId, conf){
+        this.dashboards[dashCtxId] = new CtxDashboard(conf);
+        return this.dashboards[dashCtxId];
+    }
+
     deleteItem(target, targetId){
         target = ['tables', 'figures'].includes(target) ? 'components' : target;
         delete this[target][targetId];
@@ -129,6 +145,7 @@ class NoofaCtx {
         for(let prop of [
                 'sources', 'queries', 'dataframes',
                 'components', 'documents', 'values',
+                'dashboards',
             ]
         ){
             this[prop] = {}
@@ -173,6 +190,12 @@ class NoofaCtx {
         for(let dId in docs){
             const docConf = docs[dId];
             this.documents[dId] = CtxDocument.fromConf(docConf);
+        }
+
+        const dashboards = conf.dashboards || {}
+        for(let dashId in dashboards){
+            const dashConf = dashboards[dashId];
+            this.dashboards[dashId] = CtxDashboard.fromConf(dashConf);
         }
     }
 
@@ -416,6 +439,35 @@ class CtxDocument {
             id: this.id,
             name: this.name,
             components: this.components,
+        }
+    }
+}
+
+
+class CtxDashboard {
+    constructor(conf){
+        this.id = conf.id;
+        this.contextualId = conf.contextual_id;
+        this.name = conf.name;
+        this.description = conf.description ?? '';
+        this.profileId = conf.profile_id;
+        this.properties = conf.properties ?? {};
+        this.widgets = conf.widgets ?? {};
+    }
+
+    static fromConf(dbConf){
+        return new CtxDashboard(dbConf);
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            contextual_id: this.contextualId,
+            name: this.name,
+            description: this.description,
+            properties: this.properties,
+            widgets: this.widgets,
+            profile_id: this.profileId,
         }
     }
 }
