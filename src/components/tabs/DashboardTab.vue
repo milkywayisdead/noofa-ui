@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         updateDashboard(){
-            const dash = this.context.updateDashboard(this.id, this.toConf())
+            const dash = this.context.updateDashboard(this.contextualId, this.toConf())
             this.updateItem(dash)   
         },
         toConf(){

@@ -50,6 +50,16 @@
                         {{ locale.figures.new }}
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item>
+                    <v-list-item-title @click="openNewValueDialog" >
+                        {{ locale.values.new }}
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-title @click="openNewDocumentDialog" >
+                        {{ locale.documents.new }}
+                    </v-list-item-title>
+                </v-list-item>
             </template>
         </dropdown-menu>
         <dropdown-menu :label="locale.dashboards.plural">
@@ -119,6 +129,13 @@ export default {
                 .then(res => {
                     if(res.status === 200){
                         this.context.id = res.data.id
+
+                        for(let dashId in res.data.dashboards){
+                            const ctxDash = this.context.getItem('dashboards', dashId)
+                            if(ctxDash){
+                                ctxDash.id = res.data.dashboards[dashId].id
+                            }
+                        }
                     }
                 })
         },
