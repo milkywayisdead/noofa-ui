@@ -19,6 +19,7 @@ const ru = {
         data: 'Данные',
         components: 'Компоненты',
         settings: 'Настройки профиля',
+        save: 'Сохранить профиль',
     },
     data: {
         data: 'Данные',
@@ -36,6 +37,7 @@ const ru = {
         db: 'Название БД',
         connStr: 'Строка подключения',
         plural: 'Источники',
+        testConnection: 'Проверка соединения',
     },
     queries: {
         new: 'Добавление запроса',
@@ -189,6 +191,7 @@ const ru = {
         valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено',
     },
     dbstruct: {
+        dbstruct: 'Структура БД',
         fk: 'Внешний ключ',
     },
     aggFuncs: {
@@ -207,6 +210,7 @@ const ru = {
         name: 'Название дашборда',
         description: 'Описание',
     },
+    locale: 'Язык',
 }
 
 export default ru;

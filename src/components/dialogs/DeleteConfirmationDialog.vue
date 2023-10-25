@@ -4,6 +4,7 @@
         :title="locale.actions.itemDelete"
         activator-icon="mdi-delete"
         :width="'40%'"
+        :tooltip="locale.actions.delete"
     >
         <template v-slot:content>
             <v-row>

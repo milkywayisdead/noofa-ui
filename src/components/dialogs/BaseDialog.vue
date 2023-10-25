@@ -6,12 +6,32 @@
         :width="width"
     >
         <template v-slot:activator="{ props }">
+            <v-tooltip location="bottom"
+                open-delay="300">
+                <template v-slot:activator="{ props }">
+                    <v-btn
+                    icon
+                    v-bind="props"
+                    :disabled="activatorDisabled"
+                    @click="visible = true"
+                    >
+                    <v-icon>
+                        {{ activatorIcon }}
+                    </v-icon>
+                    </v-btn>
+                </template>
+                <span>{{ tooltip || title }}</span>
+            </v-tooltip>
+        </template>
+
+        <!-- <template v-slot:activator="{ props }">
             <v-btn v-if="activatorIcon"
                 v-bind="props"
                 :icon="activatorIcon"
                 :disabled="activatorDisabled">
             </v-btn>
-        </template>
+        </template> -->
+
         <v-card>
             <v-card-title>{{ title }}</v-card-title>
             <v-divider></v-divider>
@@ -53,6 +73,10 @@ export default {
         onOpen: {
             type: [Function, null],
             default: null,
+        },
+        tooltip: {
+            type: String,
+            default: '',
         },
     },
     methods: {

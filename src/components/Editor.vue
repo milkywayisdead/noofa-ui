@@ -71,13 +71,23 @@
                 </v-list-item>
             </template>
         </dropdown-menu>
+        <dropdown-menu :label="locale.locale">
+            <template v-slot:items>
+                <v-list-item v-for="loc in locales" :key="loc.name">
+                    <v-list-item-title @click="changeLocale(loc.name)" >
+                        {{ loc.text }}
+                    </v-list-item-title>
+                </v-list-item>
+            </template>
+        </dropdown-menu>
     </v-toolbar>
 
     <v-toolbar density="compact">
         <open-profile-dialog ref="openProfileDialog"
             @profile-selected="clearTabsArea" />
-        <v-btn 
+        <icon-button
             icon="mdi-content-save"
+            :tooltip="locale.profiles.save"
             @click="saveProfile" />
         <profile-settings-dialog ref="profileSettingsDialog" />
         <new-source-dialog ref="newSourceDialog" />
@@ -114,10 +124,16 @@ import NewFigureDialog from '@/components/dialogs/NewFigureDialog.vue'
 import NewValueDialog from '@/components/dialogs/NewValueDialog.vue'
 import NewDocumentDialog from '@/components/dialogs/NewDocumentDialog.vue'
 import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
+import IconButton from '@/components/misc/IconButton.vue'
 
 export default {
     name: 'Editor',
     inject: ['api', 'context', 'locale'],
+    data(){
+        return {
+            locales: [],
+        }
+    },
     methods: {
         saveProfile(){
             const method = this.context.hasId() ? this.api.updateProfile : this.api.createProfile
@@ -175,6 +191,9 @@ export default {
         clearTabsArea(){
             this.$refs.tabsArea.clear()
         },
+        changeLocale(localeName){
+
+        },
     },
     components: {
         NewSourceDialog,
@@ -190,6 +209,7 @@ export default {
         NewValueDialog,
         NewDocumentDialog,
         NewDashboardDialog,
+        IconButton,
     },
 }
 </script>

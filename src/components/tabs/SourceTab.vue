@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled"
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateSource" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -10,9 +11,11 @@
             :item-group-plural="itemGroup + 's'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-connection"
+        <icon-button icon="mdi-connection"
+            :tooltip="locale.sources.testConnection"
             @click="testConnection" />
-        <v-btn icon="mdi-database-eye" 
+        <icon-button icon="mdi-database-eye"
+            :tooltip="locale.dbstruct.dbstruct"
             @click="$emit('enter-loading-state'), getDbStructure(this.id)" />
     </v-toolbar>
     <v-row class="mt-2">
@@ -102,6 +105,7 @@ import sources from '@/utils/sources.js'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import DbStructArea from '@/components/dbstruct/DbStructArea.vue'
+import IconButton from '@/components/misc/IconButton.vue'
 
 export default {
     name: 'SourceTab',
@@ -184,10 +188,16 @@ export default {
             this.$emit('exit-loading-state')
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     components: {
         NooTextField,
         NooSelect,
         DbStructArea,
+        IconButton,
     }
 }
 </script>
