@@ -47,6 +47,7 @@ const ru = {
         constructor: 'Конструктор',
         source: 'Источник',
         plural: 'Запросы',
+        run: 'Выполнить запрос',
     },
     dataframes: {
         new: 'Добавление датафрейма',
@@ -105,7 +106,7 @@ const ru = {
             asc: 'По возрастанию',
             desc: 'По убыванию',
         },
-        dtypeConv: 'Преобразование типов',
+        dtypesConv: 'Преобразование типов',
         dtypes: {
             none: '--',
             int: 'В целое число',
@@ -114,6 +115,7 @@ const ru = {
             datetime: 'Во временную метку',
         },
         targetDtype: 'Вариант преобразования',
+        run: 'Построить датафрейм',
     },
     tables: {
         singular: 'Таблица',
@@ -211,6 +213,10 @@ const ru = {
         description: 'Описание',
     },
     locale: 'Язык',
+    export: {
+        downloadCsv: 'Скачать CSV',
+        downloadExcel: 'Скачать XLSX',
+    },
 }
 
 export default ru;

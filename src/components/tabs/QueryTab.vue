@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled"
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateQuery" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -10,11 +11,14 @@
             :item-group-plural="'queries'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-play" 
+        <icon-button icon="mdi-play"
+            :tooltip="locale.queries.run"
             @click="getData" />
-        <v-btn icon="mdi-file-delimited"
+        <icon-button icon="mdi-file-delimited"
+            :tooltip="locale.export.downloadCsv"
             @click="download('csv')" />
-        <v-btn icon="mdi-file-excel"
+        <icon-button icon="mdi-file-excel"
+            :tooltip="locale.export.downloadExcel"
             @click="download('excel')" />
     </v-toolbar>
     <v-row class="mt-2">
@@ -83,6 +87,7 @@ import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import { tableExportMixin } from '@/utils/mixins/tables.js'
+import IconButton from '@/components/misc/IconButton.vue'
 
   
 DataTable.use(DataTablesCore)
@@ -184,10 +189,16 @@ export default {
             }
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     components: {
         NooTextField,
         NooSelect,
         DataTable,
+        IconButton,
     }
 }
 </script>

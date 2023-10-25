@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled"
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateDf" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -10,7 +11,8 @@
             :item-group-plural="'dataframes'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-play" 
+        <icon-button icon="mdi-play"
+            :tooltip="locale.dataframes.run" 
             @click="getData" />
         <df-dtypes-dialog
             :dataframe-id="id"
@@ -33,9 +35,11 @@
         <df-fillna-dialog
             :dataframe-id="id"
             @items-updated="updateBuildProp" />
-        <v-btn icon="mdi-file-delimited" 
+        <icon-button icon="mdi-file-delimited"
+            :tooltip="locale.export.downloadCsv"
             @click="download('csv')" />
-        <v-btn icon="mdi-file-excel" 
+        <icon-button icon="mdi-file-excel"
+            :tooltip="locale.export.downloadExcel"
             @click="download('excel')" />
     </v-toolbar>
     <v-row class="mt-2">
@@ -119,6 +123,7 @@ import DfFiltersDialog from '@/components/dialogs/dfconf/DfFiltersDialog.vue'
 import DfOrderingDialog from '@/components/dialogs/dfconf/DfOrderingDialog.vue'
 import DfFillnaDialog from '@/components/dialogs/dfconf/DfFillnaDialog.vue'
 import DfDtypesDialog from '@/components/dialogs/dfconf/DfDtypesDialog.vue'
+import IconButton from '@/components/misc/IconButton.vue'
   
 DataTable.use(DataTablesCore)
 DataTablesCore.Buttons.jszip(jszip)
@@ -265,7 +270,11 @@ export default {
                 return 'mdi-calendar-clock'
             }
         },
-
+    },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
     },
     provide(){
         return {
@@ -283,6 +292,7 @@ export default {
         DfOrderingDialog,
         DfFillnaDialog,
         DfDtypesDialog,
+        IconButton,
     }
 }
 </script>
