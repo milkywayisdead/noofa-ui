@@ -5,12 +5,14 @@
 <script>
 import api from '../utils/api/api.js'
 import NoofaCtx from '../utils/context/context.js'
-import {getLocale} from '../utils/locales/locales.js'
+import { DEFAULT_LOCALE, getLocale } from '../utils/locales/locales.js'
 
 export default {
     name: 'Wrapper',
     data(){
-        const locale = getLocale('ru')
+        const locale = getLocale(
+            this.getLocaleName()
+        )
         return {
             locale: locale,
             context: new NoofaCtx({
@@ -18,6 +20,12 @@ export default {
             }),
             api: api,
         }
+    },
+    methods: {
+        getLocaleName(){
+            const l = localStorage.getItem('noofaLocale')
+            return l ?? DEFAULT_LOCALE
+        },
     },
     provide(){
         return {

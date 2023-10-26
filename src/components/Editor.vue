@@ -125,13 +125,14 @@ import NewValueDialog from '@/components/dialogs/NewValueDialog.vue'
 import NewDocumentDialog from '@/components/dialogs/NewDocumentDialog.vue'
 import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
 import IconButton from '@/components/misc/IconButton.vue'
+import { locales } from '@/utils/locales/locales.js'
 
 export default {
     name: 'Editor',
     inject: ['api', 'context', 'locale'],
     data(){
         return {
-            locales: [],
+            locales: locales,
         }
     },
     methods: {
@@ -192,7 +193,7 @@ export default {
             this.$refs.tabsArea.clear()
         },
         changeLocale(localeName){
-
+            localStorage.setItem('noofaLocale', localeName)
         },
     },
     components: {
