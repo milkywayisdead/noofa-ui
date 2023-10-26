@@ -75,7 +75,11 @@
             <template v-slot:items>
                 <v-list-item v-for="loc in locales" :key="loc.name">
                     <v-list-item-title @click="changeLocale(loc.name)" >
-                        {{ loc.text }}
+                        <v-icon v-show="loc.name === locale.localeName"
+                            icon="mdi-earth"
+                            size="x-small"
+                            class="mr-1" />
+                        <span>{{ loc.text }}</span>
                     </v-list-item-title>
                 </v-list-item>
             </template>
@@ -108,6 +112,9 @@
             <tabs-area ref="tabsArea"></tabs-area>
         </v-col>
     </v-row>
+
+    <locale-change-dialog ref="localeChangeDialog"
+        @reload-confirmed="requestReload" />
 </template>
 
 <script>
@@ -126,6 +133,7 @@ import NewDocumentDialog from '@/components/dialogs/NewDocumentDialog.vue'
 import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
 import IconButton from '@/components/misc/IconButton.vue'
 import { locales } from '@/utils/locales/locales.js'
+import LocaleChangeDialog from '@/components/dialogs/LocaleChangeDialog.vue'
 
 export default {
     name: 'Editor',
@@ -135,6 +143,7 @@ export default {
             locales: locales,
         }
     },
+    emits: ['reload-requested'],
     methods: {
         saveProfile(){
             const method = this.context.hasId() ? this.api.updateProfile : this.api.createProfile
@@ -194,6 +203,13 @@ export default {
         },
         changeLocale(localeName){
             localStorage.setItem('noofaLocale', localeName)
+            this.$refs.localeChangeDialog.open()
+        },
+        requestReload(){
+            this.$emit(
+                'reload-requested',
+                localStorage.getItem('noofaLocale')
+            )
         },
     },
     components: {
@@ -211,6 +227,7 @@ export default {
         NewDocumentDialog,
         NewDashboardDialog,
         IconButton,
+        LocaleChangeDialog,
     },
 }
 </script>

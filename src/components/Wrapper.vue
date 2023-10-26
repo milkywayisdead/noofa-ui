@@ -13,6 +13,7 @@ export default {
         const locale = getLocale(
             this.getLocaleName()
         )
+
         return {
             locale: locale,
             context: new NoofaCtx({
@@ -31,7 +32,7 @@ export default {
         return {
             locale: this.locale,
             context: this.context,
-            api: this.api
+            api: this.api,
         }
     },
 }

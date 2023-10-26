@@ -1,4 +1,6 @@
 const ru = {
+    localeName: 'ru',
+    localeChange: 'Смена языка',
     actions: {
         open: 'Открыть',
         cancel: 'Отменить',
@@ -6,6 +8,8 @@ const ru = {
         delete: 'Удалить',
         itemDelete: 'Удаление элемента профиля',
         add: 'Добавить',
+        gotIt: 'Понятно',
+        reload: 'Перезагрузить',
     },
     profiles: {
         singular: 'Профиль',
@@ -194,7 +198,8 @@ const ru = {
     },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',
-        valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено',
+        valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено.',
+        localeChangeAlert: 'Для смены языка требуется перезагрузить редактор.',
     },
     dbstruct: {
         dbstruct: 'Структура БД',

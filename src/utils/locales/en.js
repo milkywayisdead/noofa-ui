@@ -1,4 +1,5 @@
 const en = {
+    localeName: 'en',
     actions: {
         open: 'Open',
         cancel: 'Cancel',
