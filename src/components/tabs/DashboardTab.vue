@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled"
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateDashboard" />
         <delete-confirmation-dialog 
             :item-id="contextualId"
@@ -18,6 +19,7 @@
 <script>
 import NooTextField from '../inputs/NooTextField.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import IconButton from '@/components/misc/IconButton.vue'
 
 export default {
     name: 'DashboardTab',
@@ -52,8 +54,14 @@ export default {
             return this.name.length
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     components: {
         NooTextField,
+        IconButton,
     }
 }
 </script>

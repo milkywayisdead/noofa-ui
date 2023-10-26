@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled"
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateDocument" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -10,7 +11,8 @@
             :item-group-plural="'documents'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-download" 
+        <icon-button icon="mdi-download"
+            :tooltip="locale.documents.downloadPdf" 
             @click="download" />
     </v-toolbar>
     <v-row class="mt-2">
@@ -29,7 +31,8 @@
                         :label="locale.documents.components"
                         chips
                         clearable
-                        multiple />
+                        multiple 
+                        closable-chips />
                 </v-col>
             </v-row>
         </v-col>
@@ -39,6 +42,7 @@
 <script>
 import NooTextField from '../inputs/NooTextField.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import IconButton from '@/components/misc/IconButton.vue'
 
 export default {
     name: 'DocumentTab',
@@ -97,8 +101,14 @@ export default {
             return this.name.length && this.components.length
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     components: {
         NooTextField,
+        IconButton,
     }
 }
 </script>

@@ -19,7 +19,8 @@
                         :label="locale.documents.components"
                         chips
                         clearable
-                        multiple />
+                        multiple 
+                        closable-chips />
                 </v-col>
             </v-row>
         </template>

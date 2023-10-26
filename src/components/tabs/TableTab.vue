@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled" 
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateTable" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -10,15 +11,18 @@
             :item-group-plural="'tables'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-play" 
+        <icon-button icon="mdi-play"
+            :tooltip="locale.tables.run" 
             @click="getData" />
         <table-exclude-dialog
             @items-updated="updateLayoutProp" />
         <table-aliases-dialog
             @items-updated="updateLayoutProp" />
-        <v-btn icon="mdi-file-delimited" 
+        <icon-button icon="mdi-file-delimited"
+            :tooltip="locale.export.downloadCsv"
             @click="download('csv')" />
-        <v-btn icon="mdi-file-excel" 
+        <icon-button icon="mdi-file-excel"
+            :tooltip="locale.export.downloadExcel"
             @click="download('excel')" />
     </v-toolbar>
     <v-row class="mt-2">
@@ -97,6 +101,7 @@ import { tabMixin } from '@/utils/mixins/tabs'
 import TableExcludeDialog from '@/components/dialogs/tableconf/TableExcludeDialog.vue'
 import TableAliasesDialog from '@/components/dialogs/tableconf/TableAliasesDialog.vue'
 import { tableExportMixin } from '@/utils/mixins/tables.js'
+import IconButton from '@/components/misc/IconButton.vue'
   
 DataTable.use(DataTablesCore)
 DataTablesCore.Buttons.jszip(jszip)
@@ -235,6 +240,11 @@ export default {
             }
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     provide(){
         return {
             buildProps: this.layoutProps,
@@ -246,6 +256,7 @@ export default {
         DataTable,
         TableExcludeDialog,
         TableAliasesDialog,
+        IconButton,
     }
 }
 </script>

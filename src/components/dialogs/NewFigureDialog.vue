@@ -2,7 +2,7 @@
     <base-dialog
         ref="baseDialog"
         :title="locale.figures.new" 
-        activator-icon="mdi-chart-box-plus-outline"
+        activator-icon="mdi-chart-line"
         @close="reset"
     >
         <template v-slot:content>

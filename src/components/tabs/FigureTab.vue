@@ -1,7 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save"
-            :disabled="!saveBtnEnabled"
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateFigure" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -10,7 +11,8 @@
             :item-group-plural="'figures'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-play" 
+        <icon-button icon="mdi-play"
+            :tooltip="locale.figures.run"
             @click="getFigure" />
         <datasets-dialog ref="datasetsDialog" 
             @datasets-updated="updateDatasets" />
@@ -123,6 +125,7 @@ import { tabMixin } from '@/utils/mixins/tabs'
 import { figureTypes, fromOptions, plotlyUtils, orientations } from '@/utils/fig.js'
 import DatasetsDialog from '@/components/dialogs/figconf/DatasetsDialog.vue'
 import { aggFuncs } from '@/utils/agg.js'
+import IconButton from '@/components/misc/IconButton.vue'
 
 export default {
     name: 'FigureTab',
@@ -337,11 +340,15 @@ export default {
                 this.$refs.datasetsDialog.usingXY = true
             }
         },
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
     },
     components: {
         NooTextField,
         NooSelect,
         DatasetsDialog,
+        IconButton,
     }
 }
 </script>

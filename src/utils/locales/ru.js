@@ -130,6 +130,7 @@ const ru = {
         colName: 'Название столбца',
         colAlias: 'Новое название столбца',
         title: 'Заголовок',
+        run: 'Построить таблицу',
     },
     components: {
         components: 'Компоненты',
@@ -170,7 +171,8 @@ const ru = {
         orientations: {
             h: 'Горизонтальная',
             v: 'Вертикальная',
-        }
+        },
+        run: 'Построить график',
     },
     values: {
         singular: 'Вычисляемое значение',
@@ -179,6 +181,7 @@ const ru = {
         name: 'Название значения',
         expression: 'Выражение',
         result: 'Результат',
+        run: 'Вычислить значение',
     },
     documents: {
         singular: 'Документ',
@@ -187,6 +190,7 @@ const ru = {
         name: 'Название документа',
         components: 'Компоненты',
         ctxCompontents: 'Доступные компоненты',
+        downloadPdf: 'Скачать PDF',
     },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',
