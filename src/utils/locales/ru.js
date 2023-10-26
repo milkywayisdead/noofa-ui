@@ -10,6 +10,7 @@ const ru = {
         add: 'Добавить',
         gotIt: 'Понятно',
         reload: 'Перезагрузить',
+        ok: 'OK',
     },
     profiles: {
         singular: 'Профиль',
@@ -41,7 +42,8 @@ const ru = {
         db: 'Название БД',
         connStr: 'Строка подключения',
         plural: 'Источники',
-        testConnection: 'Проверка соединения',
+        testConnection: 'Проверить соединение',
+        connectionTest: 'Проверка соединения',
     },
     queries: {
         new: 'Добавление запроса',
@@ -200,6 +202,8 @@ const ru = {
         itemDelete: 'Удалить элемент из профиля?',
         valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено.',
         localeChangeAlert: 'Для смены языка требуется перезагрузить редактор.',
+        connectionTestFailed: 'Не удалось установить соединение с источником',
+        connectionTestSuccess: 'Соединение с источником успешно установлено',
     },
     dbstruct: {
         dbstruct: 'Структура БД',

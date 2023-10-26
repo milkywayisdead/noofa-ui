@@ -7,7 +7,7 @@
     >
         <template v-slot:activator="{ props }">
             <v-tooltip location="bottom"
-                open-delay="300">
+                open-delay="500">
                 <template v-slot:activator="{ props }">
                     <v-btn
                     icon

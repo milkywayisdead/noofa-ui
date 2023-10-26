@@ -96,6 +96,9 @@
             <db-struct-area ref="dbStruct" />
         </v-col>
     </v-row>
+
+    <simple-message-dialog ref="connectionTestDialog"
+        @ok="connectionTestResult = false" />
 </template>
 
 <script>
@@ -106,6 +109,7 @@ import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import DbStructArea from '@/components/dbstruct/DbStructArea.vue'
 import IconButton from '@/components/misc/IconButton.vue'
+import SimpleMessageDialog from '@/components/dialogs/SimpleMessageDialog.vue'
 
 export default {
     name: 'SourceTab',
@@ -138,6 +142,8 @@ export default {
             }
         }
 
+        tabProps.connectionTestResult = false
+
         return tabProps
     },
     computed: {
@@ -154,6 +160,11 @@ export default {
                 this.port.length &&
                 this.dbname.length
         },
+        connectionTestMessage(){
+            return this.connectionTestResult ?
+                this.locale.messages.connectionTestSuccess :
+                this.locale.messages.connectionTestFailed
+        },
     },
     methods: {
         updateSource(){
@@ -164,7 +175,12 @@ export default {
             this.api.testConnection(this.context.id, this.id)
                 .then(res => {
                     if(res.status === 200){
-                        alert(res.data.result)
+                        const result = res.data.result
+                        this.connectionTestResult = result
+                        this.$refs.connectionTestDialog.openWithParams({
+                            title: this.locale.sources.connectionTest,
+                            message: this.connectionTestMessage,
+                        })
                     }
                 })
         },
@@ -198,6 +214,7 @@ export default {
         NooSelect,
         DbStructArea,
         IconButton,
+        SimpleMessageDialog,
     }
 }
 </script>
