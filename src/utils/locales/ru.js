@@ -204,6 +204,9 @@ const ru = {
         localeChangeAlert: 'Для смены языка требуется перезагрузить редактор.',
         connectionTestFailed: 'Не удалось установить соединение с источником',
         connectionTestSuccess: 'Соединение с источником успешно установлено',
+        unableToListProfiles: 'Не удалось получить список профилей',
+        unableToGetProfile: 'Не удалось загрузить профиль',
+        errorWhenDeletingProfile: 'Ошибка при удалении профиля',
     },
     dbstruct: {
         dbstruct: 'Структура БД',
