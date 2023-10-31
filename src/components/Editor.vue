@@ -137,7 +137,7 @@ import LocaleChangeDialog from '@/components/dialogs/LocaleChangeDialog.vue'
 
 export default {
     name: 'Editor',
-    inject: ['api', 'context', 'locale'],
+    inject: ['api', 'context', 'locale', 'snackbar'],
     data(){
         return {
             locales: locales,
@@ -146,9 +146,10 @@ export default {
     emits: ['reload-requested'],
     methods: {
         saveProfile(){
-            const method = this.context.hasId() ? this.api.updateProfile : this.api.createProfile
+            const creating = !this.context.hasId()
+            const method = creating ? this.api.createProfile : this.api.updateProfile
             const args = [this.context.compile()]
-            if(this.context.hasId()){
+            if(!creating){
                 args.unshift(this.context.id)
             }
             method(...args)
@@ -163,6 +164,11 @@ export default {
                             }
                         }
                     }
+                }).catch(err => {
+                    const message = creating ? 
+                        this.locale.messages.errorWhenCreatingProfile :
+                        this.locale.messages.errorWhenSavingProfile
+                    this.snackbar.error(message)
                 })
         },
         addTab(itemProps){

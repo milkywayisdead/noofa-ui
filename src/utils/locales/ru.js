@@ -206,7 +206,10 @@ const ru = {
         connectionTestSuccess: 'Соединение с источником успешно установлено',
         unableToListProfiles: 'Не удалось получить список профилей',
         unableToGetProfile: 'Не удалось загрузить профиль',
-        errorWhenDeletingProfile: 'Ошибка при удалении профиля',
+        errorWhenDeletingProfile: 'При удалении профиля произошла ошибка',
+        errorWhenCreatingProfile: 'При создании профиля произошла ошибка',
+        errorWhenSavingProfile: 'При сохранении профиля произошла ошибка',
+        errorWhenSavingSource: 'При сохранении источника произошла ошибка',
     },
     dbstruct: {
         dbstruct: 'Структура БД',

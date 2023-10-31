@@ -115,6 +115,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'source', source.id, source.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingSource
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })
