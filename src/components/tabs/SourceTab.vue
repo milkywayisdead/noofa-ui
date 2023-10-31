@@ -203,6 +203,9 @@ export default {
             this.$refs.dbStruct.resize()
             this.$emit('exit-loading-state')
         },
+        onDbStructureLoadingError(error){
+            this.$emit('exit-loading-state')
+        },
     },
     watch: {
         saveBtnEnabled(value){

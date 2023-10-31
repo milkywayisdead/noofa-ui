@@ -229,6 +229,11 @@ const ru = {
         dashboardSavedSuccess: 'Дашборд успешно сохранён',
         profileSavedSuccess: 'Профиль успешно сохранён',
         itemDeletedSuccess: 'Элемент успешно удалён',
+        errorWhenGettingQueryData: 'Ошибка при выполнении запроса',
+        errorWhenGettingDataframeData: 'Ошибка при построении датафрейма',
+        errorWhenGettingTableData: 'Ошибка при построении таблицы',
+        errorWhenGettingFigureData: 'Ошибка при построении графика',
+        errorWhenGettingValue: 'Ошибка при вычислении значения',
     },
     dbstruct: {
         dbstruct: 'Структура БД',
