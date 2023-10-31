@@ -1,6 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save" 
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateQuery" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -9,8 +11,15 @@
             :item-group-plural="'queries'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-play" 
+        <icon-button icon="mdi-play"
+            :tooltip="locale.queries.run"
             @click="getData" />
+        <icon-button icon="mdi-file-delimited"
+            :tooltip="locale.export.downloadCsv"
+            @click="download('csv')" />
+        <icon-button icon="mdi-file-excel"
+            :tooltip="locale.export.downloadExcel"
+            @click="download('excel')" />
     </v-toolbar>
     <v-row class="mt-2">
         <v-col cols="3">
@@ -51,7 +60,7 @@
             <div v-if="!expression">
             </div>
         </v-col>
-        <v-col cols="9">
+        <v-col cols="9" :id="`${this.id}-container`">
            <data-table v-if="tableIsVisible" class="display table-bordered"
                 :options="options"
            >
@@ -70,22 +79,29 @@
 <script>
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
+import 'datatables.net-buttons'
+import 'datatables.net-buttons/js/buttons.html5'
+import jszip from 'jszip'
 
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
+import { tableExportMixin } from '@/utils/mixins/tables.js'
+import IconButton from '@/components/misc/IconButton.vue'
 
   
 DataTable.use(DataTablesCore)
+DataTablesCore.Buttons.jszip(jszip)
 
 export default {
     name: 'QueryTab',
-    mixins: [tabMixin],
+    mixins: [tabMixin, tableExportMixin],
     data(){
         const props = this.itemProps
         const tabProps = {
             itemGroup: 'query',
             options: {
+                dom: 'lBftip',
                 columns: [],
                 data: [],
                 order: [],
@@ -113,6 +129,13 @@ export default {
                 }
             })
         },
+        saveBtnEnabled(){
+            if(this.usingExpression){
+                return this.name.length && this.expression.length
+            }
+
+            return false
+        },
     },
     methods: {
         updateQuery(){
@@ -132,6 +155,9 @@ export default {
                         this.columns = res.data.columns.map(i => i)
                         this.options.data = res.data.data
                         this.showTable()
+                        this.$nextTick(_ => {
+                            this._hideExportBtns()
+                        })
                     }
                 }).finally(() => {
                     this.exitLoadingState()
@@ -156,20 +182,28 @@ export default {
             this.hideTable()
             this.columns = []
             this.options = {
+                dom: 'lBftip',
                 columns: [],
                 data: [],
                 order: [],
             }
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     components: {
         NooTextField,
         NooSelect,
         DataTable,
+        IconButton,
     }
 }
 </script>
 
 <style>
 @import 'datatables.net-dt';
+@import 'datatables.net-buttons-dt';
 </style>

@@ -3,7 +3,7 @@
         rounded 
         elevation="12" 
         :id="divId">
-        <v-toolbar color="teal-darken-3" density="compact">
+        <v-toolbar color="grey-darken-2" density="compact">
             <v-toolbar-title>{{ context.name }}</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -58,6 +58,24 @@
                     />
                 </template>
             </profile-tree-branch>
+            <profile-tree-branch 
+                :subheader="locale.values.plural"
+                icon="mdi-format-superscript"
+                @profile-item-selected="emitSelected"
+                item-type="value"
+                :items="ctxValues" />
+            <profile-tree-branch 
+                :subheader="locale.documents.plural"
+                icon="mdi-file-pdf-box"
+                @profile-item-selected="emitSelected"
+                item-type="document"
+                :items="ctxDocuments" />
+            <profile-tree-branch 
+                :subheader="locale.dashboards.plural"
+                icon="mdi-view-dashboard"
+                @profile-item-selected="emitSelected"
+                item-type="dashboard"
+                :items="ctxDashboards" />
         </v-card-text>
     </v-card>
 </template>
@@ -98,6 +116,15 @@ export default {
             return Object.values(this.context.components).filter(
                 cmp => cmp.type === 'figure'
             )
+        },
+        ctxValues(){
+            return Object.values(this.context.values)
+        },
+        ctxDocuments(){
+            return Object.values(this.context.documents)
+        },
+        ctxDashboards(){
+            return Object.values(this.context.dashboards)
         },
     },
     mounted(){

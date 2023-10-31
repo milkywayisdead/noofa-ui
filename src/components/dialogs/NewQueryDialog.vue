@@ -42,7 +42,8 @@
             </div>
         </template>
         <template v-slot:actions>
-            <v-btn @click="addQuery">{{ locale.actions.save }}</v-btn>
+            <v-btn :disabled="!saveBtnEnabled"
+                @click="addQuery">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -70,6 +71,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'query', query.id, query.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingQuery
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })
@@ -89,10 +95,11 @@ export default {
         },
         reset(){
             for(let prop of [
-                'name', 'from', 'expression', 'source',
+                'name', 'from', 'source',
             ]){
                 this[prop] = ''
             }
+            this.from = 'expression'
         },
     },
     computed: {
@@ -106,6 +113,11 @@ export default {
                     text: s.name,
                 }
             })
+        },
+        saveBtnEnabled(){
+            return this.name.length &&
+                this.expression.length &&
+                this.source.length
         },
     },
     components: {

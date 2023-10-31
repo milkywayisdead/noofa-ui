@@ -1,7 +1,7 @@
 <template>
     <base-dialog
         :title="locale.tables.aliases"
-        activator-icon="mdi-sort-descending"
+        activator-icon="mdi-rename-box"
         @close="reset"
         :width="'40%'"
         ref="baseDialog"

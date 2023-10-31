@@ -1,7 +1,8 @@
 <template>
-    <wrapper>
+    <wrapper :key="w">
         <template v-slot:content>
-            <editor></editor>
+            <editor ref="editor"
+                @reload-requested="reload" />
         </template>
     </wrapper>
 </template>
@@ -13,7 +14,14 @@ import Editor from './Editor.vue'
 export default {
     name: 'NoofaEditor',
     data(){
-        return {}
+        return {
+            w: '0',
+        }
+    },
+    methods: {
+        reload(e){
+            this.w = e
+        },
     },
     components: {
         Wrapper,

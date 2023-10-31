@@ -1,16 +1,12 @@
-const ru = {
-    localeName: 'ru',
-    localeChange: 'Смена языка',
+const en = {
+    localeName: 'en',
     actions: {
-        open: 'Открыть',
-        cancel: 'Отменить',
-        save: 'Сохранить',
-        delete: 'Удалить',
-        itemDelete: 'Удаление элемента профиля',
-        add: 'Добавить',
-        gotIt: 'Понятно',
-        reload: 'Перезагрузить',
-        ok: 'OK',
+        open: 'Open',
+        cancel: 'Cancel',
+        save: 'Save',
+        delete: 'Delete',
+        itemDelete: 'Delete profile element',
+        add: 'Add',
     },
     profiles: {
         singular: 'Профиль',
@@ -42,8 +38,7 @@ const ru = {
         db: 'Название БД',
         connStr: 'Строка подключения',
         plural: 'Источники',
-        testConnection: 'Проверить соединение',
-        connectionTest: 'Проверка соединения',
+        testConnection: 'Проверка соединения',
     },
     queries: {
         new: 'Добавление запроса',
@@ -200,24 +195,7 @@ const ru = {
     },
     messages: {
         itemDelete: 'Удалить элемент из профиля?',
-        valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено.',
-        localeChangeAlert: 'Для смены языка требуется перезагрузить редактор.',
-        connectionTestFailed: 'Не удалось установить соединение с источником',
-        connectionTestSuccess: 'Соединение с источником успешно установлено',
-        unableToListProfiles: 'Не удалось получить список профилей',
-        unableToGetProfile: 'Не удалось загрузить профиль',
-        errorWhenDeletingProfile: 'При удалении профиля произошла ошибка',
-        errorWhenCreatingProfile: 'При создании профиля произошла ошибка',
-        errorWhenSavingProfile: 'При сохранении профиля произошла ошибка',
-        errorWhenSavingSource: 'При сохранении источника произошла ошибка',
-        errorWhenSavingQuery: 'При сохранении запроса произошла ошибка',
-        errorWhenSavingDataframe: 'При сохранении датафрейма произошла ошибка',
-        errorWhenSavingTable: 'При сохранении таблицы произошла ошибка',
-        errorWhenSavingFigure: 'При сохранении графика произошла ошибка',
-        errorWhenSavingValue: 'При сохранении значения произошла ошибка',
-        errorWhenSavingDocument: 'При сохранении документа произошла ошибка',
-        errorWhenSavingDashboard: 'При сохранении дашборда произошла ошибка',
-        errorWhenDeletingProfileItem: 'При удалении элемента произошла ошибка',
+        valueCantBeDisplayed: 'Значение успешно вычислено, но не может быть отображено',
     },
     dbstruct: {
         dbstruct: 'Структура БД',
@@ -246,4 +224,4 @@ const ru = {
     },
 }
 
-export default ru;
+export default en;

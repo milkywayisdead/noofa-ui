@@ -1,6 +1,8 @@
 <template>
     <v-toolbar density="compact">
-        <v-btn icon="mdi-content-save" 
+        <icon-button ref="saveButton"
+            icon="mdi-content-save"
+            :tooltip="locale.actions.save"
             @click="updateSource" />
         <delete-confirmation-dialog 
             :item-id="id"
@@ -9,9 +11,11 @@
             :item-group-plural="itemGroup + 's'"
             @item-delete="emitItemDelete($event)"
         />
-        <v-btn icon="mdi-connection"
+        <icon-button icon="mdi-connection"
+            :tooltip="locale.sources.testConnection"
             @click="testConnection" />
-        <v-btn icon="mdi-database-eye" 
+        <icon-button icon="mdi-database-eye"
+            :tooltip="locale.dbstruct.dbstruct"
             @click="$emit('enter-loading-state'), getDbStructure(this.id)" />
     </v-toolbar>
     <v-row class="mt-2">
@@ -92,6 +96,9 @@
             <db-struct-area ref="dbStruct" />
         </v-col>
     </v-row>
+
+    <simple-message-dialog ref="connectionTestDialog"
+        @ok="connectionTestResult = false" />
 </template>
 
 <script>
@@ -101,6 +108,8 @@ import sources from '@/utils/sources.js'
 import NooTextField from '../inputs/NooTextField.vue'
 import NooSelect from '../inputs/NooSelect.vue'
 import DbStructArea from '@/components/dbstruct/DbStructArea.vue'
+import IconButton from '@/components/misc/IconButton.vue'
+import SimpleMessageDialog from '@/components/dialogs/SimpleMessageDialog.vue'
 
 export default {
     name: 'SourceTab',
@@ -133,11 +142,28 @@ export default {
             }
         }
 
+        tabProps.connectionTestResult = false
+
         return tabProps
     },
     computed: {
         usingConnStr(){
             return this.from === 'conn_str'
+        },
+        saveBtnEnabled(){
+            if(this.usingConnStr){
+                return this.name.length && this.connStr.length
+            }
+
+            return this.name.length &&
+                this.host.length &&
+                this.port.length &&
+                this.dbname.length
+        },
+        connectionTestMessage(){
+            return this.connectionTestResult ?
+                this.locale.messages.connectionTestSuccess :
+                this.locale.messages.connectionTestFailed
         },
     },
     methods: {
@@ -149,7 +175,12 @@ export default {
             this.api.testConnection(this.context.id, this.id)
                 .then(res => {
                     if(res.status === 200){
-                        alert(res.data.result)
+                        const result = res.data.result
+                        this.connectionTestResult = result
+                        this.$refs.connectionTestDialog.openWithParams({
+                            title: this.locale.sources.connectionTest,
+                            message: this.connectionTestMessage,
+                        })
                     }
                 })
         },
@@ -173,10 +204,17 @@ export default {
             this.$emit('exit-loading-state')
         },
     },
+    watch: {
+        saveBtnEnabled(value){
+            this.$refs.saveButton.setEnabledProp(value)
+        },
+    },
     components: {
         NooTextField,
         NooSelect,
         DbStructArea,
+        IconButton,
+        SimpleMessageDialog,
     }
 }
 </script>

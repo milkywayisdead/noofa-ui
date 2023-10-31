@@ -4,6 +4,7 @@
         :title="locale.actions.itemDelete"
         activator-icon="mdi-delete"
         :width="'40%'"
+        :tooltip="locale.actions.delete"
     >
         <template v-slot:content>
             <v-row>
@@ -49,14 +50,25 @@ export default {
             this.profiles = []
         },
         deleteItem(){
-            this.api.partialDelete(this.context.id, this.itemGroup, this.itemId)
+            if(!this.context.hasId()){
+                this.context.deleteItem(this.itemGroupPlural, this.itemId)
+                this.$emit('item-delete', this.itemId)
+                this.$refs.baseDialog.close()
+                return
+            }
+
+            const item = this.context.getItem(this.itemGroupPlural, this.itemId)
+            this.api.partialDelete(this.context.id, this.itemGroup, item.id)
                 .then(res => {
                     if(res.status === 200){
                         this.context.deleteItem(this.itemGroupPlural, this.itemId)
                         this.$emit('item-delete', this.itemId)
                     }
-                })
-                .finally(_ => {
+                }).catch(err => {
+                    this.snackbar.error(
+                        this.locale.messages.errorWhenDeletingProfileItem
+                    )
+                }).finally(_ => {
                     try {
                         this.$refs.baseDialog.close()
                     } catch {}

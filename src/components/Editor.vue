@@ -50,6 +50,38 @@
                         {{ locale.figures.new }}
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item>
+                    <v-list-item-title @click="openNewValueDialog" >
+                        {{ locale.values.new }}
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                    <v-list-item-title @click="openNewDocumentDialog" >
+                        {{ locale.documents.new }}
+                    </v-list-item-title>
+                </v-list-item>
+            </template>
+        </dropdown-menu>
+        <dropdown-menu :label="locale.dashboards.plural">
+            <template v-slot:items>
+                <v-list-item>
+                    <v-list-item-title @click="openNewDashboardDialog" >
+                        {{ locale.dashboards.new }}
+                    </v-list-item-title>
+                </v-list-item>
+            </template>
+        </dropdown-menu>
+        <dropdown-menu :label="locale.locale">
+            <template v-slot:items>
+                <v-list-item v-for="loc in locales" :key="loc.name">
+                    <v-list-item-title @click="changeLocale(loc.name)" >
+                        <v-icon v-show="loc.name === locale.localeName"
+                            icon="mdi-earth"
+                            size="x-small"
+                            class="mr-1" />
+                        <span>{{ loc.text }}</span>
+                    </v-list-item-title>
+                </v-list-item>
             </template>
         </dropdown-menu>
     </v-toolbar>
@@ -57,8 +89,9 @@
     <v-toolbar density="compact">
         <open-profile-dialog ref="openProfileDialog"
             @profile-selected="clearTabsArea" />
-        <v-btn 
+        <icon-button
             icon="mdi-content-save"
+            :tooltip="locale.profiles.save"
             @click="saveProfile" />
         <profile-settings-dialog ref="profileSettingsDialog" />
         <new-source-dialog ref="newSourceDialog" />
@@ -66,6 +99,9 @@
         <new-dataframe-dialog ref="newDataframeDialog" />
         <new-table-dialog ref="newTableDialog" />
         <new-figure-dialog ref="newFigureDialog" />
+        <new-value-dialog ref="newValueDialog" />
+        <new-document-dialog ref="newDocumentDialog" />
+        <new-dashboard-dialog ref="newDashboardDialog" />
     </v-toolbar>
 
     <v-row>
@@ -76,6 +112,9 @@
             <tabs-area ref="tabsArea"></tabs-area>
         </v-col>
     </v-row>
+
+    <locale-change-dialog ref="localeChangeDialog"
+        @reload-confirmed="requestReload" />
 </template>
 
 <script>
@@ -89,22 +128,47 @@ import DropdownMenu from '@/components/dropdowns/DropdownMenu.vue'
 import NewDataframeDialog from './dialogs/NewDataframeDialog.vue'
 import NewTableDialog from './dialogs/NewTableDialog.vue'
 import NewFigureDialog from '@/components/dialogs/NewFigureDialog.vue'
+import NewValueDialog from '@/components/dialogs/NewValueDialog.vue'
+import NewDocumentDialog from '@/components/dialogs/NewDocumentDialog.vue'
+import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
+import IconButton from '@/components/misc/IconButton.vue'
+import { locales } from '@/utils/locales/locales.js'
+import LocaleChangeDialog from '@/components/dialogs/LocaleChangeDialog.vue'
 
 export default {
     name: 'Editor',
-    inject: ['api', 'context', 'locale'],
+    inject: ['api', 'context', 'locale', 'snackbar'],
+    data(){
+        return {
+            locales: locales,
+        }
+    },
+    emits: ['reload-requested'],
     methods: {
         saveProfile(){
-            const method = this.context.hasId() ? this.api.updateProfile : this.api.createProfile
+            const creating = !this.context.hasId()
+            const method = creating ? this.api.createProfile : this.api.updateProfile
             const args = [this.context.compile()]
-            if(this.context.hasId()){
+            if(!creating){
                 args.unshift(this.context.id)
             }
             method(...args)
                 .then(res => {
                     if(res.status === 200){
-                        console.log(res.data)
+                        this.context.id = res.data.id
+
+                        for(let dashId in res.data.dashboards){
+                            const ctxDash = this.context.getItem('dashboards', dashId)
+                            if(ctxDash){
+                                ctxDash.id = res.data.dashboards[dashId].id
+                            }
+                        }
                     }
+                }).catch(err => {
+                    const message = creating ? 
+                        this.locale.messages.errorWhenCreatingProfile :
+                        this.locale.messages.errorWhenSavingProfile
+                    this.snackbar.error(message)
                 })
         },
         addTab(itemProps){
@@ -131,8 +195,27 @@ export default {
         openNewFigureDialog(){
             this.$refs.newFigureDialog.open()
         },
+        openNewValueDialog(){
+            this.$refs.newValueDialog.open()
+        },
+        openNewDocumentDialog(){
+            this.$refs.newDocumentDialog.open()
+        },
+        openNewDashboardDialog(){
+            this.$refs.newDashboardDialog.open()
+        },
         clearTabsArea(){
             this.$refs.tabsArea.clear()
+        },
+        changeLocale(localeName){
+            localStorage.setItem('noofaLocale', localeName)
+            this.$refs.localeChangeDialog.open()
+        },
+        requestReload(){
+            this.$emit(
+                'reload-requested',
+                localStorage.getItem('noofaLocale')
+            )
         },
     },
     components: {
@@ -146,6 +229,11 @@ export default {
         NewDataframeDialog,
         NewTableDialog,
         NewFigureDialog,
+        NewValueDialog,
+        NewDocumentDialog,
+        NewDashboardDialog,
+        IconButton,
+        LocaleChangeDialog,
     },
 }
 </script>

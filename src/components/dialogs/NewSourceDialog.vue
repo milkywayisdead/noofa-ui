@@ -77,7 +77,8 @@
             </div>
         </template>
         <template v-slot:actions>
-            <v-btn @click="addSource">{{ locale.actions.save }}</v-btn>
+            <v-btn :disabled="!saveBtnEnabled"
+                @click="addSource">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -114,6 +115,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'source', source.id, source.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingSource
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })
@@ -148,6 +154,17 @@ export default {
     computed: {
         usingConnStr(){
             return this.from === 'conn_str'
+        },
+        saveBtnEnabled(){
+            if(this.usingConnStr){
+                return this.name.length &&
+                    this.connStr.length
+            }
+
+            return this.name.length &&
+                this.host.length &&
+                this.port.length &&
+                this.dbname.length
         },
     },
     components: {

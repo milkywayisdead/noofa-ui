@@ -58,6 +58,7 @@ export default {
                     this.profiles = res.data
                 }).catch(err => {
                     this.profiles = []
+                    this.snackbar.error(this.locale.messages.unableToListProfiles)
                 })
         },
         reset(){
@@ -68,9 +69,15 @@ export default {
             this.api.getProfile(profileId)
                 .then(res => {
                     if(res.status === 200){
-                        this.context.update(res.data)
+                        try {
+                            this.context.update(res.data)
+                        } catch(err){
+                            this.snackbar.error(this.locale.messages.unableToGetProfile)
+                        }
                     }
                     this.$refs.baseDialog.close()
+                }).catch(err => {
+                    this.snackbar.error(this.locale.messages.unableToGetProfile)
                 })
         },
         deleteProfile(profileId){
@@ -79,6 +86,8 @@ export default {
                     if(res.status === 200){
                         this.profiles = this.profiles.filter(p => p.id !== profileId)
                     }
+                }).catch(err => {
+                    this.snackbar.error(this.locale.messages.errorWhenDeletingProfile)
                 })
         },
     },

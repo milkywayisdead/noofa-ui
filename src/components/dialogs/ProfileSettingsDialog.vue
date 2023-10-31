@@ -23,7 +23,8 @@
             </v-row>
         </template>
         <template v-slot:actions>
-            <v-btn @click="save">{{ locale.actions.save }}</v-btn>
+            <v-btn :disabled="!saveBtnEnabled"
+                @click="save">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -54,6 +55,11 @@ export default {
             this.context.name = this.name
             this.context.description = this.description
             this.$refs.baseDialog.close()
+        },
+    },
+    computed: {
+        saveBtnEnabled(){
+            return this.name.length > 0
         },
     },
     components: {

@@ -2,7 +2,7 @@
     <base-dialog
         ref="baseDialog"
         :title="locale.figures.new" 
-        activator-icon="mdi-chart-box-plus-outline"
+        activator-icon="mdi-chart-line"
         @close="reset"
     >
         <template v-slot:content>
@@ -70,6 +70,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'figure', fig.id, fig.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingFigure
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })

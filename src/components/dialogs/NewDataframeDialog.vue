@@ -50,7 +50,8 @@
             </div>
         </template>
         <template v-slot:actions>
-            <v-btn @click="addDataframe">{{ locale.actions.save }}</v-btn>
+            <v-btn :disabled="!saveBtnEnabled"
+                @click="addDataframe">{{ locale.actions.save }}</v-btn>
         </template>
     </base-dialog>
 </template>
@@ -82,6 +83,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'dataframe', df.id, df.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingDataframe
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })
@@ -110,7 +116,7 @@ export default {
         },
         reset(){
             for(let prop of [
-                'name', 'source', 'query',
+                'name', 'source', 'query', 'expression'
             ]){
                 this[prop] = ''
             }
@@ -137,6 +143,16 @@ export default {
                     text: q.name,
                 }
             })
+        },
+        saveBtnEnabled(){
+            if(this.fromExpression){
+                return this.name.length &&
+                    this.expression.length
+            }
+
+            return this.name.length &&
+                this.source.length &&
+                this.query.length
         },
     },
     watch: {

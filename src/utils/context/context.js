@@ -24,14 +24,19 @@ class NoofaCtx {
             components[cmp.id] = cmp.compile();
         }
 
-        const docs = {}
-        for(let doc of Object.values(this.docs)){
-            docs[doc.id] = doc.compile();
+        const documents = {}
+        for(let doc of Object.values(this.documents)){
+            documents[doc.id] = doc.compile();
         }
 
         const values = {}
         for(let value of Object.values(this.values)){
             values[value.id] = value.compile();
+        }
+
+        const dashboards = {}
+        for(let dash of Object.values(this.dashboards)){
+            dashboards[dash.contextualId] = dash.compile();
         }
 
         return {
@@ -42,8 +47,9 @@ class NoofaCtx {
             queries: queries,
             dataframes: dataframes,
             components: components,
-            docs: docs,
+            docs: documents,
             values: values,
+            dashboards: dashboards,
         }
     }
 
@@ -97,6 +103,36 @@ class NoofaCtx {
         return this.components[figId];
     }
 
+    addValue(conf){
+        this.values[conf.id] = new CtxValue(conf);
+        return this.values[conf.id];
+    }
+
+    updateValue(valueId, conf){
+        this.values[valueId] = new CtxValue(conf);
+        return this.values[valueId];
+    }
+
+    addDocument(conf){
+        this.documents[conf.id] = new CtxDocument(conf);
+        return this.documents[conf.id];
+    }
+
+    updateDocument(docId, conf){
+        this.documents[docId] = new CtxDocument(conf);
+        return this.documents[docId];
+    }
+
+    addDashboard(conf){
+        this.dashboards[conf.contextual_id] = new CtxDashboard(conf);
+        return this.dashboards[conf.contextual_id];
+    }
+
+    updateDashboard(dashCtxId, conf){
+        this.dashboards[dashCtxId] = new CtxDashboard(conf);
+        return this.dashboards[dashCtxId];
+    }
+
     deleteItem(target, targetId){
         target = ['tables', 'figures'].includes(target) ? 'components' : target;
         delete this[target][targetId];
@@ -108,7 +144,8 @@ class NoofaCtx {
         this.description = conf.description || '';
         for(let prop of [
                 'sources', 'queries', 'dataframes',
-                'components', 'docs', 'values',
+                'components', 'documents', 'values',
+                'dashboards',
             ]
         ){
             this[prop] = {}
@@ -138,12 +175,36 @@ class NoofaCtx {
             const cmpType = cmpConf.type;
             if(cmpType === 'table'){
                 this.components[cmpId] = CtxTable.fromConf(cmpConf);
+            } else if(cmpType === 'figure'){
+                this.components[cmpId] = CtxFigure.fromConf(cmpConf);
             }
+        }
+
+        const values = conf.values || {}
+        for(let vId in values){
+            const valueConf = values[vId];
+            this.values[vId] = CtxValue.fromConf(valueConf);
+        }
+
+        const docs = conf.docs || {}
+        for(let dId in docs){
+            const docConf = docs[dId];
+            this.documents[dId] = CtxDocument.fromConf(docConf);
+        }
+
+        const dashboards = conf.dashboards || {}
+        for(let dashId in dashboards){
+            const dashConf = dashboards[dashId];
+            this.dashboards[dashId] = CtxDashboard.fromConf(dashConf);
         }
     }
 
     hasId(){
         return this.id !== null;
+    }
+
+    getItem(group, id){
+        return this[group][id];
     }
 }
 
@@ -336,7 +397,82 @@ class CtxFigure {
     }
 
     _propsForConstructor(){
-        return ['type', 'id', 'name', 'figure_type', 'base', 'engine'];
+        return [
+            'type', 'id', 'name', 
+            'figure_type', 'base', 'engine',
+            'layout',
+        ];
+    }
+}
+
+
+class CtxValue {
+    constructor(conf){
+        this.id = conf.id;
+        this.name = conf.name;
+        this.value = conf.value;
+    }
+
+    static fromConf(dbConf){
+        return new CtxValue(dbConf);
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            name: this.name,
+            value: this.value,
+        }
+    }
+}
+
+
+class CtxDocument {
+    constructor(conf){
+        this.id = conf.id;
+        this.name = conf.name;
+        this.components = conf.components;
+    }
+
+    static fromConf(dbConf){
+        return new CtxDocument(dbConf);
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            name: this.name,
+            components: this.components,
+        }
+    }
+}
+
+
+class CtxDashboard {
+    constructor(conf){
+        this.id = conf.id;
+        this.contextualId = conf.contextual_id;
+        this.name = conf.name;
+        this.description = conf.description ?? '';
+        this.profileId = conf.profile_id;
+        this.properties = conf.properties ?? {};
+        this.widgets = conf.widgets ?? {};
+    }
+
+    static fromConf(dbConf){
+        return new CtxDashboard(dbConf);
+    }
+
+    compile(){
+        return {
+            id: this.id,
+            contextual_id: this.contextualId,
+            name: this.name,
+            description: this.description,
+            properties: this.properties,
+            widgets: this.widgets,
+            profile_id: this.profileId,
+        }
     }
 }
 
