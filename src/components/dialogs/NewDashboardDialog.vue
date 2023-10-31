@@ -51,9 +51,12 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'dashboard', null, dash.compile())
                     .then(res => {
-                        this.context.dashboards[dash.contextualId].id = res.data.id 
-                    })
-                    .finally(_ => {
+                        this.context.dashboards[dash.contextualId].id = res.data.id
+                    }).catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingDashboard
+                        )
+                    }).finally(_ => {
                         this.$refs.baseDialog.close()
                     })
             } else {

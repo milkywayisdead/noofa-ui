@@ -71,6 +71,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'query', query.id, query.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingQuery
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })

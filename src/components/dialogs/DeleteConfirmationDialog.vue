@@ -64,8 +64,11 @@ export default {
                         this.context.deleteItem(this.itemGroupPlural, this.itemId)
                         this.$emit('item-delete', this.itemId)
                     }
-                })
-                .finally(_ => {
+                }).catch(err => {
+                    this.snackbar.error(
+                        this.locale.messages.errorWhenDeletingProfileItem
+                    )
+                }).finally(_ => {
                     try {
                         this.$refs.baseDialog.close()
                     } catch {}

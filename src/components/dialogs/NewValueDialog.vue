@@ -51,6 +51,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'value', value.id, value.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingValue
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })

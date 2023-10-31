@@ -11,7 +11,7 @@ const tabMixin = {
             type: Object,
         }
     },
-    inject: ['locale', 'context', 'api'],
+    inject: ['locale', 'context', 'api', 'snackbar'],
     emits: ['item-delete', 'enter-loading-state', 'exit-loading-state'],
     methods: {
         emitItemDelete(itemId){
@@ -19,11 +19,13 @@ const tabMixin = {
         },
         updateItem(item){
             this.api.partialUpdate(this.context.id, this.itemGroup, this.id, item.compile())
-                .then(res => {
-                    if(res.status === 200){
-                        console.log(res.data)
-                    }
-                })     
+                .then(res => {})
+                .catch(err => {
+                    const g = this.itemGroup
+                    const key = `errorWhenSaving${g[0].toUpperCase() + g.slice(1)}`
+                    const message = this.locale.messages[key]
+                    this.snackbar.error(message)
+                })
         },
         enterLoadingState(){
             this.$emit('enter-loading-state')

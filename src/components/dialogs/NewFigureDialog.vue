@@ -70,6 +70,11 @@ export default {
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'figure', fig.id, fig.compile())
                     .then(res => {})
+                    .catch(err => {
+                        this.snackbar.error(
+                            this.locale.messages.errorWhenSavingFigure
+                        )
+                    })
                     .finally(_ => {
                         this.$refs.baseDialog.close()
                     })
