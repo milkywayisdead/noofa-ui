@@ -70,7 +70,11 @@ export default {
             const query = this.context.addQuery(conf)
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'query', query.id, query.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.snackbar.success(
+                            this.locale.messages.querySavedSuccess
+                        )
+                    })
                     .catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingQuery

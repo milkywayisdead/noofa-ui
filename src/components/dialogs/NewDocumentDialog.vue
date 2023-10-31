@@ -53,7 +53,11 @@ export default {
             const doc = this.context.addDocument(this.toConf())
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'doc', doc.id, doc.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.snackbar.success(
+                            this.locale.messages.documentSavedSuccess
+                        )
+                    })
                     .catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingDocument

@@ -19,8 +19,10 @@ const tabMixin = {
         },
         updateItem(item){
             this.api.partialUpdate(this.context.id, this.itemGroup, this.id, item.compile())
-                .then(res => {})
-                .catch(err => {
+                .then(res => {
+                    const message = this.locale.messages[`${this.itemGroup}SavedSuccess`]
+                    this.snackbar.success(message)
+                }).catch(err => {
                     const g = this.itemGroup
                     const key = `errorWhenSaving${g[0].toUpperCase() + g.slice(1)}`
                     const message = this.locale.messages[key]

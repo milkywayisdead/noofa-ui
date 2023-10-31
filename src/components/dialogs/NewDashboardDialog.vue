@@ -52,6 +52,9 @@ export default {
                 this.api.partialUpdate(this.context.id, 'dashboard', null, dash.compile())
                     .then(res => {
                         this.context.dashboards[dash.contextualId].id = res.data.id
+                        this.snackbar.success(
+                            this.locale.messages.dashboardSavedSuccess
+                        )
                     }).catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingDashboard

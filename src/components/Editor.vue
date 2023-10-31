@@ -163,6 +163,10 @@ export default {
                                 ctxDash.id = res.data.dashboards[dashId].id
                             }
                         }
+
+                        this.snackbar.success(
+                            this.locale.messages.profileSavedSuccess
+                        )
                     }
                 }).catch(err => {
                     const message = creating ? 

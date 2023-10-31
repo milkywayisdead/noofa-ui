@@ -69,7 +69,11 @@ export default {
             const fig = this.context.addFigure(conf)
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'figure', fig.id, fig.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.snackbar.success(
+                            this.locale.messages.figureSavedSuccess
+                        )
+                    })
                     .catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingFigure

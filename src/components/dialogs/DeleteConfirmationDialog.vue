@@ -63,6 +63,9 @@ export default {
                     if(res.status === 200){
                         this.context.deleteItem(this.itemGroupPlural, this.itemId)
                         this.$emit('item-delete', this.itemId)
+                        this.snackbar.success(
+                            this.locale.messages.itemDeletedSuccess
+                        )
                     }
                 }).catch(err => {
                     this.snackbar.error(
