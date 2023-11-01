@@ -85,6 +85,12 @@ export default {
                 .then(res => {
                     if(res.status === 200){
                         this.profiles = this.profiles.filter(p => p.id !== profileId)
+
+                        if(this.context.id === res.data.id){
+                            this.context.update({
+                                name: this.locale.profiles.defaultName
+                            })
+                        }
                     }
                 }).catch(err => {
                     this.snackbar.error(this.locale.messages.errorWhenDeletingProfile)
