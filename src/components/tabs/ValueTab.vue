@@ -77,6 +77,9 @@ export default {
                     this.result = res.data.is_simple ?
                             res.data.value :
                             this.locale.messages.valueCantBeDisplayed
+                    this.snackbarOnItemBuildSuccess()
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

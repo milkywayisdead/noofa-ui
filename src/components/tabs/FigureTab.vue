@@ -244,7 +244,11 @@ export default {
                             this.figureContainerId,
                             res.data.data,
                         )
+
+                        this.snackbarOnItemBuildSuccess()
                     }
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

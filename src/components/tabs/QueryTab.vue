@@ -158,7 +158,11 @@ export default {
                         this.$nextTick(_ => {
                             this._hideExportBtns()
                         })
+
+                        this.snackbarOnItemBuildSuccess()
                     }
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

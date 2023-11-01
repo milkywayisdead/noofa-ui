@@ -179,8 +179,12 @@ export default {
                         this.dtypes = res.data.dtypes
                         this.showTable()
 
+                        this.snackbarOnItemBuildSuccess()
+
                         this.$nextTick(this._hideExportBtns)
                     }
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

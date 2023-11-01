@@ -74,6 +74,8 @@ export default {
                     link.setAttribute('download', 'file.pdf');
                     document.body.appendChild(link);
                     link.click();
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

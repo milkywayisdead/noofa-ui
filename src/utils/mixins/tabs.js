@@ -35,6 +35,13 @@ const tabMixin = {
         exitLoadingState(){
             this.$emit('exit-loading-state')
         },
+        snackbarOnItemBuildError(){
+            const g = this.itemGroup[0].toUpperCase() + this.itemGroup.slice(1)
+            this.snackbar.error(this.locale.messages[`errorWhenGetting${g}Data`])
+        },
+        snackbarOnItemBuildSuccess(){
+            this.snackbar.success(this.locale.messages[`${this.itemGroup}DataSuccess`])
+        },
     },
     components: {
         DeleteConfirmationDialog,
