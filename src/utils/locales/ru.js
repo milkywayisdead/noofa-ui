@@ -261,6 +261,16 @@ const ru = {
         name: 'Название дашборда',
         description: 'Описание',
     },
+    widgets: {
+        singular: 'Виджет',
+        plural: 'Виджеты',
+        new: 'Добавление виджета',
+        types: {
+            text: 'Текст',
+            table: 'Таблица',
+            figure: 'График',
+        },
+    },
     locale: 'Язык',
     export: {
         downloadCsv: 'Скачать CSV',

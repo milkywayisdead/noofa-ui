@@ -11,6 +11,12 @@
             :item-group-plural="'dashboards'"
             @item-delete="emitItemDelete($event)"
         />
+        <btn-dropdown-menu 
+            :items="widgetsTypesList"
+            icon="mdi-widgets"
+            :tooltip="locale.widgets.new"
+            @item-selected="addWidget"
+        />
     </v-toolbar>
     <v-row class="mt-2">
     </v-row>
@@ -20,6 +26,7 @@
 import NooTextField from '../inputs/NooTextField.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import IconButton from '@/components/misc/IconButton.vue'
+import BtnDropdownMenu from '@/components/misc/BtnDropdownMenu.vue'
 
 export default {
     name: 'DashboardTab',
@@ -31,6 +38,14 @@ export default {
             id: props.id,
             name: props.name,
             itemGroup: 'dashboard',
+            widgetsTypesList: Object.keys(this.locale.widgets.types).map(
+                w => {
+                    return {
+                        value: w,
+                        title: this.locale.widgets.types[w],
+                    }
+                }
+            ),
         }
 
         return tabProps
@@ -48,6 +63,9 @@ export default {
             }
             return conf
         },
+        addWidget(widgetType){
+            console.log(widgetType)
+        },
     },
     computed: {
         saveBtnEnabled(){
@@ -62,6 +80,7 @@ export default {
     components: {
         NooTextField,
         IconButton,
+        BtnDropdownMenu,
     }
 }
 </script>
