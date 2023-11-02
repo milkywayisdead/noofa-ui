@@ -4,13 +4,14 @@
         elevation="12" 
         :id="divId">
         <v-toolbar color="grey-darken-2" density="compact">
-            <v-toolbar-title>{{ context.name }}</v-toolbar-title>
+            <v-toolbar-title class="prevent-select">{{ context.name }}</v-toolbar-title>
         </v-toolbar>
-        <v-card-text>
+        <v-card-text id="profile-tree">
             <profile-tree-branch 
                 :subheader="locale.profiles.data"
                 icon="mdi-database"
                 @profile-item-selected="emitSelected"
+                item-type="data"
             >
                 <template v-slot:items>
                     <profile-tree-branch 
@@ -39,6 +40,7 @@
             <profile-tree-branch 
                 :subheader="locale.profiles.components"
                 icon="mdi-chart-box"
+                item-type="components"
                 @profile-item-selected="emitSelected"
             >
                 <template v-slot:items>
@@ -139,3 +141,9 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.v-list {
+    --indent-padding: none!important;
+}
+</style>

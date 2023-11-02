@@ -32,4 +32,19 @@ export default {
 .-db-struct-fk {
   cursor: pointer;
 }
+
+.cursor-default {
+    cursor: default !important;
+}
+
+.prevent-select {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.selected-profile-tree-item {
+  outline: 1px dotted black;
+  background-color: #637d8f;
+}
 </style>
