@@ -5,15 +5,19 @@
         <span style="margin:1px"
             :id="itemId"
             @click="reSelect"
-            @dblclick="emitSelected">
+            @dblclick="emitSelected"
+            @contextmenu="contextMenu">
             {{ label || '<empty>' }}
         </span>
     </v-list-item>
 </template>
 
 <script>
+import ctxMenuMixin from '@/utils/mixins/ctxmenu.js'
+
 export default {
     name: 'ProfileTreeLeaf',
+    mixins: [ctxMenuMixin, ],
     data(){
         return {}
     },
@@ -51,6 +55,9 @@ export default {
             }
             const _this = document.getElementById(this.itemId)
             _this.classList.add(cls)
+        },
+        beforeOnClick(){
+            this.reSelect()
         },
     },
 }

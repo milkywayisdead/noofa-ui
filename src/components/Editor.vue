@@ -106,7 +106,8 @@
 
     <v-row>
         <v-col cols="2">
-            <profile-tree @profile-item-selected="addTab"></profile-tree>
+            <profile-tree :ctxmenus="ctxmenus"
+                @profile-item-selected="addTab"></profile-tree>
         </v-col>
         <v-col cols="10">
             <tabs-area ref="tabsArea"></tabs-area>
@@ -141,6 +142,58 @@ export default {
     data(){
         return {
             locales: locales,
+            ctxmenus: {
+                data: [
+                    {
+                        title: this.locale.sources.new,
+                        children: [],
+                        onclick: this.openNewSourceDialog,
+                    },
+                    {
+                        title: this.locale.queries.new,
+                        children: [],
+                        onclick: this.openNewQueryDialog,
+                    },
+                    {
+                        title: this.locale.dataframes.new,
+                        children: [],
+                        onclick: this.openNewDataframeDialog,
+                    },
+                ],
+                components: [
+                    {
+                        title: this.locale.tables.new,
+                        children: [],
+                        onclick: this.openNewTableDialog,
+                    },
+                    {
+                        title: this.locale.figures.new,
+                        children: [],
+                        onclick: this.openNewFigureDialog,
+                    },
+                ],
+                values: [
+                    {
+                        title: this.locale.values.new,
+                        children: [],
+                        onclick: this.openNewValueDialog,
+                    },
+                ],
+                documents: [
+                    {
+                        title: this.locale.documents.new,
+                        children: [],
+                        onclick: this.openNewDocumentDialog,
+                    },
+                ],
+                dashboards : [
+                    {
+                        title: this.locale.dashboards.new,
+                        children: [],
+                        onclick: this.openNewDashboardDialog,
+                    },
+                ],
+            },
         }
     },
     emits: ['reload-requested'],

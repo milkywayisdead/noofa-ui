@@ -12,6 +12,7 @@
                 icon="mdi-database"
                 @profile-item-selected="emitSelected"
                 item-type="data"
+                :ctxmenu-items="ctxmenus.data"
             >
                 <template v-slot:items>
                     <profile-tree-branch 
@@ -42,6 +43,7 @@
                 icon="mdi-chart-box"
                 item-type="components"
                 @profile-item-selected="emitSelected"
+                :ctxmenu-items="ctxmenus.components"
             >
                 <template v-slot:items>
                     <profile-tree-branch 
@@ -65,19 +67,22 @@
                 icon="mdi-format-superscript"
                 @profile-item-selected="emitSelected"
                 item-type="value"
-                :items="ctxValues" />
+                :items="ctxValues"
+                :ctxmenu-items="ctxmenus.values" />
             <profile-tree-branch 
                 :subheader="locale.documents.plural"
                 icon="mdi-file-pdf-box"
                 @profile-item-selected="emitSelected"
                 item-type="document"
-                :items="ctxDocuments" />
+                :items="ctxDocuments"
+                :ctxmenu-items="ctxmenus.documents" />
             <profile-tree-branch 
                 :subheader="locale.dashboards.plural"
                 icon="mdi-view-dashboard"
                 @profile-item-selected="emitSelected"
                 item-type="dashboard"
-                :items="ctxDashboards" />
+                :items="ctxDashboards"
+                :ctxmenu-items="ctxmenus.dashboards" />
         </v-card-text>
     </v-card>
 </template>
@@ -102,6 +107,18 @@ export default {
         }
     },
     inject: ['context', 'locale'],
+    props: {
+        ctxmenus: {
+            type: Object,
+            default: {
+                data: [],
+                components: [],
+                values: [],
+                documents: [],
+                dashboards: [],
+            }
+        },
+    },
     emits: ['profile-item-selected'],
     methods: {
         emitSelected(itemProps){

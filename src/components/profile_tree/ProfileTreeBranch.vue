@@ -6,7 +6,8 @@
             <span :id="itemId" 
                 @click="reSelect"
                 class="text-body-2"
-                style="margin-left: 4px;">
+                style="margin-left: 4px;"
+                @contextmenu.prevent="contextMenu">
                 {{ subheader }}
             </span>
         </v-list-subheader>
@@ -23,9 +24,11 @@
 
 <script>
 import ProfileTreeLeaf from './ProfileTreeLeaf.vue'
+import ctxMenuMixin from '@/utils/mixins/ctxmenu.js'
 
 export default {
     name: 'ProfileTreeBranch',
+    mixins: [ctxMenuMixin, ],
     data(){
         return {
             expanded: false,
@@ -79,6 +82,9 @@ export default {
             }
             const _this = document.getElementById(this.itemId)
             _this.classList.add(cls)
+        },
+        beforeOnClick(){
+            this.reSelect()
         },
     },
     components: {
