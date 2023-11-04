@@ -160,16 +160,19 @@ export default {
                         title: this.locale.sources.new,
                         children: [],
                         onclick: this.openNewSourceDialog,
+                        icon: 'mdi-database',
                     },
                     {
                         title: this.locale.queries.new,
                         children: [],
                         onclick: this.openNewQueryDialog,
+                        icon: 'mdi-database-search',
                     },
                     {
                         title: this.locale.dataframes.new,
                         children: [],
                         onclick: this.openNewDataframeDialog,
+                        icon: 'mdi-table-large-plus',
                     },
                 ],
                 sources: [
@@ -177,6 +180,7 @@ export default {
                         title: this.locale.sources.new,
                         children: [],
                         onclick: this.openNewSourceDialog,
+                        icon: 'mdi-database',
                     }, 
                 ],
                 queries: [
@@ -184,6 +188,7 @@ export default {
                         title: this.locale.queries.new,
                         children: [],
                         onclick: this.openNewQueryDialog,
+                        icon: 'mdi-database-search',
                     },
                 ],
                 dataframes: [
@@ -191,6 +196,7 @@ export default {
                         title: this.locale.dataframes.new,
                         children: [],
                         onclick: this.openNewDataframeDialog,
+                        icon: 'mdi-table-large-plus',
                     },
                 ],
                 components: [
@@ -198,11 +204,13 @@ export default {
                         title: this.locale.tables.new,
                         children: [],
                         onclick: this.openNewTableDialog,
+                        icon: 'mdi-table-plus',
                     },
                     {
                         title: this.locale.figures.new,
                         children: [],
                         onclick: this.openNewFigureDialog,
+                        icon: 'mdi-chart-line',
                     },
                 ],
                 tables: [
@@ -210,6 +218,7 @@ export default {
                         title: this.locale.tables.new,
                         children: [],
                         onclick: this.openNewTableDialog,
+                        icon: 'mdi-table-plus',
                     },
                 ],
                 figures: [
@@ -217,6 +226,7 @@ export default {
                         title: this.locale.figures.new,
                         children: [],
                         onclick: this.openNewFigureDialog,
+                        icon: 'mdi-chart-line',
                     },
                 ],
                 values: [
@@ -224,6 +234,7 @@ export default {
                         title: this.locale.values.new,
                         children: [],
                         onclick: this.openNewValueDialog,
+                        icon: 'mdi-format-superscript',
                     },
                 ],
                 documents: [
@@ -231,6 +242,7 @@ export default {
                         title: this.locale.documents.new,
                         children: [],
                         onclick: this.openNewDocumentDialog,
+                        icon: 'mdi-file-pdf-box',
                     },
                 ],
                 dashboards : [
@@ -238,6 +250,7 @@ export default {
                         title: this.locale.dashboards.new,
                         children: [],
                         onclick: this.openNewDashboardDialog,
+                        icon: 'mdi-view-dashboard',
                     },
                 ],
             },

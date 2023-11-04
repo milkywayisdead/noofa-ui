@@ -9,7 +9,9 @@
             v-for="(item, index) in items"
             :key="index">
                 <v-list-item-title class="text-caption"
+                    :disabled="item.disabled"
                     @click="item.onclick">
+                    <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
                     {{ item.title }}
                 </v-list-item-title>
             </v-list-item>

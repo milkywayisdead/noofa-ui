@@ -25,10 +25,12 @@ export default {
                 {
                     title: this.locale.actions.edit,
                     onclick: this.emitSelected,
+                    icon: 'mdi-pencil',
                 },
                 {
                     title: this.locale.actions.delete,
                     onclick: this.emitDelete,
+                    icon: 'mdi-delete',
                 },
             ],
         }
