@@ -2,7 +2,8 @@
     <v-card 
         rounded 
         elevation="12" 
-        :id="divId">
+        :id="divId"
+        @contextmenu.prevent >
         <v-toolbar color="grey-darken-2" density="compact">
             <v-toolbar-title class="prevent-select">{{ context.name }}</v-toolbar-title>
         </v-toolbar>
@@ -21,6 +22,8 @@
                         :items="context.sources"
                         item-type="source"
                         @profile-item-selected="emitSelected"
+                        :ctxmenu-items="ctxmenus.sources"
+                        @profile-item-delete="emitDelete"
                     />
                     <profile-tree-branch 
                         :subheader="locale.queries.plural"
@@ -28,6 +31,8 @@
                         :items="context.queries"
                         item-type="query"
                         @profile-item-selected="emitSelected"
+                        :ctxmenu-items="ctxmenus.queries"
+                        @profile-item-delete="emitDelete"
                     />
                     <profile-tree-branch 
                         :subheader="locale.dataframes.plural"
@@ -35,6 +40,8 @@
                         :items="context.dataframes"
                         item-type="dataframe"
                         @profile-item-selected="emitSelected"
+                        :ctxmenu-items="ctxmenus.dataframes"
+                        @profile-item-delete="emitDelete"
                     />
                 </template>
             </profile-tree-branch>
@@ -52,6 +59,8 @@
                         :items="ctxTables"
                         item-type="table"
                         @profile-item-selected="emitSelected"
+                        :ctxmenu-items="ctxmenus.tables"
+                        @profile-item-delete="emitDelete"
                     />
                     <profile-tree-branch 
                         :subheader="locale.figures.plural"
@@ -59,6 +68,8 @@
                         :items="ctxFigures"
                         item-type="figure"
                         @profile-item-selected="emitSelected"
+                        :ctxmenu-items="ctxmenus.figures"
+                        @profile-item-delete="emitDelete"
                     />
                 </template>
             </profile-tree-branch>
@@ -68,21 +79,24 @@
                 @profile-item-selected="emitSelected"
                 item-type="value"
                 :items="ctxValues"
-                :ctxmenu-items="ctxmenus.values" />
+                :ctxmenu-items="ctxmenus.values" 
+                @profile-item-delete="emitDelete" />
             <profile-tree-branch 
                 :subheader="locale.documents.plural"
                 icon="mdi-file-pdf-box"
                 @profile-item-selected="emitSelected"
                 item-type="document"
                 :items="ctxDocuments"
-                :ctxmenu-items="ctxmenus.documents" />
+                :ctxmenu-items="ctxmenus.documents" 
+                @profile-item-delete="emitDelete" />
             <profile-tree-branch 
                 :subheader="locale.dashboards.plural"
                 icon="mdi-view-dashboard"
                 @profile-item-selected="emitSelected"
                 item-type="dashboard"
                 :items="ctxDashboards"
-                :ctxmenu-items="ctxmenus.dashboards" />
+                :ctxmenu-items="ctxmenus.dashboards" 
+                @profile-item-delete="emitDelete" />
         </v-card-text>
     </v-card>
 </template>
@@ -119,10 +133,13 @@ export default {
             }
         },
     },
-    emits: ['profile-item-selected'],
+    emits: ['profile-item-selected', 'profile-item-delete'],
     methods: {
         emitSelected(itemProps){
             this.$emit('profile-item-selected', itemProps)
+        },
+        emitDelete(event){
+            this.$emit('profile-item-delete', event)
         },
     },
     computed: {

@@ -107,7 +107,8 @@
     <v-row>
         <v-col cols="2">
             <profile-tree :ctxmenus="ctxmenus"
-                @profile-item-selected="addTab"></profile-tree>
+                @profile-item-selected="addTab"
+                @profile-item-delete="deleteProfileItem"></profile-tree>
         </v-col>
         <v-col cols="10">
             <tabs-area ref="tabsArea"></tabs-area>
@@ -116,6 +117,16 @@
 
     <locale-change-dialog ref="localeChangeDialog"
         @reload-confirmed="requestReload" />
+
+    <delete-confirmation-dialog v-if="deletingItem"
+        ref="deleteConfirmationDialog"
+        :item-id="itemToDelete.type === 'dashboard' ? itemToDelete.props.contextualId : itemToDelete.props.id"
+        :item-name="itemToDelete.props.name"
+        :item-group="itemToDelete.type"
+        :item-group-plural="plurals[itemToDelete.type]"
+        @item-delete="deletingItem = false"
+        :no-activator="true"
+    />
 </template>
 
 <script>
@@ -135,6 +146,7 @@ import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
 import IconButton from '@/components/misc/IconButton.vue'
 import { locales } from '@/utils/locales/locales.js'
 import LocaleChangeDialog from '@/components/dialogs/LocaleChangeDialog.vue'
+import DeleteConfirmationDialog from '@/components/dialogs/DeleteConfirmationDialog.vue'
 
 export default {
     name: 'Editor',
@@ -160,12 +172,47 @@ export default {
                         onclick: this.openNewDataframeDialog,
                     },
                 ],
+                sources: [
+                    {
+                        title: this.locale.sources.new,
+                        children: [],
+                        onclick: this.openNewSourceDialog,
+                    }, 
+                ],
+                queries: [
+                    {
+                        title: this.locale.queries.new,
+                        children: [],
+                        onclick: this.openNewQueryDialog,
+                    },
+                ],
+                dataframes: [
+                    {
+                        title: this.locale.dataframes.new,
+                        children: [],
+                        onclick: this.openNewDataframeDialog,
+                    },
+                ],
                 components: [
                     {
                         title: this.locale.tables.new,
                         children: [],
                         onclick: this.openNewTableDialog,
                     },
+                    {
+                        title: this.locale.figures.new,
+                        children: [],
+                        onclick: this.openNewFigureDialog,
+                    },
+                ],
+                tables: [
+                    {
+                        title: this.locale.tables.new,
+                        children: [],
+                        onclick: this.openNewTableDialog,
+                    },
+                ],
+                figures: [
                     {
                         title: this.locale.figures.new,
                         children: [],
@@ -193,6 +240,18 @@ export default {
                         onclick: this.openNewDashboardDialog,
                     },
                 ],
+            },
+            itemToDelete: {},
+            deletingItem: false,
+            plurals: {
+                source: 'sources',
+                query: 'queries',
+                dataframe: 'dataframes',
+                table: 'tables',
+                figure: 'figures',
+                value: 'values',
+                document: 'documents',
+                dashboard: 'dashboards',
             },
         }
     },
@@ -274,6 +333,14 @@ export default {
                 localStorage.getItem('noofaLocale')
             )
         },
+        deleteProfileItem(event){
+            console.log(event)
+            this.itemToDelete = event
+            this.deletingItem = true
+            this.$nextTick(_ => {
+                    this.$refs.deleteConfirmationDialog.open()
+                })
+        },
     },
     components: {
         NewSourceDialog,
@@ -291,6 +358,7 @@ export default {
         NewDashboardDialog,
         IconButton,
         LocaleChangeDialog,
+        DeleteConfirmationDialog,
     },
 }
 </script>

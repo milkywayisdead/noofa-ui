@@ -2,7 +2,7 @@
     <base-dialog
         ref="baseDialog"
         :title="locale.actions.itemDelete"
-        activator-icon="mdi-delete"
+        :activator-icon="noActivator ? '' : 'mdi-delete'"
         :width="'40%'"
         :tooltip="locale.actions.delete"
     >
@@ -43,6 +43,10 @@ export default {
         itemGroupPlural: {
             type: String
         },
+        noActivator: {
+            type: Boolean,
+            default: false,
+        }
     },
     emits: ['item-delete'],
     methods: {

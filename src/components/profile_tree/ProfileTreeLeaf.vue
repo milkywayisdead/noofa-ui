@@ -6,7 +6,7 @@
             :id="itemId"
             @click="reSelect"
             @dblclick="emitSelected"
-            @contextmenu="contextMenu">
+            @contextmenu.prevent="contextMenu">
             {{ label || '<empty>' }}
         </span>
     </v-list-item>
@@ -19,7 +19,19 @@ export default {
     name: 'ProfileTreeLeaf',
     mixins: [ctxMenuMixin, ],
     data(){
-        return {}
+        return {
+            useCustomCtxmenuItems: true,
+            customCtxmenuItems: [
+                {
+                    title: this.locale.actions.edit,
+                    onclick: this.emitSelected,
+                },
+                {
+                    title: this.locale.actions.delete,
+                    onclick: this.emitDelete,
+                },
+            ],
+        }
     },
     props: {
         label: {
@@ -39,7 +51,7 @@ export default {
             return `pt-item${id}`
         },
     },
-    emits: ['profile-item-selected'],
+    emits: ['profile-item-selected', 'profile-item-delete'],
     methods: {
         emitSelected(){
             this.$emit('profile-item-selected', {
@@ -57,7 +69,14 @@ export default {
             _this.classList.add(cls)
         },
         beforeOnClick(){
+            this.ctxmenu().close()
             this.reSelect()
+        },
+        emitDelete(){
+            this.$emit('profile-item-delete', {
+                type: this.itemType,
+                props: this.itemProps,
+            })
         },
     },
 }

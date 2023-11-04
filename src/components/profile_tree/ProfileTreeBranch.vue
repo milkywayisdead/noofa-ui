@@ -17,7 +17,8 @@
             :label="item.name" 
             :item-props="item" 
             :item-type="itemType"
-            @profile-item-selected="emitSelected" />
+            @profile-item-selected="emitSelected" 
+            @profile-item-delete="emitDelete"/>
 
     </v-list>
 </template>
@@ -69,7 +70,7 @@ export default {
             return `${this.itemType}-branch`
         },
     },
-    emits: ['profile-item-selected'],
+    emits: ['profile-item-selected', 'profile-item-delete'],
     methods: {
         emitSelected(itemProps){
             this.$emit('profile-item-selected', itemProps)
@@ -85,6 +86,9 @@ export default {
         },
         beforeOnClick(){
             this.reSelect()
+        },
+        emitDelete(event){
+            this.$emit('profile-item-delete', event)
         },
     },
     components: {

@@ -37,7 +37,7 @@ export default {
         show(){
             this.visible = true
         },
-        hide(){
+        close(){
             this.visible = false
         },
         position(x, y){
