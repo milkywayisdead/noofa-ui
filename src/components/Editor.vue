@@ -124,7 +124,7 @@
         :item-name="itemToDelete.props.name"
         :item-group="itemToDelete.type"
         :item-group-plural="plurals[itemToDelete.type]"
-        @item-delete="deletingItem = false"
+        @item-delete="handleItemDelete"
         :no-activator="true"
     />
 </template>
@@ -340,6 +340,12 @@ export default {
             this.$nextTick(_ => {
                     this.$refs.deleteConfirmationDialog.open()
                 })
+        },
+        handleItemDelete(){
+            this.deletingItem = false
+            const itemId = this.itemToDelete.type === 'dashboard' ? this.itemToDelete.props.contextualId : this.itemToDelete.props.id
+            this.$refs.tabsArea.closeTab(itemId)
+            this.itemToDelete = {}
         },
     },
     components: {
