@@ -73,7 +73,16 @@ export default {
         },
         setEditAreaSize(w=10, h=10){
             this.$refs.editArea.setSize(w, h)
-        }
+        },
+        afterContainerResize(){
+            const rc = document.getElementById(this.rowContainerId)
+            const r1 = rc.getBoundingClientRect()
+            const ea = document.getElementById(this.$refs.editArea.containerId)
+            const r2 = ea.getBoundingClientRect()
+            this.$refs.editArea.setContainerHeight(
+                r1.y + r1.height - 10 - r2.y
+            )
+        },
     },
     mounted(){
         this.setEditAreaSize(2000, 2000)

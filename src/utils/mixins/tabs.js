@@ -48,14 +48,17 @@ const tabMixin = {
         updateContainerSize(){
             const rc = document.getElementById(this.rowContainerId)
             const ta = document.getElementById(this.tabsArea.divId)
-            console.log(rc,ta)
-            if(!rc || !ta) return
-
-            const taRect = ta.getBoundingClientRect()
-            const taBottom = taRect.y + taRect.height
-            const rcRect = rc.getBoundingClientRect()
-            rc.style.height = `${taBottom - 10 - rcRect.y}px`
+            if(rc && ta){
+                const taRect = ta.getBoundingClientRect()
+                const taBottom = taRect.y + taRect.height
+                const rcRect = rc.getBoundingClientRect()
+                rc.style.height = `${taBottom - 10 - rcRect.y}px`
+            }
+            try {
+                this.afterContainerResize()
+            } catch {}
         },
+        afterContainerResize(){},
     },
     computed: {
         rowContainerId(){
