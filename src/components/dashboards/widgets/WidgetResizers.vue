@@ -2,6 +2,14 @@
 <div class="noo-widget-resizers"
     :style="sizeStyle + positionStyle">
 </div>
+<div class="widget-resizer-circle lu"
+    :style="luPosition"></div>
+<div class="widget-resizer-circle ru"
+    :style="ruPosition"></div>
+<div class="widget-resizer-circle rd"
+    :style="rdPosition"></div>
+<div class="widget-resizer-circle ld"
+    :style="ldPosition"></div>
 </template>
 
 <script>
@@ -26,6 +34,18 @@ export default {
         },
         positionStyle(){
             return `top:${this.top}px;left:${this.left}px;`
+        },
+        luPosition(){
+            return `top:${this.top -2 }px;left:${this.left - 2}px;`
+        },
+        ruPosition(){
+            return `top:${this.top - 2}px;left:${this.left + this.width - 2}px;`
+        },
+        rdPosition(){
+            return `top:${this.top + this.height - 2}px;left:${this.left + this.width - 2}px;`
+        },
+        ldPosition(){
+            return `top:${this.top + this.height - 2}px;left:${this.left - 2}px;`
         },
     },
     methods: {

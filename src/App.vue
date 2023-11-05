@@ -64,4 +64,28 @@ div.v-row.rigid-row {
 .noo-text-widget {
   resize: none;
 }
+
+.widget-resizer-circle {
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  border: 1px solid black;
+  position: absolute;
+}
+
+.widget-resizer-circle.lu {
+  cursor: nwse-resize;
+}
+
+.widget-resizer-circle.ru {
+  cursor: nesw-resize;
+}
+
+.widget-resizer-circle.ld {
+  cursor: nesw-resize;
+}
+
+.widget-resizer-circle.rd {
+  cursor: nwse-resize;
+}
 </style>

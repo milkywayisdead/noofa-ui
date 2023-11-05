@@ -72,8 +72,8 @@ export default {
         unselectWidget(){
             if(this.selectedWidget){
                 this.selectedWidget.unselect()
+                this.selectedWidget = null
             }
-            this.selectedWidget = null
         },
     },
     components: {
