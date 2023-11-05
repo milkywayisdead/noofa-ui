@@ -110,7 +110,7 @@
                 @profile-item-selected="addTab"
                 @profile-item-delete="deleteProfileItem"></profile-tree>
         </v-col>
-        <v-col cols="10">
+        <v-col cols="10" style="flex:none;height:100%">
             <tabs-area ref="tabsArea"></tabs-area>
         </v-col>
     </v-row>

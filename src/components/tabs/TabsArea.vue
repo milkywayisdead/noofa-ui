@@ -1,5 +1,5 @@
 <template>
-    <v-card elevation="12" :id="divId" style="overflow: scroll">
+    <v-card elevation="12" :id="divId">
         <v-tabs v-model="tab">
             <v-tab v-for="item in tabs" 
                 :key="_key(item)"
@@ -10,17 +10,19 @@
             </v-tab>
         </v-tabs>
         <v-window v-model="tab">
-            <v-window-item v-for="item in tabs" 
+            <v-window-item v-for="item in tabs"
                 :key="_key(item)"
                 :value="_key(item)"
                 class="px-2 pb-2 pt-2 no-transition"
             >
                 <component 
                     :is="`${item.type}-tab`" 
-                    :item-props="item.props" 
+                    :item-props="item.props"
+                    :tabs-area="this" 
                     @item-delete="closeTab($event)" 
                     @enter-loading-state="loading = true" 
-                    @exit-loading-state="loading = false" />
+                    @exit-loading-state="loading = false"
+                    @mounted="addTabObj" />
             </v-window-item>
         </v-window>
     </v-card>
@@ -63,14 +65,18 @@ export default {
             tabs: [],
             loading: false,
             divId: tabsAreaId,
+            tabsObjects: {},
         }
     },
     mounted(){
         changeTabsAreaHeight()
+        this.updateTabsContainersSizes()
         addEventListener('resize', changeTabsAreaHeight)
+        addEventListener('resize', this.updateTabsContainersSizes)
     },
     unmounted(){
         removeEventListener('resize', changeTabsAreaHeight)
+        removeEventListener('resize', this.updateTabsContainersSizes)
     },
     methods: {
         addTab(props){
@@ -86,11 +92,16 @@ export default {
 
             this.tabs.push(props)
             this.tab = tabId
+
+            this.$nextTick(_ => {
+                changeTabsAreaHeight()
+            })
         },
         closeTab(tabId){
             const tabIdProp = tabId.startsWith('dash') ? 'contextualId' : 'id'
 
             this.tabs = this.tabs.filter(tab => tab.props[tabIdProp] !== tabId)
+            delete this.tabsObjects[tabId]
             if(this.tabs.length){
                 this.tab = this.tabs[0].props[tabIdProp]
             }
@@ -98,9 +109,26 @@ export default {
         clear(){
             this.tabs = []
             this.tab = null
+            tabsObjects = {}
+        },
+        addTabObj(tabObj){
+            this.tabsObjects[tabObj.itemGroup === 'dashboard' ? tabObj.contextualId : tabObj.id] = tabObj
+        },
+        updateTabsContainersSizes(){
+            for(let tabO of Object.values(this.tabsObjects)){
+                tabO.updateContainerSize()
+            }
         },
         _key(item){
             return item.type === 'dashboard' ? item.props.contextualId : item.props.id
+        },
+    },
+    watch: {
+        tab(){
+            this.$nextTick(_ => {
+                changeTabsAreaHeight()
+                this.updateTabsContainersSizes()
+            })
         },
     },
     components: {

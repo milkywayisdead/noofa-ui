@@ -18,7 +18,7 @@
             :tooltip="locale.dbstruct.dbstruct"
             @click="$emit('enter-loading-state'), getDbStructure(this.id)" />
     </v-toolbar>
-    <v-row class="mt-2">
+    <v-row class="mt-2 rigid-row" :id="rowContainerId">
         <v-col cols="3">
             <v-row>
                 <v-col cols="12">

@@ -9,10 +9,13 @@ const tabMixin = {
     props: {
         itemProps: {
             type: Object,
-        }
+        },
+        tabsArea: {
+            type: Object,
+        },
     },
     inject: ['locale', 'context', 'api', 'snackbar'],
-    emits: ['item-delete', 'enter-loading-state', 'exit-loading-state'],
+    emits: ['item-delete', 'enter-loading-state', 'exit-loading-state', 'mounted'],
     methods: {
         emitItemDelete(itemId){
             this.$emit('item-delete', itemId)
@@ -42,6 +45,27 @@ const tabMixin = {
         snackbarOnItemBuildSuccess(){
             this.snackbar.success(this.locale.messages[`${this.itemGroup}DataSuccess`])
         },
+        updateContainerSize(){
+            const rc = document.getElementById(this.rowContainerId)
+            const ta = document.getElementById(this.tabsArea.divId)
+            console.log(rc,ta)
+            if(!rc || !ta) return
+
+            const taRect = ta.getBoundingClientRect()
+            const taBottom = taRect.y + taRect.height
+            const rcRect = rc.getBoundingClientRect()
+            rc.style.height = `${taBottom - 10 - rcRect.y}px`
+        },
+    },
+    computed: {
+        rowContainerId(){
+            const idProp = this.itemGroup === 'dashboard' ? 'contextualId' : 'id'
+            return `r-cont-${this[idProp]}`
+        },
+    },
+    mounted(){
+        this.$emit('mounted', this)
+        this.updateContainerSize()
     },
     components: {
         DeleteConfirmationDialog,

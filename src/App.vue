@@ -47,4 +47,9 @@ export default {
   outline: 1px dotted black;
   background-color: #637d8f;
 }
+
+div.v-row.rigid-row {
+  flex: none;
+  overflow: auto;
+}
 </style>

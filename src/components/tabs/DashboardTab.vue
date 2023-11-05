@@ -18,7 +18,11 @@
             @item-selected="addWidget"
         />
     </v-toolbar>
-    <v-row class="mt-2">
+    <v-row class="mt-2 rigid-row" :id="rowContainerId">
+        <v-col cols="3"></v-col>
+        <v-col cols="9">
+            <dashboard-edit-area ref="editArea" />
+        </v-col>
     </v-row>
 </template>
 
@@ -27,6 +31,7 @@ import NooTextField from '../inputs/NooTextField.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import IconButton from '@/components/misc/IconButton.vue'
 import BtnDropdownMenu from '@/components/misc/BtnDropdownMenu.vue'
+import DashboardEditArea from '@/components/dashboards/DashboardEditArea.vue'
 
 export default {
     name: 'DashboardTab',
@@ -66,6 +71,12 @@ export default {
         addWidget(widgetType){
             console.log(widgetType)
         },
+        setEditAreaSize(w=10, h=10){
+            this.$refs.editArea.setSize(w, h)
+        }
+    },
+    mounted(){
+        this.setEditAreaSize(2000, 2000)
     },
     computed: {
         saveBtnEnabled(){
@@ -81,6 +92,7 @@ export default {
         NooTextField,
         IconButton,
         BtnDropdownMenu,
+        DashboardEditArea,
     }
 }
 </script>
