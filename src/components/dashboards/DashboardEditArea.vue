@@ -1,12 +1,22 @@
 <template>
-<div :style="containerHeight" style="outline: 1px solid black;padding:4px;overflow:scroll;" :id="containerId">
-    <div :style="bgSize + areaSize" class="edit-area">
-
+<div :id="containerId"
+    :style="containerHeight"
+    style="outline: 1px solid black;padding:4px;overflow:scroll;">
+    <div :style="bgSize + areaSize" class="edit-area" @click.self="unselectWidget">
+        <component v-for="widget in widgets"
+            :is="`${widget.type}-widget`"
+            :widget-props="widget.props"
+            mode="edit"
+            @selected="selectWidget" />
     </div>
 </div>
 </template>
 
 <script>
+import TextWidget from './widgets/TextWidget.vue'
+import TableWidget from './widgets/TableWidget.vue'
+import FigureWidget from './widgets/FigureWidget.vue'
+
 export default {
     name: 'DashboardEditArea',
     data(){
@@ -16,6 +26,8 @@ export default {
             height: 0,
             _containerHeight: 0,
             containerId: `dash-ea-${+ new Date()}`,
+            widgets: [],
+            selectedWidget: null,
         }
     },
     computed: {
@@ -43,6 +55,31 @@ export default {
         setContainerHeight(h){
             this._containerHeight = h
         },
+        addWidget(type, props=null){
+            const id = props ? props.id : `${type}-w-${+ new Date()}`
+            props = props || {id: id}
+            this.widgets.push({
+                type: type,
+                props: props,
+            })
+        },
+        getWidgets(){
+            return this.widgets
+        },
+        selectWidget(e){
+            this.selectedWidget = e
+        },
+        unselectWidget(){
+            if(this.selectedWidget){
+                this.selectedWidget.unselect()
+            }
+            this.selectedWidget = null
+        },
+    },
+    components: {
+        TextWidget,
+        TableWidget,
+        FigureWidget,
     },
 }
 </script>

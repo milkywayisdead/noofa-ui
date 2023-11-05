@@ -69,7 +69,7 @@ export default {
             return conf
         },
         addWidget(widgetType){
-            console.log(widgetType)
+            this.$refs.editArea.addWidget(widgetType)
         },
         setEditAreaSize(w=10, h=10){
             this.$refs.editArea.setSize(w, h)

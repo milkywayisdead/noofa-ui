@@ -52,4 +52,16 @@ div.v-row.rigid-row {
   flex: none;
   overflow: auto;
 }
+
+.noo-widget, .noo-widget-resizers {
+  position: absolute;
+}
+
+.noo-widget-resizers {
+  outline: 2px dotted black;
+}
+
+.noo-text-widget {
+  resize: none;
+}
 </style>
