@@ -81,6 +81,12 @@ export default {
             delete this.widgets[widgetId]
             this.unselectWidget()
         },
+        getShape(){
+            return {
+                width: this.width,
+                height: this.height
+            }
+        },
     },
     provide(){
         return {

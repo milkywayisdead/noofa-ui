@@ -22,6 +22,7 @@ const widgetMixin = {
             ],
         }
     },
+    inject: ['editArea',],
     mixins: [ctxMenuMixin,],
     props: {
         widgetProps: {
@@ -74,9 +75,27 @@ const widgetMixin = {
             this.top += dy
         },
         checkPositionDeltas(dx=0, dy=0){
+            const testX = this.left + dx
+            const testY = this.top + dy
+
+            if(testX < 0 || testY < 0) return false
+
+            const rect = this.getWidgetElement().getBoundingClientRect()
+            const ea = this.editArea.getShape()
+            if((testX + rect.width > ea.width) ||
+                (testY + rect.height > ea.height)
+            ) return false
+
             return true
         },
-        checkSizeDeltas(dx=0, dy=0){
+        checkSizeDeltas(dw=0, dh=0){
+            const testW = this.width + dw
+            const testH = this.height + dh
+
+            const ea = this.editArea.getShape()
+            if(this.top + testH > ea.height) return false
+            if(this.left + testW > ea.width) return false
+
             return true
         },
     },
@@ -134,16 +153,17 @@ const draggableWidgetMixin = {
             e = e || window.event;
             e.preventDefault();
 
+            const dx = e.clientX - this._x1
+            const dy = e.clientY - this._y1
+            const canBeRepositioned = this.checkPositionDeltas(dx, dy)
+            if(!canBeRepositioned) return
+
             this._x0 = this._x1 - e.clientX
             this._y0 = this._y1 - e.clientY
             this._x1 = e.clientX
             this._y1 = e.clientY
 
-            const widget = this.getWidgetElement()
-            this.position(
-                widget.offsetLeft - this._x0,
-                widget.offsetTop - this._y0,
-            )
+            this.positionWithDeltas(dx, dy)
         },
         _stopDragging(){
             document.onmouseup = null

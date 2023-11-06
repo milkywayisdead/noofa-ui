@@ -100,7 +100,7 @@ export default {
         },
         _resizeLeft(e){
             const dx = this.initX - e.clientX
-            const canBeRepositioned = this.widget.checkPositionDeltas(dx, 0)
+            const canBeRepositioned = this.widget.checkPositionDeltas(-dx, 0)
             const canBeResized = this.widget.checkSizeDeltas(dx, 0)
             if(canBeResized && canBeRepositioned){
                 this.widget.positionWithDeltas(-dx, 0)
@@ -110,7 +110,7 @@ export default {
         },
         _resizeUp(e){
             const dy = this.initY - e.clientY
-            const canBeRepositioned = this.widget.checkPositionDeltas(0, dy)
+            const canBeRepositioned = this.widget.checkPositionDeltas(0, -dy)
             const canBeResized = this.widget.checkSizeDeltas(0, dy)
             if(canBeResized && canBeRepositioned){
                 this.widget.positionWithDeltas(0, -dy)

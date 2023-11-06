@@ -85,7 +85,7 @@ export default {
         },
     },
     mounted(){
-        this.setEditAreaSize(2000, 2000)
+        this.setEditAreaSize(1000, 500)
     },
     computed: {
         saveBtnEnabled(){
