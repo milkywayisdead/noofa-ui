@@ -90,8 +90,8 @@ export default {
             selectedWidget: null,
 
             bindToGrid: false,
-            width: 1000,
-            height: 1000,
+            width: props.properties.width || 1000,
+            height: props.properties.height || 1000,
         }
 
         return tabProps
@@ -106,6 +106,11 @@ export default {
                 id: this.id,
                 contextual_id: this.contextualId,
                 name: this.name,
+                widgets: this.$refs.editArea.getWidgets(),
+                properties: {
+                    height: this.height,
+                    width: this.width,
+                },
             }
             return conf
         },
@@ -138,6 +143,10 @@ export default {
             this.width,
             this.height
         )
+
+        for(let w of Object.values(this.itemProps.widgets)){
+            this.$refs.editArea.addWidget(w.type, w)
+        }
     },
     computed: {
         saveBtnEnabled(){

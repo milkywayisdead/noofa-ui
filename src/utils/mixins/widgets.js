@@ -26,6 +26,9 @@ const widgetMixin = {
             changeableProps: [],
         }
     },
+    mounted(){
+        this.editArea.addWidgetObject(this)
+    },
     inject: ['editArea',],
     mixins: [ctxMenuMixin,],
     props: {

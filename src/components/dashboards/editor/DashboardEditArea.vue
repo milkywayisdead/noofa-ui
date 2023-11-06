@@ -32,6 +32,7 @@ export default {
             selectedWidget: null,
 
             bindToGrid: false,
+            widgetObjects: {},
         }
     },
     computed: {
@@ -68,8 +69,15 @@ export default {
                 props: props,
             }
         },
+        addWidgetObject(wo){
+            this.widgetObjects[wo.id] = wo
+        },
         getWidgets(){
-            return this.widgets
+            const widgets = {}
+            for(let w of Object.values(this.widgetObjects)){
+                widgets[w.id] = w.getWidgetProps()
+            }
+            return widgets
         },
         selectWidget(e){
             this.selectedWidget = e
@@ -84,6 +92,7 @@ export default {
         },
         deleteWidget(widgetId){
             delete this.widgets[widgetId]
+            delete this.widgetObjects[widgetId]
             this.unselectWidget()
         },
         getShape(){

@@ -109,7 +109,7 @@ export default {
         clear(){
             this.tabs = []
             this.tab = null
-            tabsObjects = {}
+            this.tabsObjects = {}
         },
         addTabObj(tabObj){
             this.tabsObjects[tabObj.itemGroup === 'dashboard' ? tabObj.contextualId : tabObj.id] = tabObj
