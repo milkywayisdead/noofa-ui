@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import TextWidget from './widgets/TextWidget.vue'
-import TableWidget from './widgets/TableWidget.vue'
-import FigureWidget from './widgets/FigureWidget.vue'
+import TextWidget from './TextWidget.vue'
+import TableWidget from './TableWidget.vue'
+import FigureWidget from './FigureWidget.vue'
 
 export default {
     name: 'DashboardEditArea',

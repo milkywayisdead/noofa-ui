@@ -41,14 +41,19 @@
                     </v-expansion-panel-text>
                 </v-expansion-panel>
 
-                <v-expansion-panel v-if="widgetSelected"
-                    :title="locale.dashboards.widgetSettings"></v-expansion-panel>
+                <component v-if="widgetSelected"
+                    :is="`${selectedWidget.type}-widget-settings`"
+                    :panel-title="locale.dashboards.widgetSettings"
+                    :widget="selectedWidget.getWidgetProps()"
+                    @property-changed="selectedWidget.updateProperty"
+                />
+
             </v-expansion-panels>
         </v-col>
         <v-col cols="9">
             <dashboard-edit-area ref="editArea" 
-                @widget-selected="widgetSelected = true"
-                @widget-unselected="widgetSelected = false" />
+                @widget-selected="selectedHandler"
+                @widget-unselected="unselectedHandler" />
         </v-col>
     </v-row>
 </template>
@@ -58,7 +63,10 @@ import NooTextField from '../inputs/NooTextField.vue'
 import { tabMixin } from '@/utils/mixins/tabs'
 import IconButton from '@/components/misc/IconButton.vue'
 import BtnDropdownMenu from '@/components/misc/BtnDropdownMenu.vue'
-import DashboardEditArea from '@/components/dashboards/DashboardEditArea.vue'
+import DashboardEditArea from '@/components/dashboards/editor/DashboardEditArea.vue'
+import TextWidgetSettings from '@/components/dashboards/settings/TextWidgetSettings.vue'
+import TableWidgetSettings from '@/components/dashboards/settings/TableWidgetSettings.vue'
+import FigureWidgetSettings from '@/components/dashboards/settings/FigureWidgetSettings.vue'
 
 export default {
     name: 'DashboardTab',
@@ -79,6 +87,7 @@ export default {
                 }
             ),
             widgetSelected: false,
+            selectedWidget: null,
 
             bindToGrid: false,
             width: 1000,
@@ -114,6 +123,14 @@ export default {
             this.$refs.editArea.setContainerHeight(
                 r1.y + r1.height - 10 - r2.y
             )
+        },
+        selectedHandler(e){
+            this.widgetSelected = true
+            this.selectedWidget = e
+        },
+        unselectedHandler(e){
+            this.widgetSelected = false
+            this.selectedWidget = null
         },
     },
     mounted(){
@@ -152,6 +169,9 @@ export default {
         IconButton,
         BtnDropdownMenu,
         DashboardEditArea,
+        TextWidgetSettings,
+        TableWidgetSettings,
+        FigureWidgetSettings,
     }
 }
 </script>

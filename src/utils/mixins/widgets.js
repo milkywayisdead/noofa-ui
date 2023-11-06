@@ -1,5 +1,7 @@
-import WidgetResizers from '@/components/dashboards/widgets/WidgetResizers.vue'
+import WidgetResizers from '@/components/dashboards/editor/WidgetResizers.vue'
 import ctxMenuMixin from './ctxmenu.js'
+import NooSelect from '@/components/inputs/NooSelect.vue'
+import NooTextField from '@/components/inputs/NooTextField.vue'
 
 const widgetMixin = {
     data(){
@@ -20,6 +22,8 @@ const widgetMixin = {
                     onclick: this.emitDelete,
                 }
             ],
+
+            changeableProps: [],
         }
     },
     inject: ['editArea',],
@@ -42,6 +46,14 @@ const widgetMixin = {
         },
         sizeStyle(){
             return `width:${this.width}px;height:${this.height}px;`
+        },
+        layoutProps(){
+            return {
+                top: this.top,
+                left: this.left,
+                width: this.width,
+                height: this.height,
+            }
         },
     },
     emits: ['selected', 'delete', ],
@@ -97,6 +109,16 @@ const widgetMixin = {
             if(this.left + testW > ea.width) return false
 
             return true
+        },
+        getWidgetProps(){
+            const props = {}
+            for(let p of this.changeableProps){
+                props[p] = this[p]
+            }
+            return props
+        },
+        updateProperty({name, value}){
+            this[name] = value
         },
     },
     watch: {
@@ -188,7 +210,39 @@ const draggableWidgetMixin = {
 }
 
 
+const widgetSettingsMixin = {
+    data(){
+        return {
+            changeableProps: [],
+        }
+    },
+    props: {
+        widget: {
+            type: Object,
+        },
+        panelTitle: {
+            type: String,
+        },
+    },
+    inject: ['locale'],
+    emits: ['property-changed',],
+    methods: {
+        emitChanged(prop, value){
+            this.$emit('property-changed', {
+                name: prop,
+                value: value,
+            })
+        },
+    },
+    components: {
+        NooSelect,
+        NooTextField,
+    }
+}
+
+
 export {
     widgetMixin,
     draggableWidgetMixin,
+    widgetSettingsMixin,
 }

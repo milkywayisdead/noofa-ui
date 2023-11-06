@@ -276,6 +276,10 @@ const ru = {
             table: 'Таблица',
             figure: 'График',
         },
+        text: 'Текст',
+        fontSize: 'Размер текста',
+        fontColor: 'Цвет текста',
+        interprete: 'Считать выражением',
     },
     locale: 'Язык',
     export: {
