@@ -30,6 +30,8 @@ export default {
             containerId: `dash-ea-${+ new Date()}`,
             widgets: {},
             selectedWidget: null,
+
+            bindToGrid: false,
         }
     },
     computed: {
@@ -49,6 +51,7 @@ export default {
             return `height:${this._containerHeight}px;`
         },
     },
+    emits: ['widget-selected', 'widget-unselected',],
     methods: {
         setSize(w, h){
             this.width = w
@@ -70,11 +73,13 @@ export default {
         },
         selectWidget(e){
             this.selectedWidget = e
+            this.$emit('widget-selected', e)
         },
         unselectWidget(){
             if(this.selectedWidget){
                 this.selectedWidget.unselect()
                 this.selectedWidget = null
+                this.$emit('widget-unselected')
             }
         },
         deleteWidget(widgetId){

@@ -261,6 +261,11 @@ const ru = {
         new: 'Добавление дашборда',
         name: 'Название дашборда',
         description: 'Описание',
+        settings: 'Настройки дашборда',
+        widgetSettings: 'Настройки виджета',
+        height: 'Высота',
+        width: 'Ширина',
+        bindToGrid: 'Привязка к сетке',
     },
     widgets: {
         singular: 'Виджет',

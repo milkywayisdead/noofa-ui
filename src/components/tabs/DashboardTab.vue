@@ -19,9 +19,36 @@
         />
     </v-toolbar>
     <v-row class="mt-2 rigid-row" :id="rowContainerId">
-        <v-col cols="3"></v-col>
+        <v-col cols="3">
+            <v-expansion-panels>
+                <v-expansion-panel :title="locale.dashboards.settings">
+                    <v-expansion-panel-text>
+                        <v-row>
+                            <v-col cols="12">
+                                <noo-text-field :label="locale.dashboards.height"
+                                    v-model="height" />
+                            </v-col>
+                            <v-col cols="12">
+                                <noo-text-field :label="locale.dashboards.width"
+                                    v-model="width" />
+                            </v-col>
+                            <v-col cols="12">
+                                <v-checkbox 
+                                    v-model="bindToGrid"
+                                    :label="locale.dashboards.bindToGrid" />
+                            </v-col>
+                        </v-row>
+                    </v-expansion-panel-text>
+                </v-expansion-panel>
+
+                <v-expansion-panel v-if="widgetSelected"
+                    :title="locale.dashboards.widgetSettings"></v-expansion-panel>
+            </v-expansion-panels>
+        </v-col>
         <v-col cols="9">
-            <dashboard-edit-area ref="editArea" />
+            <dashboard-edit-area ref="editArea" 
+                @widget-selected="widgetSelected = true"
+                @widget-unselected="widgetSelected = false" />
         </v-col>
     </v-row>
 </template>
@@ -51,6 +78,11 @@ export default {
                     }
                 }
             ),
+            widgetSelected: false,
+
+            bindToGrid: false,
+            width: 1000,
+            height: 1000,
         }
 
         return tabProps
@@ -85,7 +117,10 @@ export default {
         },
     },
     mounted(){
-        this.setEditAreaSize(1000, 500)
+        this.setEditAreaSize(
+            this.width,
+            this.height
+        )
     },
     computed: {
         saveBtnEnabled(){
@@ -95,6 +130,21 @@ export default {
     watch: {
         saveBtnEnabled(value){
             this.$refs.saveButton.setEnabledProp(value)
+        },
+        bindToGrid(value){
+            this.$refs.editArea.bindToGrid = value
+        },
+        height(value){
+            this.$refs.editArea.setSize(
+                this.width,
+                value
+            )
+        },
+        width(value){
+            this.$refs.editArea.setSize(
+                value,
+                this.height,
+            )
         },
     },
     components: {
