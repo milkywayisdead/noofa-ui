@@ -92,6 +92,17 @@ export default {
                 height: this.height
             }
         },
+        getClosestIntersect(x, y){
+            const cxN = x / this.cellSize;console.log(cxN)
+            const cyN = y / this.cellSize
+            const resX = cxN % 1 > 0.5 ? Math.ceil(cxN)*this.cellSize : Math.floor(cxN)*this.cellSize;console.log(resX)
+            const resY = cyN % 1 > 0.5 ? Math.ceil(cyN)*this.cellSize : Math.floor(cyN)*this.cellSize
+
+            return {
+                x: resX,
+                y: resY,
+            }
+        },
     },
     provide(){
         return {

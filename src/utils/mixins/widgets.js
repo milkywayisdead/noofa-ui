@@ -110,16 +110,20 @@ const widgetMixin = {
         positionStyle(){
             if(!this.editorMode) return
 
-            try {
-                this.$refs.resizers.draw()
-            } catch {}
+            this.$nextTick(_ => {
+                try {
+                    this.$refs.resizers.draw()
+                } catch {}
+            })
         },
         sizeStyle(){
             if(!this.editorMode) return
 
-            try {
-                this.$refs.resizers.draw()
-            } catch {}
+            this.$nextTick(_ => {
+                try {
+                    this.$refs.resizers.draw()
+                } catch {}
+            })
         },
     },
     components: {
@@ -169,10 +173,21 @@ const draggableWidgetMixin = {
             document.onmouseup = null
             document.onmousemove = null
 
+            if(this.editArea.bindToGrid){
+                this.bindToGrid()
+            }
+
             try {
                 this.$refs.resizers.draw()
             } catch {}
-        }
+        },
+        bindToGrid(){
+            const { x, y } = this.editArea.getClosestIntersect(
+                this.left,
+                this.top
+            )
+            this.position(x, y)
+        },
     },
 }
 
