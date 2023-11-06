@@ -176,10 +176,6 @@ const draggableWidgetMixin = {
             if(this.editArea.bindToGrid){
                 this.bindToGrid()
             }
-
-            try {
-                this.$refs.resizers.draw()
-            } catch {}
         },
         bindToGrid(){
             const { x, y } = this.editArea.getClosestIntersect(

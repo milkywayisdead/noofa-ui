@@ -93,9 +93,9 @@ export default {
             }
         },
         getClosestIntersect(x, y){
-            const cxN = x / this.cellSize;console.log(cxN)
+            const cxN = x / this.cellSize
             const cyN = y / this.cellSize
-            const resX = cxN % 1 > 0.5 ? Math.ceil(cxN)*this.cellSize : Math.floor(cxN)*this.cellSize;console.log(resX)
+            const resX = cxN % 1 > 0.5 ? Math.ceil(cxN)*this.cellSize : Math.floor(cxN)*this.cellSize
             const resY = cyN % 1 > 0.5 ? Math.ceil(cyN)*this.cellSize : Math.floor(cyN)*this.cellSize
 
             return {
