@@ -59,10 +59,19 @@ div.v-row.rigid-row {
 
 .noo-widget-resizers {
   outline: 2px dotted black;
+  z-index: 1;
+}
+
+.noo-widget {
+  z-index: 10;
 }
 
 .noo-text-widget {
   resize: none;
+  cursor: default;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .widget-resizer-circle {
@@ -73,19 +82,19 @@ div.v-row.rigid-row {
   position: absolute;
 }
 
-.widget-resizer-circle.lu {
-  cursor: nwse-resize;
+.widget-resizer-circle.t {
+  cursor: ns-resize;
 }
 
-.widget-resizer-circle.ru {
-  cursor: nesw-resize;
+.widget-resizer-circle.r {
+  cursor: ew-resize;
 }
 
-.widget-resizer-circle.ld {
-  cursor: nesw-resize;
+.widget-resizer-circle.l {
+  cursor: ew-resize;
 }
 
-.widget-resizer-circle.rd {
-  cursor: nwse-resize;
+.widget-resizer-circle.b {
+  cursor: ns-resize;
 }
 </style>

@@ -2,7 +2,9 @@
 <div :id="id"
     class="noo-widget"
     :style="positionStyle"
-    @click="select">
+    @click="select"
+    @contextmenu.prevent="contextMenu"
+    @mousedown="select(), startDragging($event)">
     <textarea class="noo-text-widget" readonly>
         HELLO WORDL
     </textarea>
@@ -13,11 +15,11 @@
 </template>
 
 <script>
-import WidgetMixin from '@/utils/mixins/widgets.js'
+import { widgetMixin, draggableWidgetMixin } from '@/utils/mixins/widgets.js'
 
 export default {
     name: 'TextWidget', 
-    mixins: [WidgetMixin, ],
+    mixins: [widgetMixin, draggableWidgetMixin],
     data(){
         return {}
     },

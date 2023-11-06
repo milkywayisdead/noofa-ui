@@ -2,14 +2,14 @@
 <div class="noo-widget-resizers"
     :style="sizeStyle + positionStyle">
 </div>
-<div class="widget-resizer-circle lu"
-    :style="luPosition"></div>
-<div class="widget-resizer-circle ru"
-    :style="ruPosition"></div>
-<div class="widget-resizer-circle rd"
-    :style="rdPosition"></div>
-<div class="widget-resizer-circle ld"
-    :style="ldPosition"></div>
+<div class="widget-resizer-circle t"
+    :style="tPosition"></div>
+<div class="widget-resizer-circle r"
+    :style="rPosition"></div>
+<div class="widget-resizer-circle l"
+    :style="lPosition"></div>
+<div class="widget-resizer-circle b"
+    :style="bPosition"></div>
 </template>
 
 <script>
@@ -35,17 +35,17 @@ export default {
         positionStyle(){
             return `top:${this.top}px;left:${this.left}px;`
         },
-        luPosition(){
-            return `top:${this.top -2 }px;left:${this.left - 2}px;`
+        tPosition(){
+            return `top:${this.top - 4}px;left:${this.left + this.width/2 - 2}px;`
         },
-        ruPosition(){
-            return `top:${this.top - 2}px;left:${this.left + this.width - 2}px;`
+        rPosition(){
+            return `top:${this.top + this.height/2}px;left:${this.left + this.width}px;`
         },
-        rdPosition(){
-            return `top:${this.top + this.height - 2}px;left:${this.left + this.width - 2}px;`
+        lPosition(){
+            return `top:${this.top + this.height/2}px;left:${this.left - 4}px;`
         },
-        ldPosition(){
-            return `top:${this.top + this.height - 2}px;left:${this.left - 2}px;`
+        bPosition(){
+            return `top:${this.top + this.height -2}px;left:${this.left + this.width/2 - 2}px;`
         },
     },
     methods: {

@@ -4,11 +4,11 @@
 </template>
 
 <script>
-import WidgetMixin from '@/utils/mixins/widgets.js'
+import { widgetMixin, draggableWidgetMixin } from '@/utils/mixins/widgets.js'
 
 export default {
     name: 'TableWidget',
-    mixins: [WidgetMixin, ],
+    mixins: [widgetMixin, draggableWidgetMixin],
     data(){
         return {}
     },

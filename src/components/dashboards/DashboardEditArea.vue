@@ -3,11 +3,13 @@
     :style="containerHeight"
     style="outline: 1px solid black;padding:4px;overflow:scroll;">
     <div :style="bgSize + areaSize" class="edit-area" @click.self="unselectWidget">
-        <component v-for="widget in widgets"
+        <component v-for="(widget, wId) in widgets"
+            :key="wId"
             :is="`${widget.type}-widget`"
             :widget-props="widget.props"
             mode="edit"
-            @selected="selectWidget" />
+            @selected="selectWidget"
+            @delete="deleteWidget" />
     </div>
 </div>
 </template>
@@ -26,7 +28,7 @@ export default {
             height: 0,
             _containerHeight: 0,
             containerId: `dash-ea-${+ new Date()}`,
-            widgets: [],
+            widgets: {},
             selectedWidget: null,
         }
     },
@@ -58,10 +60,10 @@ export default {
         addWidget(type, props=null){
             const id = props ? props.id : `${type}-w-${+ new Date()}`
             props = props || {id: id}
-            this.widgets.push({
+            this.widgets[id] = {
                 type: type,
                 props: props,
-            })
+            }
         },
         getWidgets(){
             return this.widgets
@@ -75,6 +77,15 @@ export default {
                 this.selectedWidget = null
             }
         },
+        deleteWidget(widgetId){
+            delete this.widgets[widgetId]
+            this.unselectWidget()
+        },
+    },
+    provide(){
+        return {
+            editArea: this,
+        }
     },
     components: {
         TextWidget,
