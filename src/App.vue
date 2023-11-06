@@ -59,7 +59,7 @@ div.v-row.rigid-row {
 
 .noo-widget-resizers {
   outline: 2px dotted black;
-  z-index: 1;
+  z-index: 2;
 }
 
 .noo-widget {

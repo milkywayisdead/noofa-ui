@@ -8,6 +8,8 @@ const widgetMixin = {
             type: '',
             top: 0,
             left: 0,
+            height: 100,
+            width: 100,
             selected: false,
 
             useCustomCtxmenuItems: true,
@@ -37,6 +39,9 @@ const widgetMixin = {
         editorMode(){
             return this.mode === 'edit'
         },
+        sizeStyle(){
+            return `width:${this.width}px;height:${this.height}px;`
+        },
     },
     emits: ['selected', 'delete', ],
     methods: {
@@ -60,6 +65,20 @@ const widgetMixin = {
         emitDelete(){
             this.$emit('delete', this.id)
         },
+        resizeWithDeltas(dx=0, dy=0){
+            this.width += dx
+            this.height += dy
+        },
+        positionWithDeltas(dx=0, dy=0){
+            this.left += dx
+            this.top += dy
+        },
+        checkPositionDeltas(dx=0, dy=0){
+            return true
+        },
+        checkSizeDeltas(dx=0, dy=0){
+            return true
+        },
     },
     watch: {
         selected(v){
@@ -70,6 +89,13 @@ const widgetMixin = {
             }
         },
         positionStyle(){
+            if(!this.editorMode) return
+
+            try {
+                this.$refs.resizers.draw()
+            } catch {}
+        },
+        sizeStyle(){
             if(!this.editorMode) return
 
             try {

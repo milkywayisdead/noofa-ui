@@ -1,7 +1,7 @@
 <template>
 <div :id="id"
     class="noo-widget"
-    :style="positionStyle"
+    :style="positionStyle + sizeStyle"
     @click="select"
     @contextmenu.prevent="contextMenu"
     @mousedown="select(), startDragging($event)">
