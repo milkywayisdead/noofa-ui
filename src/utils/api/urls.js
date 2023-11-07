@@ -21,6 +21,7 @@ const urls = {
     getFigureData: `${prefix}/get_figure_data/`,
     getValue: `${prefix}/get_value/`,
     getDocument: `${prefix}/get_document/`,
+    getWidgetData: `${prefix}/get_widget_data/`,
 }
 
 export default urls;

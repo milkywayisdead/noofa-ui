@@ -241,6 +241,7 @@ const ru = {
         tableDataSuccess: 'Таблица успешно построена',
         figureDataSuccess: 'График успешно построен',
         valueDataSuccess: 'Значение успешно получено',
+        errorWhenGettingWidgetData: 'Ошибка загрузки содержимого виджета',
     },
     dbstruct: {
         dbstruct: 'Структура БД',

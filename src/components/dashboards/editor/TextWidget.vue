@@ -35,6 +35,12 @@ export default {
         fontStyle(){
             return `font-size:${this.fontSize}px;color:${this.fontColor};`
         },
+        actualText(){
+            return this.interprete ? `<${this.text}>` : text
+        },
+    },
+    mounted(){
+        this.getWidgetData()
     },
     methods: {
         getWidgetProps(){
@@ -50,6 +56,7 @@ export default {
                 layout: this.layoutProps,
             }
         },
+        updateContent(data){},
     },
 }
 </script>

@@ -152,6 +152,9 @@ export default {
             this.widgetSelected = false
             this.selectedWidget = null
         },
+        getUUID(){
+            return this.id
+        },
     },
     mounted(){
         this.setEditAreaSize(
@@ -187,6 +190,11 @@ export default {
                 this.height,
             )
         },
+    },
+    provide(){
+        return {
+            dashboard: this,
+        }
     },
     components: {
         NooTextField,

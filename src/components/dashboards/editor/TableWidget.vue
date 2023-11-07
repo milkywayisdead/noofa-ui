@@ -32,6 +32,9 @@ export default {
             title: props.props.title || '',
         }
     },
+    mounted(){
+        this.getWidgetData()
+    },
     methods: {
         getWidgetProps(){
             return {
@@ -43,6 +46,9 @@ export default {
                 },
                 layout: this.layoutProps,
             }
+        },
+        updateContent(data){
+            console.log(data)
         },
     },
 }

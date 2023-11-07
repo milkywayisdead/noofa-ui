@@ -59,6 +59,9 @@ const api = {
             {responseType: 'blob'}
         );
     },
+    getWidgetData(dashboardId, widgetId){
+        return axios.get(`${urls.getWidgetData + dashboardId}/${widgetId}`);
+    },
 }
 
 export default api;

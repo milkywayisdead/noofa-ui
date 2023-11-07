@@ -31,7 +31,7 @@ const widgetMixin = {
     mounted(){
         this.editArea.addWidgetObject(this)
     },
-    inject: ['editArea',],
+    inject: ['editArea', 'dashboard', 'api', 'locale', 'snackbar'],
     mixins: [ctxMenuMixin,],
     props: {
         widgetProps: {
@@ -125,6 +125,20 @@ const widgetMixin = {
         updateProperty({name, value}){
             this[name] = value
         },
+        getWidgetData(){
+            const uuid = this.dashboard.getUUID()
+            if(!uuid) return
+
+            this.api.getWidgetData(uuid, this.id)
+                .then(res => {
+                    this.updateContent(res.data)
+                }).catch(err => {
+                    this.snackbar.error(
+                        this.locale.messages.errorWhenGettingWidgetData
+                    )
+                })
+        },
+        updateContent(data){},
     },
     watch: {
         selected(v){
