@@ -8,6 +8,8 @@ const dashboardWidgetMixin = {
             left: props.layout.left,
             width: props.layout.width,
             height: props.layout.height,
+
+            scaling: props.scaling || {},
         }
     },
     inject: ['api'],
@@ -21,13 +23,23 @@ const dashboardWidgetMixin = {
     },
     computed: {
         positionStyle(){
-            const top = this.top
-            const left = this.left
+            let top = this.top
+            let left = this.left
+
+            if(this.dashboard.scaling){
+                return `top:${this.scaling.scaledTop}%;left:${this.scaling.scaledLeft}%;`
+            }
+
             return `top:${top}px;left:${left}px;`
         },
         sizeStyle(){
-            const width = this.width
-            const height = this.height
+            let width = this.width
+            let height = this.height
+
+            if(this.dashboard.scaling){
+                return `width:${this.scaling.scaledWidth}%;height:${this.scaling.scaledHeight}%;`
+            }
+
             return `width:${width}px;height:${height}px;`
         },
     },
@@ -39,6 +51,10 @@ const dashboardWidgetMixin = {
                 }).catch(err => {})
         },
         updateContent(data){},
+        redraw(){},
+    },
+    mounted(){
+        this.dashboard.addWidgetObject(this)
     },
 }
 

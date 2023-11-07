@@ -1,5 +1,6 @@
 <template>
-<div :style="sizeStyle + bgStyle" style="position:absolute">
+<div :id="`${id}-dash`" 
+    :style="sizeStyle + bgStyle">
     <component v-for="(widget, widgetId) in widgets"
         :key="widgetId"
         :is="`${widget.type}-widget`"
@@ -27,7 +28,8 @@ export default {
             height: 0,
             bgColor: '#ddd',
 
-            widgets: {},
+            widgets: [],
+            widgetsObjects: {},
         }
     },
     inject: ['api', 'locale', 'snackbar'],
@@ -41,7 +43,26 @@ export default {
 
                 document.title = res.data.name
 
-                this.widgets = res.data.widgets
+                if(!this.scaling){
+                    this.widgets = Object.values(res.data.widgets)
+                } else {
+                    this.widgets = Object.values(res.data.widgets).map(w => {
+                        const { width, height, top, left} = w.layout
+
+                        return {
+                            ...w,
+                            scaling: {
+                                scaledTop: (top/this.height)*100,
+                                scaledLeft: (left/this.width)*100,
+                                scaledWidth: (width/this.width)*100,
+                                scaledHeight: (height/this.height)*100,
+                            },
+                        }
+                    })
+                }
+
+                addEventListener('resize', this.scale)
+                this.scale()
             }).catch(err => {
                 this.snackbar.error(
                     this.locale.messages.errorWhenLoadingDashboard
@@ -49,11 +70,27 @@ export default {
                 document.title(this.locale.messages.errorWhenLoadingDashboard)
             })
     },
+    unmounted(){
+        removeEventListener('resize', this.scale)
+    },
+    methods: {
+        addWidgetObject(wo){
+            this.widgetsObjects[wo.id] = wo
+        },
+        scale(){
+            if(!this.scaling) return
+
+            this.width = window.innerWidth
+            this.height = window.innerHeight
+
+            for(let w of Object.values(this.widgetsObjects)){
+                w.redraw()
+            }
+        },
+    },
     computed: {
         sizeStyle(){
-            return this.scaling ? 
-                'height:100%;width:100%;' :
-                `height:${this.height}px;width:${this.width}px;`
+            return `height:${this.height}px;width:${this.width}px;`
         },
         bgStyle(){
             return `background-color:${this.bgColor};`

@@ -104,7 +104,7 @@ div.v-row.rigid-row {
 }
 
 .noo-dashboard-widget {
-  position: absolute;
+  position: absolute!important;
 }
 
 .noo-dashboard-text {

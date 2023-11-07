@@ -1,5 +1,5 @@
 <template>
-<v-card :style="positionStyle + sizeStyle">
+<v-card :style="positionStyle + sizeStyle" class="noo-dashboard-widget">
     <v-card-title class="prevent-select">{{ title }}</v-card-title>
     <v-card-text :id="cardContentId" style="height:100%;width:100%;padding:0px;">
         <div :id="containerId" :style="containerSize"></div>
@@ -54,6 +54,16 @@ export default {
                                 .getBoundingClientRect()
             this.containerWidth = r.width
             this.containerHeight = r.height
+        },
+        redraw(){
+            if(!this._figureData) return
+            this.resizeContainer()
+            this.$nextTick(_ => {
+                plotlyUtils.create(
+                    this.containerId,
+                    this._figureData,
+                )
+            })
         },
     },
 }

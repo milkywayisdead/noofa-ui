@@ -1,5 +1,5 @@
 <template>
-<v-card :style="positionStyle + sizeStyle" style="overflow:auto">
+<v-card :style="positionStyle + sizeStyle" style="overflow:auto" class="noo-dashboard-widget">
     <v-card-title class="prevent-select">{{ title }}</v-card-title>
     <v-card-text style="height:100%;width:100%;padding:4px">
         <div :id="containerId">
