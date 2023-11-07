@@ -1,7 +1,7 @@
 <template>
 <div :style="sizeStyle + bgStyle" style="position:absolute">
-    <component v-for="widget in widgets"
-        :key="widget.id"
+    <component v-for="(widget, widgetId) in widgets"
+        :key="widgetId"
         :is="`${widget.type}-widget`"
         :widget-props="widget"
         :dashboard="this"
@@ -17,6 +17,8 @@ import FigureWidget from './dashboard_widgets/FigureWidget.vue'
 export default {
     name: 'Dashboard',
     data(){
+        document.title = ''
+
         return {
             id: this.$route.params.dashId,
 
@@ -25,7 +27,7 @@ export default {
             height: 0,
             bgColor: '#ddd',
 
-            widgets: [],
+            widgets: {},
         }
     },
     inject: ['api', 'locale', 'snackbar'],
@@ -36,10 +38,15 @@ export default {
                 this.scaling = scaling
                 this.width = width
                 this.height = height
+
+                document.title = res.data.name
+
+                this.widgets = res.data.widgets
             }).catch(err => {
                 this.snackbar.error(
                     this.locale.messages.errorWhenLoadingDashboard
                 )
+                document.title(this.locale.messages.errorWhenLoadingDashboard)
             })
     },
     computed: {

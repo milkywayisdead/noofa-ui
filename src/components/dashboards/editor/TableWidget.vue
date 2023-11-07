@@ -5,9 +5,9 @@
     @click="select"
     @contextmenu.prevent="contextMenu"
     @mousedown="select(), startDragging($event)">
-    <v-card class="noo-table-widget-card">
+    <v-card class="noo-table-widget-card" style="overflow:scroll">
         <v-card-title class="prevent-select">{{ title }}</v-card-title>
-        <v-card-text style="height:100%;width:100%;padding:4px;overflow:scroll">
+        <v-card-text style="height:100%;width:100%;padding:4px;">
             <div :id="containerId">
                 <data-table v-if="tableIsVisible" class="display table-bordered"
                     :options="tableOptions">

@@ -152,6 +152,8 @@ export default {
     name: 'Editor',
     inject: ['api', 'context', 'locale', 'snackbar'],
     data(){
+        document.title = 'Noofa Editor'
+
         return {
             locales: locales,
             ctxmenus: {

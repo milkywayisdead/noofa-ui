@@ -102,4 +102,14 @@ div.v-row.rigid-row {
   width: 100%;
   height: 100%;
 }
+
+.noo-dashboard-widget {
+  position: absolute;
+}
+
+.noo-dashboard-text {
+  resize: none;
+  cursor: default;
+  overflow: hidden;
+}
 </style>
