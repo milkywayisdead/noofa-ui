@@ -3,12 +3,17 @@
     <v-expansion-panel-text>
         <v-row>
             <v-col cols="12">
-                <v-textarea v-model="text" :label="locale.widgets.text" />
+                <v-textarea v-model="text"
+                    :label="locale.widgets.text"
+                    hide-details 
+                    density="compact" />
             </v-col>
             <v-col cols="12">
                 <v-checkbox 
                     v-model="interprete"
-                    :label="locale.widgets.interprete" />
+                    :label="locale.widgets.interprete" 
+                    hide-details 
+                    density="compact" />
             </v-col>
             <v-col cols="12">
                 <noo-select v-model="fontSize"

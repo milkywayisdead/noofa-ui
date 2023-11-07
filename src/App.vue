@@ -97,4 +97,9 @@ div.v-row.rigid-row {
 .widget-resizer-circle.b {
   cursor: ns-resize;
 }
+
+.noo-table-widget-card, .noo-figure-widget-card {
+  width: 100%;
+  height: 100%;
+}
 </style>

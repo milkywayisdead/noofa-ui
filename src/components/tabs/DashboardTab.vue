@@ -25,6 +25,10 @@
                     <v-expansion-panel-text>
                         <v-row>
                             <v-col cols="12">
+                                <noo-text-field :label="locale.dashboards.name"
+                                    v-model="name" />
+                            </v-col>
+                            <v-col cols="12">
                                 <noo-text-field :label="locale.dashboards.height"
                                     v-model="height" />
                             </v-col>
@@ -34,8 +38,17 @@
                             </v-col>
                             <v-col cols="12">
                                 <v-checkbox 
+                                    v-model="scaling"
+                                    :label="locale.dashboards.scaling"
+                                    hide-details 
+                                    density="compact" />
+                            </v-col>
+                            <v-col cols="12">
+                                <v-checkbox 
                                     v-model="bindToGrid"
-                                    :label="locale.dashboards.bindToGrid" />
+                                    :label="locale.dashboards.bindToGrid"
+                                    hide-details
+                                    density="compact" />
                             </v-col>
                         </v-row>
                     </v-expansion-panel-text>
@@ -92,6 +105,7 @@ export default {
             bindToGrid: false,
             width: props.properties.width || 1000,
             height: props.properties.height || 1000,
+            scaling: props.properties.scaling || false,
         }
 
         return tabProps
@@ -110,6 +124,7 @@ export default {
                 properties: {
                     height: this.height,
                     width: this.width,
+                    scaling: this.scaling,
                 },
             }
             return conf

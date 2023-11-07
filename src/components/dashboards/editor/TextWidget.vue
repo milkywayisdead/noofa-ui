@@ -29,11 +29,6 @@ export default {
             interprete: props.props.interprete || false,
             fontSize: props.props.fontSize || 12,
             fontColor: props.props.fontColor || '#333',
-
-            top: props.layout.top || 0,
-            left: props.layout.left || 0,
-            height: props.layout.height || 0,
-            width: props.layout.width || 0,
         }
     },
     computed: {

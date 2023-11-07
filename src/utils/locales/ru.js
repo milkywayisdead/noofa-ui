@@ -266,6 +266,7 @@ const ru = {
         height: 'Высота',
         width: 'Ширина',
         bindToGrid: 'Привязка к сетке',
+        scaling: 'Масштабирование',
     },
     widgets: {
         singular: 'Виджет',
@@ -280,6 +281,9 @@ const ru = {
         fontSize: 'Размер текста',
         fontColor: 'Цвет текста',
         interprete: 'Считать выражением',
+        table: 'Таблица',
+        figure: 'График',
+        title: 'Заголовок',
     },
     locale: 'Язык',
     export: {

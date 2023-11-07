@@ -5,13 +5,15 @@ import NooTextField from '@/components/inputs/NooTextField.vue'
 
 const widgetMixin = {
     data(){
+        const props = this.widgetProps
+
         return {
-            id: this.widgetProps.id,
+            id: props.id,
             type: '',
-            top: 0,
-            left: 0,
-            height: 100,
-            width: 100,
+            top: props.layout.top || 0,
+            left: props.layout.left || 0,
+            height: props.layout.height || 100,
+            width: props.layout.width || 100,
             selected: false,
 
             useCustomCtxmenuItems: true,
@@ -227,7 +229,7 @@ const widgetSettingsMixin = {
             type: String,
         },
     },
-    inject: ['locale'],
+    inject: ['locale', 'context'],
     emits: ['property-changed',],
     methods: {
         emitChanged(prop, value){

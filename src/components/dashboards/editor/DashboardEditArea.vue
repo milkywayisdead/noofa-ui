@@ -63,7 +63,11 @@ export default {
         },
         addWidget(type, props=null){
             const id = props ? props.id : `${type}-w-${+ new Date()}`
-            props = props || {id: id}
+            props = props || {
+                id: id,
+                props: {},
+                layout: {},
+            }
             this.widgets[id] = {
                 type: type,
                 props: props,
@@ -80,6 +84,11 @@ export default {
             return widgets
         },
         selectWidget(e){
+            if(this.selectedWidget && this.selectedWidget !== e){
+                this.selectedWidget.unselect()
+                this.selectedWidget = null
+            }
+
             this.selectedWidget = e
             this.$emit('widget-selected', e)
         },
