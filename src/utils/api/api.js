@@ -59,6 +59,9 @@ const api = {
             {responseType: 'blob'}
         );
     },
+    getDashboard(dashboardId){
+        return axios.get(`${urls.getDashboard + dashboardId}`);
+    },
     getWidgetData(dashboardId, widgetId){
         return axios.get(`${urls.getWidgetData + dashboardId}/${widgetId}`);
     },

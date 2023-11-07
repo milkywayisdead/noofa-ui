@@ -17,6 +17,10 @@
             :tooltip="locale.widgets.new"
             @item-selected="addWidget"
         />
+        <icon-button
+            icon="mdi-file-eye"
+            :tooltip="locale.dashboards.preview"
+            @click="preview" />
     </v-toolbar>
     <v-row class="mt-2 rigid-row" :id="rowContainerId">
         <v-col cols="3">
@@ -154,6 +158,12 @@ export default {
         },
         getUUID(){
             return this.id
+        },
+        preview(){
+            if(this.id){
+                const r = this.$router.resolve({path: `/dashboard/${this.id}`})
+                window.open(r.href)
+            }
         },
     },
     mounted(){

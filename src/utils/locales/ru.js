@@ -242,6 +242,7 @@ const ru = {
         figureDataSuccess: 'График успешно построен',
         valueDataSuccess: 'Значение успешно получено',
         errorWhenGettingWidgetData: 'Ошибка загрузки содержимого виджета',
+        errorWhenLoadingDashboard: 'Ошибка при загрузке дашборда',
     },
     dbstruct: {
         dbstruct: 'Структура БД',
@@ -268,6 +269,7 @@ const ru = {
         width: 'Ширина',
         bindToGrid: 'Привязка к сетке',
         scaling: 'Масштабирование',
+        preview: 'Предварительный просмотр',
     },
     widgets: {
         singular: 'Виджет',

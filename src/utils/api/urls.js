@@ -21,6 +21,7 @@ const urls = {
     getFigureData: `${prefix}/get_figure_data/`,
     getValue: `${prefix}/get_value/`,
     getDocument: `${prefix}/get_document/`,
+    getDashboard: `${prefix}/get_dashboard/`,
     getWidgetData: `${prefix}/get_widget_data/`,
 }
 
