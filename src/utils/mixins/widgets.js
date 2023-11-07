@@ -136,6 +136,8 @@ const widgetMixin = {
                     this.snackbar.error(
                         this.locale.messages.errorWhenGettingWidgetData
                     )
+
+                    console.log(err)
                 })
         },
         updateContent(data){},

@@ -103,7 +103,8 @@ export default {
             this.tabs = this.tabs.filter(tab => tab.props[tabIdProp] !== tabId)
             delete this.tabsObjects[tabId]
             if(this.tabs.length){
-                this.tab = this.tabs[0].props[tabIdProp]
+                const pid = this.tabs[0].props.contextualId ? 'contextualId' : 'id'
+                this.tab = this.tabs[0].props[pid]
             }
         },
         clear(){

@@ -6,7 +6,7 @@
     @contextmenu.prevent="contextMenu"
     @mousedown="select(), startDragging($event)">
     <textarea class="noo-text-widget" readonly :style="fontStyle">
-        {{ text }}
+        {{ actualText }}
     </textarea>
 </div>
 <widget-resizers v-if="editorMode && selected"
@@ -36,7 +36,7 @@ export default {
             return `font-size:${this.fontSize}px;color:${this.fontColor};`
         },
         actualText(){
-            return this.interprete ? `<${this.text}>` : text
+            return this.interprete ? `=<${this.text}>` : this.text
         },
     },
     mounted(){
