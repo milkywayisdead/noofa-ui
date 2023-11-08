@@ -204,6 +204,7 @@ class NoofaCtx {
     }
 
     getItem(group, id){
+        group = ['tables', 'figures'].includes(group) ? 'components' : group;
         return this[group][id];
     }
 }

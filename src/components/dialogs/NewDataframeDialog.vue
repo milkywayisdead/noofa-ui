@@ -82,7 +82,11 @@ export default {
             const df = this.context.addDataframe(conf)
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'dataframe', df.id, df.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.snackbar.success(
+                            this.locale.messages.dataframeSavedSuccess
+                        )
+                    })
                     .catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingDataframe

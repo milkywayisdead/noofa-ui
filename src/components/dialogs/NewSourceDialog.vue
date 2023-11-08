@@ -114,7 +114,11 @@ export default {
             const source = this.context.addSource(conf)
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'source', source.id, source.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.snackbar.success(
+                            this.locale.messages.sourceSavedSuccess
+                        )
+                    })
                     .catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingSource

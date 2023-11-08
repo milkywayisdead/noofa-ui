@@ -1,6 +1,7 @@
 <template>
     <slot name="content"></slot>
     <snackbar ref="snackbar" />
+    <ctx-menu ref="ctxmenu" />
 </template>
 
 <script>
@@ -8,6 +9,7 @@ import api from '../utils/api/api.js'
 import NoofaCtx from '../utils/context/context.js'
 import { DEFAULT_LOCALE, getLocale } from '../utils/locales/locales.js'
 import Snackbar from '@/components/misc/Snackbar.vue'
+import CtxMenu from '@/components/misc/CtxMenu.vue'
 
 export default {
     name: 'Wrapper',
@@ -41,6 +43,9 @@ export default {
         showMessage(message, color){
             this.$refs.snackbar.showMessage(message, color)
         },
+        ctxmenu(){
+            return this.$refs.ctxmenu
+        },
     },
     provide(){
         return {
@@ -52,10 +57,12 @@ export default {
                 error: this.errorMessage,
                 success: this.successMessage,
             },
+            ctxmenu: this.ctxmenu,
         }
     },
     components: {
         Snackbar,
+        CtxMenu,
     },
 }
 </script>

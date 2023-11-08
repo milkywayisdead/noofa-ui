@@ -15,7 +15,7 @@
             :tooltip="locale.values.run" 
             @click="getValue" />
     </v-toolbar>
-    <v-row class="mt-2">
+    <v-row class="mt-2 rigid-row" :id="rowContainerId">
         <v-col cols="3">
             <v-row>
                 <v-col cols="12">
@@ -77,6 +77,9 @@ export default {
                     this.result = res.data.is_simple ?
                             res.data.value :
                             this.locale.messages.valueCantBeDisplayed
+                    this.snackbarOnItemBuildSuccess()
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

@@ -15,7 +15,7 @@
             :tooltip="locale.documents.downloadPdf" 
             @click="download" />
     </v-toolbar>
-    <v-row class="mt-2">
+    <v-row class="mt-2 rigid-row" :id="rowContainerId">
         <v-col cols="3">
             <v-row>
                 <v-col cols="12">
@@ -74,6 +74,8 @@ export default {
                     link.setAttribute('download', 'file.pdf');
                     document.body.appendChild(link);
                     link.click();
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })

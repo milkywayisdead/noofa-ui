@@ -72,7 +72,11 @@ export default {
             const table = this.context.addTable(conf)
             if(this.context.hasId()){
                 this.api.partialUpdate(this.context.id, 'table', table.id, table.compile())
-                    .then(res => {})
+                    .then(res => {
+                        this.snackbar.success(
+                            this.locale.messages.tableSavedSuccess
+                        )
+                    })
                     .catch(err => {
                         this.snackbar.error(
                             this.locale.messages.errorWhenSavingTable

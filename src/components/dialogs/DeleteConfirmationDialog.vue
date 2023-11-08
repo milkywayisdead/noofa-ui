@@ -2,7 +2,7 @@
     <base-dialog
         ref="baseDialog"
         :title="locale.actions.itemDelete"
-        activator-icon="mdi-delete"
+        :activator-icon="noActivator ? '' : 'mdi-delete'"
         :width="'40%'"
         :tooltip="locale.actions.delete"
     >
@@ -43,6 +43,10 @@ export default {
         itemGroupPlural: {
             type: String
         },
+        noActivator: {
+            type: Boolean,
+            default: false,
+        }
     },
     emits: ['item-delete'],
     methods: {
@@ -63,6 +67,9 @@ export default {
                     if(res.status === 200){
                         this.context.deleteItem(this.itemGroupPlural, this.itemId)
                         this.$emit('item-delete', this.itemId)
+                        this.snackbar.success(
+                            this.locale.messages.itemDeletedSuccess
+                        )
                     }
                 }).catch(err => {
                     this.snackbar.error(

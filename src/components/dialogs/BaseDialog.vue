@@ -5,7 +5,7 @@
         persistent
         :width="width"
     >
-        <template v-slot:activator="{ props }">
+        <template v-slot:activator="{ props }" v-if="activatorIcon">
             <v-tooltip location="bottom"
                 open-delay="500">
                 <template v-slot:activator="{ props }">

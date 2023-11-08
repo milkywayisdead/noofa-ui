@@ -106,15 +106,27 @@
 
     <v-row>
         <v-col cols="2">
-            <profile-tree @profile-item-selected="addTab"></profile-tree>
+            <profile-tree :ctxmenus="ctxmenus"
+                @profile-item-selected="addTab"
+                @profile-item-delete="deleteProfileItem"></profile-tree>
         </v-col>
-        <v-col cols="10">
+        <v-col cols="10" style="flex:none;height:100%">
             <tabs-area ref="tabsArea"></tabs-area>
         </v-col>
     </v-row>
 
     <locale-change-dialog ref="localeChangeDialog"
         @reload-confirmed="requestReload" />
+
+    <delete-confirmation-dialog v-if="deletingItem"
+        ref="deleteConfirmationDialog"
+        :item-id="itemToDelete.type === 'dashboard' ? itemToDelete.props.contextualId : itemToDelete.props.id"
+        :item-name="itemToDelete.props.name"
+        :item-group="itemToDelete.type"
+        :item-group-plural="plurals[itemToDelete.type]"
+        @item-delete="handleItemDelete"
+        :no-activator="true"
+    />
 </template>
 
 <script>
@@ -134,13 +146,128 @@ import NewDashboardDialog from '@/components/dialogs/NewDashboardDialog.vue'
 import IconButton from '@/components/misc/IconButton.vue'
 import { locales } from '@/utils/locales/locales.js'
 import LocaleChangeDialog from '@/components/dialogs/LocaleChangeDialog.vue'
+import DeleteConfirmationDialog from '@/components/dialogs/DeleteConfirmationDialog.vue'
 
 export default {
     name: 'Editor',
     inject: ['api', 'context', 'locale', 'snackbar'],
     data(){
+        document.title = 'Noofa Editor'
+
         return {
             locales: locales,
+            ctxmenus: {
+                data: [
+                    {
+                        title: this.locale.sources.new,
+                        children: [],
+                        onclick: this.openNewSourceDialog,
+                        icon: 'mdi-database',
+                    },
+                    {
+                        title: this.locale.queries.new,
+                        children: [],
+                        onclick: this.openNewQueryDialog,
+                        icon: 'mdi-database-search',
+                    },
+                    {
+                        title: this.locale.dataframes.new,
+                        children: [],
+                        onclick: this.openNewDataframeDialog,
+                        icon: 'mdi-table-large-plus',
+                    },
+                ],
+                sources: [
+                    {
+                        title: this.locale.sources.new,
+                        children: [],
+                        onclick: this.openNewSourceDialog,
+                        icon: 'mdi-database',
+                    }, 
+                ],
+                queries: [
+                    {
+                        title: this.locale.queries.new,
+                        children: [],
+                        onclick: this.openNewQueryDialog,
+                        icon: 'mdi-database-search',
+                    },
+                ],
+                dataframes: [
+                    {
+                        title: this.locale.dataframes.new,
+                        children: [],
+                        onclick: this.openNewDataframeDialog,
+                        icon: 'mdi-table-large-plus',
+                    },
+                ],
+                components: [
+                    {
+                        title: this.locale.tables.new,
+                        children: [],
+                        onclick: this.openNewTableDialog,
+                        icon: 'mdi-table-plus',
+                    },
+                    {
+                        title: this.locale.figures.new,
+                        children: [],
+                        onclick: this.openNewFigureDialog,
+                        icon: 'mdi-chart-line',
+                    },
+                ],
+                tables: [
+                    {
+                        title: this.locale.tables.new,
+                        children: [],
+                        onclick: this.openNewTableDialog,
+                        icon: 'mdi-table-plus',
+                    },
+                ],
+                figures: [
+                    {
+                        title: this.locale.figures.new,
+                        children: [],
+                        onclick: this.openNewFigureDialog,
+                        icon: 'mdi-chart-line',
+                    },
+                ],
+                values: [
+                    {
+                        title: this.locale.values.new,
+                        children: [],
+                        onclick: this.openNewValueDialog,
+                        icon: 'mdi-format-superscript',
+                    },
+                ],
+                documents: [
+                    {
+                        title: this.locale.documents.new,
+                        children: [],
+                        onclick: this.openNewDocumentDialog,
+                        icon: 'mdi-file-pdf-box',
+                    },
+                ],
+                dashboards : [
+                    {
+                        title: this.locale.dashboards.new,
+                        children: [],
+                        onclick: this.openNewDashboardDialog,
+                        icon: 'mdi-view-dashboard',
+                    },
+                ],
+            },
+            itemToDelete: {},
+            deletingItem: false,
+            plurals: {
+                source: 'sources',
+                query: 'queries',
+                dataframe: 'dataframes',
+                table: 'tables',
+                figure: 'figures',
+                value: 'values',
+                document: 'documents',
+                dashboard: 'dashboards',
+            },
         }
     },
     emits: ['reload-requested'],
@@ -163,6 +290,10 @@ export default {
                                 ctxDash.id = res.data.dashboards[dashId].id
                             }
                         }
+
+                        this.snackbar.success(
+                            this.locale.messages.profileSavedSuccess
+                        )
                     }
                 }).catch(err => {
                     const message = creating ? 
@@ -217,6 +348,20 @@ export default {
                 localStorage.getItem('noofaLocale')
             )
         },
+        deleteProfileItem(event){
+            console.log(event)
+            this.itemToDelete = event
+            this.deletingItem = true
+            this.$nextTick(_ => {
+                    this.$refs.deleteConfirmationDialog.open()
+                })
+        },
+        handleItemDelete(){
+            this.deletingItem = false
+            const itemId = this.itemToDelete.type === 'dashboard' ? this.itemToDelete.props.contextualId : this.itemToDelete.props.id
+            this.$refs.tabsArea.closeTab(itemId)
+            this.itemToDelete = {}
+        },
     },
     components: {
         NewSourceDialog,
@@ -234,6 +379,7 @@ export default {
         NewDashboardDialog,
         IconButton,
         LocaleChangeDialog,
+        DeleteConfirmationDialog,
     },
 }
 </script>

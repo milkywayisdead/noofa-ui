@@ -1,5 +1,5 @@
 const dbExplorerMixin = {
-    inject: ['api', 'context'],
+    inject: ['api', 'context', 'locale', 'snackbar'],
     methods: {
         getTablesList(sourceId){
             this.api.getTablesList(this.context.id, sourceId)
@@ -26,6 +26,9 @@ const dbExplorerMixin = {
                     }
                 }).catch(err => {
                     this.onDbStructureLoadingError(err)
+                    this.snackbar.error(
+                        this.locale.messages.errorWhenGettingDbStruct
+                    )
                 })
         },
         beforeDbStructureLoading(){},

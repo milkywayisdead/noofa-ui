@@ -21,7 +21,7 @@
             :tooltip="locale.export.downloadExcel"
             @click="download('excel')" />
     </v-toolbar>
-    <v-row class="mt-2">
+    <v-row class="mt-2 rigid-row" :id="rowContainerId">
         <v-col cols="3">
             <v-row>
                 <v-col cols="12">
@@ -158,7 +158,11 @@ export default {
                         this.$nextTick(_ => {
                             this._hideExportBtns()
                         })
+
+                        this.snackbarOnItemBuildSuccess()
                     }
+                }).catch(err => {
+                    this.snackbarOnItemBuildError()
                 }).finally(() => {
                     this.exitLoadingState()
                 })
