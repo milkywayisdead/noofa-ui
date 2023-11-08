@@ -13,7 +13,7 @@ import dashboardWidgetMixin from '@/utils/mixins/dashwidgets.js'
 
 export default {
     name: 'TextWidget',
-    mixins: [dashboardWidgetMixin, ],
+    mixins: [dashboardWidgetMixin,],
     data(){
         const props = this.widgetProps
 
