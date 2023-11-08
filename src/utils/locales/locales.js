@@ -1,7 +1,7 @@
-import ru from './ru.js'
-import en from './en.js'
+import ru from './ru.js';
+import en from './en.js';
 
-const DEFAULT_LOCALE = 'ru';
+const DEFAULT_LOCALE = 'en';
 
 const _locales = {
     ru: ru,

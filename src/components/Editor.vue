@@ -349,12 +349,11 @@ export default {
             )
         },
         deleteProfileItem(event){
-            console.log(event)
             this.itemToDelete = event
             this.deletingItem = true
             this.$nextTick(_ => {
-                    this.$refs.deleteConfirmationDialog.open()
-                })
+                this.$refs.deleteConfirmationDialog.open()
+            })
         },
         handleItemDelete(){
             this.deletingItem = false
