@@ -1,9 +1,11 @@
 <template>
-<textarea readonly :style="positionStyle + sizeStyle + fontStyle"
+<textarea :id="`${id}-dash-text`"
+    :style="positionStyle + sizeStyle + fontStyle"
     class="noo-dashboard-widget noo-dashboard-text prevent-select"
-    disabled>
-    {{ text }}
-</textarea>
+    readonly 
+    disabled
+    :value="text" 
+    @onselectstart.prevent />
 </template>
 
 <script>
@@ -17,8 +19,9 @@ export default {
 
         return {
             text: '',
-            fontSize: props.props.fontSize,
+            fontSize: props.scaling.fontK || props.props.fontSize,
             fontColor: props.props.fontColor,
+            fontK: props.scaling.fontK,
         }
     },
     computed: {
@@ -27,11 +30,17 @@ export default {
         },
     },
     mounted(){
+        this.redraw()
         this.getWidgetData()
     },
     methods: {
         updateContent(data){
             this.text = data
+        },
+        redraw(){
+            if(!this.dashboard.scaling) return
+
+            this.fontSize = (this.dashboard.height*this.fontK)/100
         },
     },
 }

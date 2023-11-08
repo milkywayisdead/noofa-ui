@@ -56,6 +56,7 @@ export default {
                                 scaledLeft: (left/this.width)*100,
                                 scaledWidth: (width/this.width)*100,
                                 scaledHeight: (height/this.height)*100,
+                                fontK: w.type === 'text' ? (w.props.fontSize/this.height)*100 : null,
                             },
                         }
                     })

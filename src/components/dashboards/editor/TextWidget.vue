@@ -5,9 +5,10 @@
     @click="select"
     @contextmenu.prevent="contextMenu"
     @mousedown="select(), startDragging($event)">
-    <textarea class="noo-text-widget" readonly :style="fontStyle">
-        {{ actualText }}
-    </textarea>
+    <textarea class="noo-text-widget"
+        readonly
+        :style="fontStyle"
+        :value="actualText" />
 </div>
 <widget-resizers v-if="editorMode && selected"
     ref="resizers"
