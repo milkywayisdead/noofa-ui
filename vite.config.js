@@ -36,6 +36,7 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
+    host: process.env.NOOFA_UI_HOST ?? '0.0.0.0',
+    port: process.env.NOOFA_UI_PORT ?? 3000,
   },
 })
